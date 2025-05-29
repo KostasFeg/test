@@ -1,0 +1,26 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.root {
+  background: $grey-300;
+  border-top: 1px solid $grey-800;
+  @include flex-center;
+  gap: $spacing-4;
+  padding: 0 $spacing-4;
+}
+
+.item {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-1;
+  font-size: .875rem;
+  color: $grey-800;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+} 

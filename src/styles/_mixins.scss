@@ -1,0 +1,13 @@
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin portrait {
+  @media (orientation: portrait) { @content; }
+}
+
+@mixin landscape {
+  @media (orientation: landscape) { @content; }
+} 

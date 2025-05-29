@@ -1,0 +1,18 @@
+@import "./variables";
+@import "./mixins";
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: $font-family-sans;
+  background: $grey-100;
+  color: $grey-800;
+}
+
+button {
+  font-family: inherit;
+} 

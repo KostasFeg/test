@@ -1,0 +1,55 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.root {
+  display: grid;
+  height: 100%;
+  grid-template-areas:
+    "topbar topbar"
+    "sidebar main"
+    ". bottombar";
+  grid-template-columns: 320px 1fr;
+  grid-template-rows: 64px 1fr 72px;
+
+  @media (orientation: portrait) and (max-width: 900px) {
+    grid-template-areas:
+      "topbar"
+      "sidebar"
+      "main"
+      "bottombar";
+    grid-template-columns: 1fr;
+    grid-template-rows: 64px 140px 1fr 72px;
+  }
+}
+
+.labelsVariant .sidebar {
+  width: 160px;
+  min-width: 160px;
+  max-width: 160px;
+}
+
+.topbar {
+  grid-area: topbar;
+  z-index: $z-topbar;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  z-index: $z-sidebar;
+}
+
+.main {
+  grid-area: main;
+  padding: $spacing-4;
+  overflow: auto;
+  background: $grey-100;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-4;
+  @include flex-center;
+}
+
+.bottombar {
+  grid-area: bottombar;
+  z-index: $z-bottombar;
+} 

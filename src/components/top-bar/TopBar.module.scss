@@ -1,0 +1,15 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.root {
+  background: $grey-300;
+  border-bottom: 1px solid $grey-800;
+  @include flex-center;
+  justify-content: space-between;
+  padding: 0 $spacing-4;
+}
+
+.section {
+  @include flex-center;
+  gap: $spacing-2;
+} 

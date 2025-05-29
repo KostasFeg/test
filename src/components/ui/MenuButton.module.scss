@@ -1,0 +1,19 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.root {
+  width: 260px;
+  height: 88px;
+  background: $grey-300;
+  border: 2px solid $grey-800;
+  border-radius: $radius-sm;
+  @include flex-center;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+
+  &:hover {
+    background: $blue-100;
+  }
+} 
