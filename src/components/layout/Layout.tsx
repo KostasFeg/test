@@ -30,7 +30,8 @@ export const Layout: React.FC<LayoutProps> = ({
     <div
       className={clsx(
         styles.root,
-        sidebarVariant === "labels" && styles.labelsVariant
+        sidebarVariant === "labels" && styles.labelsVariant,
+        !bottomItems && styles.noBottomBar
       )}
     >
       <TopBar

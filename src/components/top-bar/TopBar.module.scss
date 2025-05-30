@@ -4,12 +4,30 @@
 .root {
   background: $grey-300;
   border-bottom: 1px solid $grey-800;
-  @include flex-center;
-  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  height: 100%;
   padding: 0 $spacing-4;
 }
 
 .section {
-  @include flex-center;
+  display: flex;
+  align-items: center;
   gap: $spacing-2;
+}
+
+.section:nth-child(1) {
+  position: absolute;
+  left: $spacing-4;
+}
+.section:nth-child(2) {
+  margin: 0 auto;
+  position: relative;
+  left: 0;
+  right: 0;
+  justify-content: center;
+}
+.section:nth-child(3) {
+  position: absolute;
+  right: $spacing-4;
 } 

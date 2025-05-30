@@ -11,6 +11,7 @@ export type SideBarButtons = {
   icon: React.ReactNode;
   label: string;
   onClick?: () => void;
+  active?: boolean;
 }[];
 
 interface SideBarBaseProps {
@@ -30,7 +31,7 @@ export const SideBar: React.FC<SideBarBaseProps> = ({
         {(items as SideBarLabels).map((item) => (
           <button
             key={item.label}
-            className={clsx(styles.labelItem, { ["active"]: item.active })}
+            className={clsx(styles.labelItem, { [styles.active]: item.active })}
             onClick={item.onClick}
           >
             {item.label}
@@ -44,7 +45,11 @@ export const SideBar: React.FC<SideBarBaseProps> = ({
     <aside className={clsx(styles.root, className)}>
       <div className={styles.buttonColumn}>
         {(items as SideBarButtons).map((item) => (
-          <button key={item.label} onClick={item.onClick}>
+          <button
+            key={item.label}
+            onClick={item.onClick}
+            className={clsx(styles.labelItem, { [styles.active]: item.active })}
+          >
             {item.icon}
             <span>{item.label}</span>
           </button>
