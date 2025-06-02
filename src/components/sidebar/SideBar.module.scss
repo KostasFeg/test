@@ -29,11 +29,33 @@
   min-height: 0;
   box-sizing: border-box;
   transition: background 0.15s, color 0.15s, border-bottom 0.15s;
+  position: relative;
+  overflow: hidden;
 
   &.active {
     color: $blue-600;
     background: $blue-100;
-    border-bottom: 2px solid $blue-600;
+    border-bottom: 2px solid transparent;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom: 0;
+    height: 2px;
+    background: $blue-600;
+    border-radius: 2px;
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+  }
+
+  &.active::after {
+    transform: scaleX(1);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
   }
 }
 

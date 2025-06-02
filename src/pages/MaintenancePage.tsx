@@ -12,9 +12,12 @@ import {
   useParams,
 } from "react-router-dom";
 import GenericReport from "../components/ui/GenericReport";
-import BursterActionPanel, { BursterAction } from "../components/bursters/BursterActionPanel";
+import BursterActionPanel, {
+  BursterAction,
+} from "../components/bursters/BursterActionPanel";
 import LoginPage from "./LoginPage";
 import Panel from "../components/modal/Modal";
+import ReportRendered from "../components/ui/ReportRendered";
 
 const sidebarItems = [
   {
@@ -41,7 +44,16 @@ const sidebarItems = [
   {
     label: "Generic Report",
     icon: (
-      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        viewBox="0 0 24 24"
+      >
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <path d="M9 9h6v6H9z" />
       </svg>
@@ -51,9 +63,37 @@ const sidebarItems = [
   {
     label: "Burster Selection",
     icon: (
-      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        viewBox="0 0 24 24"
+      >
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="12" cy="12" r="6" />
+      </svg>
+    ),
+    onClick: () => {},
+  },
+  {
+    label: "Report Rendered",
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        viewBox="0 0 24 24"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M8 8h8v8H8z" />
       </svg>
     ),
     onClick: () => {},
@@ -311,9 +351,18 @@ function MainAreaContent({
   React.useEffect(() => {
     const patched = sidebarItems.map((item) => {
       let active = false;
-      if (item.label === "Dashboard" && location.pathname === "/") active = true;
-      if (item.label === "Generic Report" && location.pathname === "/generic-report") active = true;
-      if (item.label === "Burster Selection" && location.pathname === "/burster-selection") active = true;
+      if (item.label === "Dashboard" && location.pathname === "/")
+        active = true;
+      if (
+        item.label === "Generic Report" &&
+        location.pathname === "/generic-report"
+      )
+        active = true;
+      if (
+        item.label === "Burster Selection" &&
+        location.pathname === "/burster-selection"
+      )
+        active = true;
       return {
         ...item,
         onClick:
@@ -323,6 +372,8 @@ function MainAreaContent({
             ? () => navigate("/generic-report")
             : item.label === "Burster Selection"
             ? () => navigate("/burster-selection")
+            : item.label === "Report Rendered"
+            ? () => navigate("/report-rendered")
             : item.onClick || (() => {}),
         active,
       };
@@ -375,48 +426,65 @@ function MainAreaContent({
         }
       />
       <Route path="/generic-report" element={<GenericReport />} />
-      <Route path="/burster-selection" element={
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-          <Panel title="Burster Selection" onClose={() => {}}>
-            {(() => {
-              // Mock implementations for actions
-              const loadFullPack = (ctx: any) => {
-                alert("Load Full Pack: " + ctx.selected.map((b: any) => b.id).join(", "));
-              };
-              const unloadPack = (ctx: any) => {
-                alert("Unload Pack: " + ctx.selected.map((b: any) => b.id).join(", "));
-              };
-              const actions: BursterAction[] = [
-                {
-                  id: "load-full",
-                  label: "Load Full Pack",
-                  variant: "primary",
-                  disabled: (c) => c.selected.length !== 1,
-                  onExecute: loadFullPack,
-                },
-                {
-                  id: "multi-pack",
-                  label: "Multi Pack Load",
-                  disabled: (c) => c.selected.length === 0,
-                  onExecute: (c) => console.log("multi", c.selected),
-                },
-                {
-                  id: "unload",
-                  label: "Unload Pack",
-                  variant: "danger",
-                  onExecute: unloadPack,
-                },
-                {
-                  id: "park",
-                  label: "Park Blade",
-                  onExecute: () => console.log("parking…"),
-                },
-              ];
-              return <BursterActionPanel actions={actions} />;
-            })()}
-          </Panel>
-        </div>
-      } />
+      <Route
+        path="/burster-selection"
+        element={
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+            }}
+          >
+            <Panel title="Burster Selection" onClose={() => {}}>
+              {(() => {
+                // Mock implementations for actions
+                const loadFullPack = (ctx: any) => {
+                  alert(
+                    "Load Full Pack: " +
+                      ctx.selected.map((b: any) => b.id).join(", ")
+                  );
+                };
+                const unloadPack = (ctx: any) => {
+                  alert(
+                    "Unload Pack: " +
+                      ctx.selected.map((b: any) => b.id).join(", ")
+                  );
+                };
+                const actions: BursterAction[] = [
+                  {
+                    id: "load-full",
+                    label: "Load Full Pack",
+                    variant: "primary",
+                    disabled: (c) => c.selected.length !== 1,
+                    onExecute: loadFullPack,
+                  },
+                  {
+                    id: "multi-pack",
+                    label: "Multi Pack Load",
+                    disabled: (c) => c.selected.length === 0,
+                    onExecute: (c) => console.log("multi", c.selected),
+                  },
+                  {
+                    id: "unload",
+                    label: "Unload Pack",
+                    variant: "danger",
+                    onExecute: unloadPack,
+                  },
+                  {
+                    id: "park",
+                    label: "Park Blade",
+                    onExecute: () => console.log("parking…"),
+                  },
+                ];
+                return <BursterActionPanel actions={actions} />;
+              })()}
+            </Panel>
+          </div>
+        }
+      />
+      <Route path="/report-rendered" element={<ReportRendered />} />
     </Routes>
   );
 }

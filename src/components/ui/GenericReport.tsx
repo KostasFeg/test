@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ImageScroller from "./ImageScroller";
+// @ts-ignore
+import styles from "./GenericReport.module.scss";
 
 // Mocked dependencies and data
 const RenderReport = ({ children }: any) => <div>{children}</div>;
@@ -35,7 +37,13 @@ const dateFormats = {
   timeOnly: "HH:mm",
 };
 
-const DAILY_OFFSET_SLUGS = ["sales", "sales-summary", "commissions", "cashes", "financial-adjustments"];
+const DAILY_OFFSET_SLUGS = [
+  "sales",
+  "sales-summary",
+  "commissions",
+  "cashes",
+  "financial-adjustments",
+];
 
 type State = {
   isLoading: boolean;
@@ -55,7 +63,10 @@ function unixToDate(unix: number) {
   return new Date(unix * 1000);
 }
 
-const GenericReport = ({ report = "mockReport", i18n = { get: (k: string) => k } }) => {
+const GenericReport = ({
+  report = "mockReport",
+  i18n = { get: (k: string) => k },
+}) => {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<State>(() => {
@@ -86,10 +97,19 @@ const GenericReport = ({ report = "mockReport", i18n = { get: (k: string) => k }
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
     const newParams = { ...state.params, ...params };
     try {
-      const response = await service.getReport(newParams);
-      setState((prev) => ({ ...prev, htmlCode: response || "", isLoading: false, params: newParams }));
+      const response = await service.getReport();
+      setState((prev) => ({
+        ...prev,
+        htmlCode: response || "",
+        isLoading: false,
+        params: newParams,
+      }));
     } catch (error) {
-      setState((prev) => ({ ...prev, isLoading: false, error: "Error fetching report" }));
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: "Error fetching report",
+      }));
     }
   };
 
@@ -108,30 +128,45 @@ const GenericReport = ({ report = "mockReport", i18n = { get: (k: string) => k }
         case "type":
           filters.push(
             <div className="type" key="type-filter">
-              {RetailerPortalStore.REPORTS[report].options["type"].map((type: string) => (
-                <button
-                  key={type}
-                  className={params.type === type ? "active" : ""}
-                  onClick={() => fetchService({ type })}
-                  style={{ marginRight: 8 }}
-                  type="button"
-                >
-                  {type}
-                </button>
-              ))}
+              {RetailerPortalStore.REPORTS[report].options["type"].map(
+                (type: string) => (
+                  <button
+                    key={type}
+                    className={[
+                      params.type === type ? styles.active : "",
+                      styles["filter-margin"],
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    onClick={() => fetchService({ type })}
+                    type="button"
+                  >
+                    {type}
+                  </button>
+                )
+              )}
             </div>
           );
           break;
         case "fromDate":
         case "toDate":
           const timestamp = params[requiredField];
-          const preSelected = Number.isFinite(timestamp) ? unixToDate(timestamp) : new Date();
+          const preSelected = Number.isFinite(timestamp)
+            ? unixToDate(timestamp)
+            : new Date();
           // minDate: 6 months ago, maxDate: today
           const now = new Date();
-          const minDate = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate());
+          const minDate = new Date(
+            now.getFullYear(),
+            now.getMonth() - 6,
+            now.getDate()
+          );
           const maxDate = now;
           filters.push(
-            <div key={`date-picker-${requiredField}`} className={requiredField} style={{ marginRight: 8 }}>
+            <div
+              key={`date-picker-${requiredField}`}
+              className={styles["filter-margin"]}
+            >
               <span>{requiredField}</span>
               <DatePicker
                 selected={preSelected}
@@ -140,7 +175,11 @@ const GenericReport = ({ report = "mockReport", i18n = { get: (k: string) => k }
                 maxDate={maxDate}
                 onChange={(date) => onCalendarChange(date, requiredField)}
                 showTimeSelect={params.withTime ?? false}
-                dateFormat={params.withTime || params.withAutoTime ? dateFormats.DateTimeOnly24Unicode : dateFormats.shortDateUnicode}
+                dateFormat={
+                  params.withTime || params.withAutoTime
+                    ? dateFormats.DateTimeOnly24Unicode
+                    : dateFormats.shortDateUnicode
+                }
                 timeFormat={dateFormats.timeOnly}
               />
             </div>
@@ -160,19 +199,17 @@ const GenericReport = ({ report = "mockReport", i18n = { get: (k: string) => k }
   const { isLoading, htmlCode, error } = state;
 
   return (
-    <div className="financial_sales" style={{ padding: 24, background: "#f9f9f9" }}>
-      <div className="title" style={{ fontWeight: 600, fontSize: 24, marginBottom: 16, textAlign: "center" }}>
-        {getReportTitle()}
-      </div>
+    <div className={styles.financial_sales}>
+      <div className={styles.title}>{getReportTitle()}</div>
       {report === "mockReport" && (
-        <div style={{ margin: "24px auto", maxWidth: 800 }}>
+        <div className={styles["mock-image-scroller-wrapper"]}>
           <ImageScroller src="https://picsum.photos/800/1600" />
         </div>
       )}
-      <div style={{ marginBottom: 16, display: "flex", alignItems: "center" }}>
+      <div className={styles["filters-row"]}>
         {getFilters()}
         <button
-          style={{ marginLeft: 16, background: "#1d4ed8", color: "#fff", border: "none", borderRadius: 4, padding: "8px 16px", fontWeight: 600, cursor: "pointer" }}
+          className={styles["print-btn"]}
           onClick={printReport}
           disabled={!htmlCode}
           type="button"
@@ -180,21 +217,25 @@ const GenericReport = ({ report = "mockReport", i18n = { get: (k: string) => k }
           Print
         </button>
         <button
-          style={{ marginLeft: 16, background: "#10b981", color: "#fff", border: "none", borderRadius: 4, padding: "8px 16px", fontWeight: 600, cursor: "pointer" }}
+          className={styles["sample-btn"]}
           onClick={() => navigate("/sample-report")}
           type="button"
         >
           View Sample Report
         </button>
       </div>
-      <div style={{ background: "#fff", borderRadius: 4, padding: 16, minHeight: 120 }}>
+      <div className={styles["report-container"]}>
         {isLoading && <div>Loading...</div>}
-        {error && <div style={{ color: "red" }}>{error}</div>}
+        {error && <div className={styles["report-error"]}>{error}</div>}
         {!isLoading && !htmlCode && <div>No data available</div>}
         {!isLoading && htmlCode && (
           <div ref={containerRef}>
             <RenderReport>
-              <div id="report" style={{ width: "680px", background: "#fff", fontFamily: "DejavuSans-Book" }} dangerouslySetInnerHTML={{ __html: htmlCode }} />
+              <div
+                id="report"
+                className={styles.report}
+                dangerouslySetInnerHTML={{ __html: htmlCode }}
+              />
             </RenderReport>
           </div>
         )}
@@ -203,4 +244,4 @@ const GenericReport = ({ report = "mockReport", i18n = { get: (k: string) => k }
   );
 };
 
-export default GenericReport; 
+export default GenericReport;

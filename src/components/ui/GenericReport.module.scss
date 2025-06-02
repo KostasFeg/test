@@ -1,0 +1,66 @@
+.financial_sales {
+  padding: 24px;
+  background: #f9f9f9;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.mock-image-scroller-wrapper {
+  margin: 24px auto;
+  width: 100%;
+  max-width: 800px;
+}
+
+.filters-row {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.filter-margin {
+  margin-right: 8px;
+}
+
+.print-btn {
+  margin-left: 16px;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sample-btn {
+  margin-left: 16px;
+  background: #10b981;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-container {
+  background: #fff;
+  border-radius: 4px;
+  padding: 16px;
+  min-height: 120px;
+}
+
+.report-error {
+  color: red;
+}
+
+#report {
+  width: 680px;
+  background: #fff;
+  font-family: DejavuSans-Book;
+} 
