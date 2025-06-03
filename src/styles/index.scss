@@ -16,3 +16,14 @@ html, body, #root {
 button {
   font-family: inherit;
 } 
+
+.full-width-scroller {
+  width: 100%;
+  height: 100%;
+  max-width: none;   /* overrides ImageScroller’s 800 px cap */
+}
+
+.full-width-scroller .image-scroller-viewport {
+  max-height: 100%;  /* overrides the 70 vh cap */
+  height: 100%;
+}

@@ -107,3 +107,31 @@
     margin: 0;
   }
 }
+
+.burster__fullness-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  border-radius: 6px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, #38d39f 0%, #23a867 100%);
+  box-shadow: 0 2px 8px 0 rgba(56, 211, 159, 0.10);
+  transition: height 0.7s cubic-bezier(0.4,0,0.2,1);
+  animation: fullness-gradient-move 2.5s linear infinite alternate;
+  opacity: 0.92;
+  transform-origin: bottom;
+  /* Use scaleY for smooth animation */
+  will-change: transform;
+}
+
+@keyframes fullness-gradient-move {
+  0% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 100% 0%;
+  }
+}

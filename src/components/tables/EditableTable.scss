@@ -1,0 +1,67 @@
+/* =========================================================
+   EditableTable.scss
+   =========================================================*/
+   .table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .editable-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+  
+    th,
+    td {
+      padding: 6px 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+      white-space: nowrap;
+    }
+  
+    thead {
+      background: #f0f0f0;
+      font-weight: bold;
+    }
+  
+    tbody tr:nth-child(odd) {
+      background: #ffffff;
+    }
+    tbody tr:nth-child(even) {
+      background: #fff8e0;
+    }
+  
+    tbody tr.selected {
+      background: #e6e1f7;
+    }
+  }
+  
+  .qty-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .qty-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #555;
+    border-radius: 50%;
+    background: #fff;
+    font-size: 16px;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+  
+  .qty-value {
+    min-width: 16px;
+  }

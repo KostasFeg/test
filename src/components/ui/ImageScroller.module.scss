@@ -1,8 +1,9 @@
+/* ImageScroller.module.scss  – only the .image-scroller-html class is new */
 .image-scroller-root {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
@@ -10,17 +11,37 @@
 }
 
 .image-scroller-viewport {
-  max-height: 70vh;
+  max-height: 85vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+}
+.image-scroller-viewport::-webkit-scrollbar {
+  display: none;
 }
 
 .image-scroller-img {
   width: 100%;
   display: block;
   user-select: none;
-  pointer-events: none;
+  pointer-events: auto;
+}
+
+/* shared styling for rendered HTML / BBCode */
+.image-scroller-html {
+  padding: 1rem 1.25rem;
+  color: #eee;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.image-scroller-html img,
+.image-scroller-html video {
+  max-width: 100%;
+  height: auto;
 }
 
 .image-scroller-btn {
@@ -30,7 +51,7 @@
   height: 25%;
   min-height: 60px;
   max-height: 200px;
-  background: rgba(0,0,0,0.25);
+  background: rgba(0, 0, 0, 0.25);
   color: #fff;
   border: none;
   display: flex;
@@ -38,10 +59,11 @@
   justify-content: center;
   cursor: pointer;
   z-index: 2;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, box-shadow 0.2s, opacity 0.2s;
   font-size: 2rem;
   border-radius: 12px;
   opacity: 0.85;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .image-scroller-btn--up {
@@ -54,55 +76,24 @@
   border-bottom-right-radius: 16px;
 }
 
-.image-scroller-btn:hover {
+.image-scroller-btn:hover,
+.image-scroller-btn:active {
   background: rgba(30, 64, 175, 0.7);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
   opacity: 1;
 }
 
-.image-scroller-tooltip {
-  position: absolute;
-  right: 60px;
-  min-width: 140px;
-  background: #fff;
-  color: #222;
-  font-size: 1rem;
-  padding: 12px 18px;
-  border-radius: 10px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  z-index: 10;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(10px) scale(0.98);
-  transition: opacity 0.18s, transform 0.18s;
-  font-family: inherit;
-  font-weight: 500;
-  line-height: 1.5;
+@media (hover: none) {
+  .image-scroller-btn {
+    opacity: 0.55;
+  }
 }
 
-.image-scroller-tooltip--active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
+.image-scroller-root--fill {
+  width: 90%
 
-.image-scroller-tooltip--down {
-  bottom: 32px;
+  
+  /* Optionally keep the background and border-radius for visual consistency */
+  /* background: #222; */
+  /* border-radius: 16px; */
 }
-
-.image-scroller-tooltip--arrow {
-  position: absolute;
-  right: -10px;
-  width: 18px;
-  height: 18px;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.image-scroller-tooltip--arrow svg {
-  display: block;
-  width: 18px;
-  height: 18px;
-  color: #fff;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10));
-} 

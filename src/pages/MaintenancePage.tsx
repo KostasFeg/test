@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Layout } from "../components/layout/Layout";
 import { MenuButton } from "../components/ui/MenuButton";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   BrowserRouter as Router,
@@ -18,6 +17,9 @@ import BursterActionPanel, {
 import LoginPage from "./LoginPage";
 import Panel from "../components/modal/Modal";
 import ReportRendered from "../components/ui/ReportRendered";
+import DatePicker from "../components/DatePicker/DatePicker";
+import EditableTable from "../components/tables/EditableTable";
+import { ColumnDef } from "@tanstack/react-table";
 
 const sidebarItems = [
   {
@@ -94,6 +96,44 @@ const sidebarItems = [
       >
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <path d="M8 8h8v8H8z" />
+      </svg>
+    ),
+    onClick: () => {},
+  },
+  {
+    label: "Date Picker",
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        viewBox="0 0 24 24"
+      >
+        <rect x="3" y="8" width="18" height="8" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+      </svg>
+    ),
+    onClick: () => {},
+  },
+  {
+    label: "Tables",
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        viewBox="0 0 24 24"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
       </svg>
     ),
     onClick: () => {},
@@ -363,6 +403,21 @@ function MainAreaContent({
         location.pathname === "/burster-selection"
       )
         active = true;
+      if (
+        item.label === "Report Rendered" &&
+        location.pathname === "/report-rendered"
+      )
+        active = true;
+      if (
+        item.label === "Date Picker" &&
+        location.pathname === "/date-picker"
+      )
+        active = true;
+      if (
+        item.label === "Tables" &&
+        location.pathname === "/tables"
+      )
+        active = true;
       return {
         ...item,
         onClick:
@@ -374,6 +429,10 @@ function MainAreaContent({
             ? () => navigate("/burster-selection")
             : item.label === "Report Rendered"
             ? () => navigate("/report-rendered")
+            : item.label === "Date Picker"
+            ? () => navigate("/date-picker")
+            : item.label === "Tables"
+            ? () => navigate("/tables")
             : item.onClick || (() => {}),
         active,
       };
@@ -485,7 +544,33 @@ function MainAreaContent({
         }
       />
       <Route path="/report-rendered" element={<ReportRendered />} />
+      <Route path="/date-picker" element={<DatePicker />} />
+      <Route path="/tables" element={<TablesDemo />} />
     </Routes>
+  );
+}
+
+// Demo data and columns for EditableTable
+type DemoRow = { id: number; name: string; quantity: number; price: number };
+const demoColumns: ColumnDef<DemoRow, any>[] = [
+  { header: "ID", accessorKey: "id", size: 40 },
+  { header: "Name", accessorKey: "name", size: 120 },
+  { header: "Quantity", accessorKey: "quantity", size: 80 },
+  { header: "Price", accessorKey: "price", size: 80 },
+];
+const demoEditable = [ { key: "quantity" as const, step: 1, min: 0 } ];
+const demoData: DemoRow[] = [
+  { id: 1, name: "Apple", quantity: 5, price: 1.2 },
+  { id: 2, name: "Banana", quantity: 3, price: 0.8 },
+  { id: 3, name: "Orange", quantity: 7, price: 1.5 },
+];
+function TablesDemo() {
+  const [data, setData] = React.useState(demoData);
+  return (
+    <div style={{ width: 500, margin: "0 auto", background: "#fff", padding: 24, borderRadius: 8 }}>
+      <h2>Editable Table Demo</h2>
+      <EditableTable columns={demoColumns} data={data} editableColumns={demoEditable} onDataChange={setData} />
+    </div>
   );
 }
 
