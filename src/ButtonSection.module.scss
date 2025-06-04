@@ -1,0 +1,23 @@
+.buttonGrid {
+  display: flex;
+  flex-direction: column;     // one per row like the screenshot
+  align-items: center;
+  gap: 36px;
+  padding-top: 60px;
+}
+
+.item {
+  min-width: 280px;
+  padding: 12px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0044cc;
+  background: linear-gradient(#ffffff, #e8e8e8);
+  border: 2px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: filter .15s ease;
+
+  &:hover { filter: brightness(0.95); }
+}

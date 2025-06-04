@@ -200,13 +200,13 @@ const GenericReport = ({
 
   return (
     <div className={styles.financial_sales}>
-      <div className={styles.title}>{getReportTitle()}</div>
+      {/* <div className={styles.title}>{getReportTitle()}</div> */}
       {report === "mockReport" && (
         <div className={styles["mock-image-scroller-wrapper"]}>
           <ImageScroller src="https://picsum.photos/800/1600" />
         </div>
       )}
-      <div className={styles["filters-row"]}>
+      {/* <div className={styles["filters-row"]}>
         {getFilters()}
         <button
           className={styles["print-btn"]}
@@ -239,7 +239,7 @@ const GenericReport = ({
             </RenderReport>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
