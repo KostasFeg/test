@@ -1,3 +1,5 @@
+import { SidebarVariant } from '../types/ui';
+
 interface AppConfig {
   app: {
     name: string;
@@ -12,7 +14,7 @@ interface AppConfig {
     timeout: number;
   };
   ui: {
-    defaultSidebarVariant: 'labels' | 'buttons';
+    defaultSidebarVariant: SidebarVariant;
     defaultShowBottomBar: boolean;
   };
 }

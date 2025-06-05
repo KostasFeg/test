@@ -1,11 +1,13 @@
 // SideBar.tsx
-import React, { JSX, lazy } from "react";
+import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import styles from "./SideBar.module.scss";
-import type { NavNode } from "../../config";
+import type { NavNode } from "../../../shared/config/navigation.config";
+import { SidebarVariant } from "../../../shared/types/ui";
 
-export type SideBarVariant = "labels" | "buttons";
+// Keep this for backward compatibility if needed
+export type SideBarVariant = SidebarVariant;
 
 interface SideBarProps {
   items: NavNode[]; // usually the *top-level* nodes (`nav` array)

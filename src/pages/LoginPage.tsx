@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import nhLotteryLogo from "./nhlottery-logo.png";
 import { RetailerLevel } from "../permissions/access-model";
 import styles from "./LoginPage.module.scss";
-
-interface User {
-  retailerId: string;
-  level: RetailerLevel;
-  name?: string;
-}
+import { User } from "../shared/types/auth";
 
 interface LoginPageProps {
   onLoginSuccess: (user: User, isOffline?: boolean) => void;

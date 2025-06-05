@@ -1,6 +1,6 @@
-// nav-config.ts
-import React, { JSX } from "react";
+import React from "react";
 import { Printer } from "lucide-react";
+import { AUTO_GENERATED_REPORTS } from "../../utils/reportNavigation";
 
 export type NavNode = {
   /** URL segment, *not* the full path */
@@ -10,26 +10,27 @@ export type NavNode = {
   /** Icon component for the sidebar variant that shows icons */
   icon?: React.ReactNode;
   /** Function returning a React element that lives in the MAIN area */
-  element?: () => JSX.Element;
+  element?: () => React.ReactElement;
   /** Children = render an "inner menu" AND create nested routes */
   children?: NavNode[];
   /** Display style for children: 'tabs' (default) or 'buttons' */
   display?: "tabs" | "buttons";
 };
 
-// lazy helpers
+// Lazy-loaded components
 const ReportRendered = React.lazy(
-  () => import("./components/ui/ReportRendered")
+  () => import("../../components/ui/ReportRendered")
 );
-const GenericReport = React.lazy(() => import("./components/ui/GenericReport"));
-
+const GenericReport = React.lazy(
+  () => import("../../components/ui/GenericReport")
+);
 const BursterSelectionPanel = React.lazy(
-  () => import("./components/bursters/BursterSelectionPanel")
+  () => import("../../components/bursters/BursterSelectionPanel")
 );
 
 export const navConfig: NavNode[] = [
   {
-    slug: "maintenance-operations", // "
+    slug: "maintenance-operations",
     label: "Maintenance Operations",
     icon: <Printer />,
     display: "buttons",
@@ -71,28 +72,11 @@ export const navConfig: NavNode[] = [
       },
     ],
   },
-  {
-    slug: "financial-reports",
-    label: "Financial Reports",
-    icon: <Printer />,
-    children: [
-      {
-        slug: "pack-settlements",
-        label: "Pack Settlements",
-        element: () => <ReportRendered />,
-      },
-      {
-        slug: "scratch-cashes",
-        label: "Scratch Cashes",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "weekly-statement",
-        label: "Current Weekly Statement",
-        element: () => <ReportRendered />,
-      },
-    ],
-  },
+
+  // ✨ ULTRA-SIMPLE: All reports auto-generated from single config file!
+  // Add new reports by editing ONLY src/config/reportConfig.ts
+  ...AUTO_GENERATED_REPORTS,
+
   {
     slug: "lottery-sales-reports",
     label: "Lottery Sales Rep",
@@ -105,7 +89,7 @@ export const navConfig: NavNode[] = [
       },
       {
         slug: "adjustments",
-        label: "Adjustements",
+        label: "Adjustments",
         element: () => <ReportRendered />,
       },
       {
@@ -119,7 +103,7 @@ export const navConfig: NavNode[] = [
         element: () => <ReportRendered />,
       },
       {
-        slug: "order-pararamets",
+        slug: "order-parameters",
         label: "Order Parameters",
         element: () => <ReportRendered />,
       },
@@ -147,7 +131,7 @@ export const navConfig: NavNode[] = [
     display: "buttons",
     children: [
       {
-        slug: " cash-reconciliation-report",
+        slug: "cash-reconciliation-report",
         label: "Cash Reconciliation Report (Interim)",
         element: () => <ReportRendered />,
       },
@@ -163,7 +147,7 @@ export const navConfig: NavNode[] = [
       },
       {
         slug: "transaction-history-report",
-        label: "Transtaction History Report",
+        label: "Transaction History Report",
         element: () => <ReportRendered />,
       },
       {
@@ -198,78 +182,6 @@ export const navConfig: NavNode[] = [
         label: "Configuration",
         element: () => <ReportRendered />,
       },
-      {
-        slug: "logged-events",
-        label: "Logged Events",
-        element: () => <ReportRendered />,
-      },
-      {
-        slug: "security",
-        label: "Security",
-        element: () => <ReportRendered />,
-      },
     ],
   },
-  {
-    slug: "diagnostics",
-    label: "Diagnostics",
-    icon: <Printer />,
-    children: [
-      {
-        slug: "pack-settlements",
-        label: "Pack Settlements",
-        element: () => <ReportRendered />,
-      },
-      {
-        slug: "scratch-cashes",
-        label: "Scratch Cashes",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "weekly-statement",
-        label: "Current Weekly Statement",
-        element: () => <ReportRendered />,
-      },
-    ],
-  },
-  {
-    slug: "terminal",
-    label: "Terminal",
-    icon: <Printer />,
-    display: "buttons",
-    children: [
-      {
-        slug: "sign-off",
-        label: "Sign Off",
-        element: () => <ReportRendered />,
-      },
-      {
-        slug: "password-change",
-        label: "Password Change",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "new-password",
-        label: "New Password",
-        element: () => <ReportRendered />,
-      },
-      {
-        slug: "training",
-        label: "Training",
-        element: () => <ReportRendered />,
-      },
-      {
-        slug: "field-settings",
-        label: "Field Settings",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "message-resend",
-        label: "Message Resend",
-        element: () => <ReportRendered />,
-      },
-    ],
-  },
-
-  /* …the rest of your sections… */
 ];

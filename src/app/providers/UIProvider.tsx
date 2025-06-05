@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-
-export type SidebarVariant = "labels" | "buttons";
+import { SidebarVariant } from "../../types/ui";
 
 interface UIContextType {
   sidebarVariant: SidebarVariant;

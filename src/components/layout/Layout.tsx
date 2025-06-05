@@ -1,17 +1,16 @@
 import React, { ReactNode } from "react";
 import styles from "./Layout.module.scss";
 import { TopBar } from "./top-bar/TopBar";
-import { SideBar, SideBarLabels, SideBarButtons } from "./sidebar/SideBar";
+import { SideBar } from "./sidebar/SideBar";
 import { BottomBar, BottomBarItem } from "./bottom-bar/BottomBar";
 import clsx from "clsx";
 import FloatingBackButton from "../ui/FloatingBackButton";
-
-export type SideBarVariant = "labels" | "buttons";
+import { useUI } from "../../app/providers/UIProvider";
+import { peripherals } from "../../mocksHelper";
+import { NavNode } from "../../shared/config/navigation.config";
 
 interface LayoutProps {
-  sidebarVariant?: SideBarVariant;
-  sidebarItems: SideBarLabels | SideBarButtons;
-  bottomItems?: BottomBarItem[];
+  sidebarItems: NavNode[];
   topLeft?: ReactNode;
   topCenter?: ReactNode;
   topRight?: ReactNode;
@@ -19,20 +18,20 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({
-  sidebarVariant = "labels",
   sidebarItems,
-  bottomItems,
   topLeft,
   topCenter,
   topRight,
   children,
 }) => {
+  const { sidebarVariant, showBottomBar } = useUI();
+
   return (
     <div
       className={clsx(
         styles.root,
         sidebarVariant === "labels" && styles.labelsVariant,
-        !bottomItems && styles.noBottomBar
+        !showBottomBar && styles.noBottomBar
       )}
     >
       <TopBar
@@ -50,8 +49,8 @@ export const Layout: React.FC<LayoutProps> = ({
 
       <main className={styles.main}>{children}</main>
 
-      {bottomItems && (
-        <BottomBar className={styles.bottombar} items={bottomItems} />
+      {showBottomBar && (
+        <BottomBar className={styles.bottombar} items={peripherals} />
       )}
       <FloatingBackButton />
     </div>

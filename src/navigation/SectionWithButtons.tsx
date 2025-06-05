@@ -7,7 +7,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import styles from "./ButtonSection.module.scss";
-import type { NavNode } from "../config";
+import type { NavNode } from "../shared/config/navigation.config";
 
 export const SectionWithButtons: React.FC<{ node: NavNode }> = ({ node }) => {
   const navigate = useNavigate();

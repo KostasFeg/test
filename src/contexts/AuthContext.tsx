@@ -6,14 +6,9 @@ import React, {
   ReactNode,
 } from "react";
 import { accessManager } from "../permissions/create-access-manager";
-import { RetailerLevel, Permission } from "../permissions/access-model";
-import config from "../config/app.config";
-
-interface User {
-  retailerId: string;
-  level: RetailerLevel;
-  name?: string;
-}
+import { Permission, RetailerLevel } from "../permissions/access-model";
+import config from "../shared/config/app.config";
+import { User } from "../shared/types/auth";
 
 interface AuthContextType {
   // Authentication state

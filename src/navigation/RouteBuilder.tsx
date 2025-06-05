@@ -1,7 +1,7 @@
 // RouteBuilder.tsx
 import React, { Suspense } from "react";
 import { Route, Navigate } from "react-router-dom";
-import type { NavNode } from "../config/navigation.config";
+import type { NavNode } from "../shared/config/navigation.config";
 import { SectionWithTabs } from "./SectionWithTabs";
 import { SectionWithButtons } from "./SectionWithButtons";
 import LoadingFallback from "../components/ui/LoadingFallback";

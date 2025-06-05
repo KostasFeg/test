@@ -1,5 +1,5 @@
 import React from "react";
-import { useUI } from "../../contexts/UIContext";
+import { useUI } from "../../app/providers/UIProvider";
 
 const TestToggles: React.FC = () => {
   const { sidebarVariant, setSidebarVariant, showBottomBar, setShowBottomBar } =

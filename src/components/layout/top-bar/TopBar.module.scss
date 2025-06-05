@@ -2,12 +2,30 @@
 @import "../../../styles/mixins";
 
 .root {
-  background: $grey-300;
-  border-bottom: 1px solid $grey-800;
+  background: linear-gradient(135deg, $white 0%, $grey-100 100%);
+  border-bottom: 1px solid rgba(212, 212, 212, 0.3);
   display: flex;
   align-items: center;
   height: 100%;
   padding: 0 $spacing-4;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(212, 212, 212, 0.2) 20%, 
+      rgba(212, 212, 212, 0.2) 80%, 
+      transparent 100%);
+  }
+  
+  // Add subtle shadow for depth
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .section {

@@ -2,13 +2,39 @@
 @import "../../../styles/mixins";
 
 .root {
-  background: $grey-300;
+  background: linear-gradient(135deg, $white 0%, $grey-100 100%);
+  border-right: 1px solid $grey-300;
   padding: $spacing-4 0;
   display: flex;
   flex-direction: column;
   gap: $spacing-2;
   overflow-y: auto;
   height: 100%;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+      transparent 0%, 
+      rgba(212, 212, 212, 0.3) 20%, 
+      rgba(212, 212, 212, 0.3) 80%, 
+      transparent 100%);
+  }
+}
+
+.item {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .labelItem {
@@ -59,28 +85,137 @@
   }
 }
 
-.buttonColumn {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-2;
-  padding: 0 $spacing-4;
-}
-
-.buttonColumn button {
-  min-height: 56px;
+.buttonItem {
+  margin: 0 $spacing-4;
+  padding: $spacing-4;
+  min-height: 64px;
   display: flex;
   align-items: center;
-  gap: $spacing-2;
-  font-size: 1rem;
+  gap: $spacing-3;
+  font-size: 0.95rem;
   font-weight: 600;
-  border: none;
-  background: transparent;
+  color: $grey-800;
+  background: $white;
+  border: 1px solid $grey-300;
+  border-radius: 12px;
   cursor: pointer;
-  border-radius: $radius-sm;
-  transition: background 0.15s;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      rgba(37, 99, 235, 0.05) 0%, 
+      rgba(29, 78, 216, 0.02) 100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
 
   &:hover {
-    background: $accent-color-bg;
+    background: $white;
+    border-color: rgba(212, 212, 212, 0.8);
+    box-shadow: 
+      0 4px 6px rgba(0, 0, 0, 0.07),
+      0 1px 3px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &.active {
+    background: linear-gradient(135deg, $accent-color-bg 0%, rgba(219, 234, 254, 0.8) 100%);
+    border-color: $accent-color;
     color: $accent-color;
+    box-shadow: 
+      0 4px 12px rgba(37, 99, 235, 0.15),
+      0 2px 4px rgba(37, 99, 235, 0.1);
+    
+    &::before {
+      background: linear-gradient(135deg, 
+        rgba(37, 99, 235, 0.1) 0%, 
+        rgba(29, 78, 216, 0.05) 100%);
+      opacity: 1;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 60%;
+      background: linear-gradient(to bottom, $accent-color, $blue-500);
+      border-radius: 0 2px 2px 0;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: inherit;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.text {
+  flex: 1;
+  text-align: left;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+// Button variant specific container styling
+.buttons {
+  .root {
+    padding: $spacing-4 0;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 900px) {
+  .buttonItem {
+    margin: 0 $spacing-2;
+    padding: $spacing-3;
+    min-height: 56px;
+    gap: $spacing-2;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    
+    .text {
+      display: none;
+    }
+    
+    .icon {
+      margin: 0 auto;
+    }
+  }
+  
+  .root {
+    padding: $spacing-3 0;
   }
 } 
