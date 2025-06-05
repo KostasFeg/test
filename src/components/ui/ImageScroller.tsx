@@ -8,30 +8,10 @@ import React, {
 } from "react";
 import { ArrowUp, ArrowDown } from "lucide-react";
 import clsx from "clsx";
-import Mustache from "mustache";
-import bbobHTML from "@bbob/html";
-import presetHTML5 from "@bbob/preset-html5";
 import styles from "./ImageScroller.module.scss";
 
-type SourceType = "image" | "html" | "bbcode";
-
-/* ───── robust auto-detection ───── */
-const detectType = (raw: string): SourceType => {
-  const t = raw.trim();
-  if (t.startsWith("<")) return "html";
-  if (/^\[[a-z]+[^\]]*\]/i.test(t)) return "bbcode";
-  const loneUrl = /^(https?:\/\/|\/\/)[^\s]+$/i;
-  const urlWithExt =
-    /^(https?:\/\/|\/\/)[^\s]+\.(png|jpe?g|gif|webp|avif|svg)(\?.*)?$/i;
-  const dataUri = /^data:image\/[a-z+]+;/i;
-  if (urlWithExt.test(t) || dataUri.test(t) || loneUrl.test(t)) return "image";
-  return "html";
-};
-
 export interface ImageScrollerProps {
-  src: string;
-  sourceType?: SourceType;
-  templateData?: Record<string, unknown>;
+  children: ReactNode;
   step?: number;
   continuousSpeed?: number;
   className?: string;
@@ -40,9 +20,7 @@ export interface ImageScrollerProps {
 }
 
 export default function ImageScroller({
-  src,
-  sourceType,
-  templateData = {},
+  children,
   step = 240,
   continuousSpeed = 8,
   className,
@@ -50,7 +28,7 @@ export default function ImageScroller({
 }: ImageScrollerProps) {
   /* ───────── refs + state ───────── */
   const viewport = useRef<HTMLDivElement>(null);
-  const rafId = useRef<number>();
+  const rafId = useRef<number | undefined>(undefined);
   const downTime = useRef<number>(0);
   const movedInContinuous = useRef(false);
   const [needsScroll, setNeedsScroll] = useState(false);
@@ -61,8 +39,11 @@ export default function ImageScroller({
 
   const scrollBy = useCallback(
     (delta: number, smooth = true) =>
-      viewport.current?.scrollBy({ top: delta, behavior: smooth ? "smooth" : "auto" }),
-    [],
+      viewport.current?.scrollBy({
+        top: delta,
+        behavior: smooth ? "smooth" : "auto",
+      }),
+    []
   );
 
   const updateScrollNeeded = useCallback(() => {
@@ -82,8 +63,10 @@ export default function ImageScroller({
     const imgs = viewport.current?.querySelectorAll?.("img") ?? [];
     imgs.forEach((img) => img.addEventListener("load", updateScrollNeeded));
     return () =>
-      imgs.forEach((img) => img.removeEventListener("load", updateScrollNeeded));
-  }, [src, templateData, updateScrollNeeded]);
+      imgs.forEach((img) =>
+        img.removeEventListener("load", updateScrollNeeded)
+      );
+  }, [children, updateScrollNeeded]);
 
   /* ───────── continuous scroll machinery ───────── */
   const stopContinuous = useCallback(() => {
@@ -103,7 +86,7 @@ export default function ImageScroller({
       };
       rafId.current = requestAnimationFrame(tick);
     },
-    [continuousSpeed, stopContinuous],
+    [continuousSpeed, stopContinuous]
   );
 
   const handlePointerDown = (dir: 1 | -1) => {
@@ -121,55 +104,24 @@ export default function ImageScroller({
 
   useEffect(() => stopContinuous, [stopContinuous]);
 
-  /* ───────── content rendering ───────── */
-  const kind: SourceType = sourceType ?? detectType(src);
-  let content: ReactNode;
-
-  switch (kind) {
-    case "html": {
-      const rendered = Mustache.render(src, templateData);
-      content = (
-        <div
-          className={styles["image-scroller-html"]}
-          dangerouslySetInnerHTML={{ __html: rendered }}
-        />
-      );
-      break;
-    }
-    case "bbcode": {
-      const rendered = Mustache.render(src, templateData);
-      const html = bbobHTML(rendered, presetHTML5());
-      content = (
-        <div
-          className={styles["image-scroller-html"]}
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-      );
-      break;
-    }
-    case "image":
-    default:
-      content = <img src={src} alt="" className={styles["image-scroller-img"]} />;
-  }
-
   /* ───────── markup ───────── */
   return (
     <div
       className={clsx(
         styles["image-scroller-root"],
         fill && styles["image-scroller-root--fill"],
-        className,
+        className
       )}
     >
       <div
         ref={viewport}
         className={clsx(
           styles["image-scroller-viewport"],
-          fill && styles["image-scroller-viewport--fill"],
+          fill && styles["image-scroller-viewport--fill"]
         )}
         onScroll={updateScrollNeeded}
       >
-        {content}
+        {children}
       </div>
 
       {/* ▲ up */}
@@ -179,7 +131,7 @@ export default function ImageScroller({
         className={clsx(
           styles["image-scroller-btn"],
           styles["image-scroller-btn--up"],
-          !needsScroll && styles["image-scroller-btn--hidden"],
+          !needsScroll && styles["image-scroller-btn--hidden"]
         )}
         onPointerDown={() => handlePointerDown(-1)}
         onPointerUp={() => handlePointerUpCancel(-1)}
@@ -196,7 +148,7 @@ export default function ImageScroller({
         className={clsx(
           styles["image-scroller-btn"],
           styles["image-scroller-btn--down"],
-          !needsScroll && styles["image-scroller-btn--hidden"],
+          !needsScroll && styles["image-scroller-btn--hidden"]
         )}
         onPointerDown={() => handlePointerDown(1)}
         onPointerUp={() => handlePointerUpCancel(1)}

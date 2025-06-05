@@ -1,18 +1,21 @@
+@import "../styles/variables";
+
 .buttonGrid {
   display: flex;
   flex-direction: column;     // one per row like the screenshot
   align-items: center;
   gap: 36px;
-  padding-top: 60px;
+  height: 100%;
+  justify-content: center;
 }
 
 .item {
   min-width: 280px;
-  padding: 12px 18px;
+  padding: 25px 18px;
   font-size: 15px;
   font-weight: 600;
-  color: #0044cc;
-  background: linear-gradient(#ffffff, #e8e8e8);
+  color: $accent-color;
+  background: $accent-color-bg;
   border: 2px solid #333;
   border-radius: 6px;
   cursor: pointer;

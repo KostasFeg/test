@@ -1,9 +1,10 @@
 import React, { ReactNode } from "react";
 import styles from "./Layout.module.scss";
-import { TopBar } from "../top-bar/TopBar";
-import { SideBar, SideBarLabels, SideBarButtons } from "../sidebar/SideBar";
-import { BottomBar, BottomBarItem } from "../bottom-bar/BottomBar";
+import { TopBar } from "./top-bar/TopBar";
+import { SideBar, SideBarLabels, SideBarButtons } from "./sidebar/SideBar";
+import { BottomBar, BottomBarItem } from "./bottom-bar/BottomBar";
 import clsx from "clsx";
+import FloatingBackButton from "../ui/FloatingBackButton";
 
 export type SideBarVariant = "labels" | "buttons";
 
@@ -52,6 +53,7 @@ export const Layout: React.FC<LayoutProps> = ({
       {bottomItems && (
         <BottomBar className={styles.bottombar} items={bottomItems} />
       )}
+      <FloatingBackButton />
     </div>
   );
 };

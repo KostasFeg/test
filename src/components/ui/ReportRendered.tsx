@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ImageScroller from "./ImageScroller";
 import FullScreenModal from "./FullScreenModal";
 import { X, Printer } from "lucide-react";
-import styles from "../sidebar/SideBar.module.scss";
+import styles from "../layout/sidebar/SideBar.module.scss";
 
 const MOCK_IMAGE = "https://picsum.photos/800/1600";
 
@@ -272,24 +272,9 @@ export default function ReportRendered({
   onPrint?: () => void;
 }) {
   const [open, setOpen] = useState(false);
-  const renderMainAreaButtons = () => {
-    return options.map((option) => {
-      return (
-        <button
-          className={styles.labelItem}
-          style={{ marginBottom: 24 }}
-          onClick={() => {}}
-        >
-          {option}
-        </button>
-      );
-    });
-  };
+
   return (
     <div>
-      <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
-        {renderMainAreaButtons()}
-      </div>
       <button onClick={() => setOpen(true)}>Open</button>
       <FullScreenModal open={open} onClose={onClose}>
         <div
@@ -301,23 +286,8 @@ export default function ReportRendered({
             justifyContent: "center",
           }}
         >
-          {/* Sidebar-style label button */}
-          <button
-            className={styles.labelItem}
-            style={{ width: 200, marginBottom: 24 }}
-            onClick={() => {}}
-          >
-            Sidebar Style
-          </button>
           <div style={{ padding: "2rem" }}>
-            <ImageScroller
-              src={bbcode}
-              // templateData={{ user: "Maria", coins: 172 }}
-              /* stretch horizontally */
-              fill={true}
-              sourceType="html"
-              className="full-width-scroller"
-            />
+            <div>Text here...</div>
           </div>
           <div
             style={{

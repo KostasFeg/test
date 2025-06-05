@@ -7,14 +7,14 @@ import {
   useNavigate,
 } from "react-router-dom";
 import styles from "./ButtonSection.module.scss";
-import { NavNode } from "./App";
+import type { NavNode } from "../config";
 
 export const SectionWithButtons: React.FC<{ node: NavNode }> = ({ node }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const basePath = useResolvedPath(".").pathname; // e.g. "/dreamtouch-operations"
 
-  /* if we’re *exactly* on “…/dreamtouch-operations” show menu, otherwise hide */
+  /* if we're *exactly* on "…/dreamtouch-operations" show menu, otherwise hide */
   const showMenu = pathname === basePath || pathname === `${basePath}/`;
 
   return (

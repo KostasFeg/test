@@ -1,0 +1,21 @@
+.spinnerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  display: block;
+}
+
+.path {
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+} 

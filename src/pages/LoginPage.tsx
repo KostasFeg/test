@@ -1,79 +1,146 @@
 import React, { useState } from "react";
 import nhLotteryLogo from "./nhlottery-logo.png";
+import { RetailerLevel } from "../permissions/access-model";
+import styles from "./LoginPage.module.scss";
 
-const LoginPage: React.FC<{ onLoginSuccess: () => void }> = ({ onLoginSuccess }) => {
+interface User {
+  retailerId: string;
+  level: RetailerLevel;
+  name?: string;
+}
+
+interface LoginPageProps {
+  onLoginSuccess: (user: User, isOffline?: boolean) => void;
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === "user" && password === "pass") {
-      setError("");
-      onLoginSuccess();
-    } else {
-      setError("Invalid username or password");
+    setError("");
+    setIsLoading(true);
+
+    try {
+      // Mock offline login for development
+      if (username === "admin" && password === "admin") {
+        const user: User = {
+          retailerId: "32324d",
+          level: RetailerLevel.ADMINISTRATOR,
+          name: "Administrator User",
+        };
+        onLoginSuccess(user, true); // true = offline mode
+        return;
+      }
+
+      if (username === "manager" && password === "manager") {
+        const user: User = {
+          retailerId: "32324d",
+          level: RetailerLevel.AGENT_MANAGER,
+          name: "Manager User",
+        };
+        onLoginSuccess(user, true);
+        return;
+      }
+
+      if (username === "clerk" && password === "clerk") {
+        const user: User = {
+          retailerId: "32324d",
+          level: RetailerLevel.AGENT_CLERK,
+          name: "Clerk User",
+        };
+        onLoginSuccess(user, true);
+        return;
+      }
+
+      // TODO: Replace with actual API call
+      // try {
+      //   const response = await fetch('/api/login', {
+      //     method: 'POST',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify({ username, password })
+      //   });
+      //
+      //   if (response.ok) {
+      //     const data = await response.json();
+      //     const user: User = {
+      //       retailerId: data.retailerId,
+      //       level: data.level,
+      //       name: data.name
+      //     };
+      //     onLoginSuccess(user, false); // false = online mode
+      //   } else {
+      //     setError('Invalid credentials');
+      //   }
+      // } catch (apiError) {
+      //   setError('Login service unavailable');
+      // }
+
+      setError(
+        "Invalid credentials. Try admin/admin, manager/manager, or clerk/clerk"
+      );
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An error occurred during login");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#f5f5f5",
-      }}
-    >
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          background: "#fff",
-          padding: 32,
-          borderRadius: 8,
-          boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
-          display: "flex",
-          flexDirection: "column",
-          gap: 16,
-          minWidth: 320,
-        }}
-      >
-        <img src={nhLotteryLogo} alt="NH Lottery Logo" style={{ width: 180, margin: "0 auto 8px auto", display: "block" }} />
-        <h2 style={{ margin: 0, textAlign: "center" }}>Login</h2>
+    <div className={styles.loginPageContainer}>
+      <form onSubmit={handleSubmit} className={styles.loginForm}>
+        <img
+          src={nhLotteryLogo}
+          alt="NH Lottery Logo"
+          className={styles.logo}
+        />
+        <h2 className={styles.heading}>Retailer Portal Login</h2>
+
         <input
           type="text"
           placeholder="Username"
           value={username}
-          onChange={e => setUsername(e.target.value)}
-          style={{ padding: 8, fontSize: 16, borderRadius: 4, border: "1px solid #ccc" }}
+          onChange={(e) => setUsername(e.target.value)}
+          className={styles.input}
+          required
+          disabled={isLoading}
         />
+
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
-          style={{ padding: 8, fontSize: 16, borderRadius: 4, border: "1px solid #ccc" }}
+          onChange={(e) => setPassword(e.target.value)}
+          className={styles.input}
+          required
+          disabled={isLoading}
         />
-        {error && <div style={{ color: "red", textAlign: "center" }}>{error}</div>}
-        <button
-          type="submit"
-          style={{
-            background: "#1d4ed8",
-            color: "#fff",
-            border: "none",
-            borderRadius: 4,
-            padding: "10px 0",
-            fontWeight: 600,
-            fontSize: 16,
-            cursor: "pointer",
-          }}
-        >
-          Login
+
+        {error && <div className={styles.error}>{error}</div>}
+
+        <button type="submit" className={styles.button} disabled={isLoading}>
+          {isLoading ? "Logging in..." : "Login"}
         </button>
+
+        <div className={styles.demoInfo}>
+          <p>Demo Credentials:</p>
+          <p>
+            <strong>admin/admin</strong> - Full access
+          </p>
+          <p>
+            <strong>manager/manager</strong> - Manager access
+          </p>
+          <p>
+            <strong>clerk/clerk</strong> - Limited access
+          </p>
+        </div>
       </form>
     </div>
   );
 };
 
-export default LoginPage; 
+export default LoginPage;

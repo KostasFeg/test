@@ -2,7 +2,7 @@
 import React from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import styles from "./Tabs.module.scss";
-import { NavNode } from "./App";
+import type { NavNode } from "../config";
 
 export const SectionWithTabs: React.FC<{ node: NavNode }> = ({ node }) => {
   const location = useLocation();

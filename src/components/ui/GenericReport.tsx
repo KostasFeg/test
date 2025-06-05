@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ImageScroller from "./ImageScroller";
+import Spinner from "./Spinner";
 // @ts-ignore
 import styles from "./GenericReport.module.scss";
 
@@ -203,43 +204,11 @@ const GenericReport = ({
       {/* <div className={styles.title}>{getReportTitle()}</div> */}
       {report === "mockReport" && (
         <div className={styles["mock-image-scroller-wrapper"]}>
-          <ImageScroller src="https://picsum.photos/800/1600" />
+          <ImageScroller>
+            <div style={{ color: "white" }}>Some HTML content</div>
+          </ImageScroller>
         </div>
       )}
-      {/* <div className={styles["filters-row"]}>
-        {getFilters()}
-        <button
-          className={styles["print-btn"]}
-          onClick={printReport}
-          disabled={!htmlCode}
-          type="button"
-        >
-          Print
-        </button>
-        <button
-          className={styles["sample-btn"]}
-          onClick={() => navigate("/sample-report")}
-          type="button"
-        >
-          View Sample Report
-        </button>
-      </div>
-      <div className={styles["report-container"]}>
-        {isLoading && <div>Loading...</div>}
-        {error && <div className={styles["report-error"]}>{error}</div>}
-        {!isLoading && !htmlCode && <div>No data available</div>}
-        {!isLoading && htmlCode && (
-          <div ref={containerRef}>
-            <RenderReport>
-              <div
-                id="report"
-                className={styles.report}
-                dangerouslySetInnerHTML={{ __html: htmlCode }}
-              />
-            </RenderReport>
-          </div>
-        )}
-      </div> */}
     </div>
   );
 };

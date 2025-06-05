@@ -3,7 +3,7 @@ import React, { JSX, lazy } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import styles from "./SideBar.module.scss";
-import { NavNode } from "../../App";
+import type { NavNode } from "../../config";
 
 export type SideBarVariant = "labels" | "buttons";
 
@@ -19,9 +19,9 @@ export const SideBar: React.FC<SideBarProps> = ({
   variant = "labels",
   className,
 }) => {
-  const location = useLocation(); // allows custom “isActive” logic below
+  const location = useLocation(); // allows custom "isActive" logic below
 
-  /**   * Consider parent nodes “active” while any descendant route is active.
+  /**   * Consider parent nodes "active" while any descendant route is active.
    * That's why we can't rely solely on <NavLink>'s built-in end={true/false}.   */
   const isRouteActive = (node: NavNode) => {
     const path = `/${node.slug}`.replace(/\/+/g, "/");

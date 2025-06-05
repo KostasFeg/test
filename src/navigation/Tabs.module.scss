@@ -5,14 +5,13 @@
    Active tab ── .active      (added by <NavLink … className={isActive ? styles.active : undefined}>)
 */
 
+@import "../styles/variables";
+
 $tab-height: 34px;
-$border-radius: 4px;
+$border-radius: 12px;
 
 $color-bg:        #f1f1f1;
 $color-border:    #c8c8c8;
-$color-hover:     #e5e5e5;
-$color-active:    #4caf50;
-$color-active-dk: darken($color-active, 8%);
 $color-text:      #212121;
 
 /* --- container ---------------------------------------------------------- */
@@ -35,6 +34,7 @@ $color-text:      #212121;
   align-items: center;
   justify-content: center;
   height: 40px;
+  border-radius: 12px;
   font-size: 15px;
   font-weight: 500;
   color: $color-text;
@@ -49,14 +49,16 @@ $color-text:      #212121;
   box-sizing: border-box;
 
   &:hover {
-    background: $color-hover;
+    background: $accent-color-bg;
   }
 }
 
 /* --- active state ------------------------------------------------------- */
 .active {
-  background: $color-active;
-  border-color: $color-active-dk;
+  background: $accent-color;
+  border-color: darken($accent-color, 8%);
+  border-radius: 12px;
+  height: 40px;
   color: #fff;
   display: flex;
   align-items: center;
