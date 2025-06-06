@@ -253,8 +253,8 @@ const UniversalReportsPage: React.FC = () => {
                 showTimeSelect={params.withTime}
                 dateFormat={
                   params.withTime || params.withAutoTime
-                    ? "yyyy-MM-dd HH:mm"
-                    : "yyyy-MM-dd"
+                    ? "MM/dd/yyyy HH:mm"
+                    : "MM/dd/yyyy"
                 }
                 timeFormat="HH:mm"
               />

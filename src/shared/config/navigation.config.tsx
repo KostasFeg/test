@@ -8,6 +8,7 @@ import {
   Monitor,
   Clock,
   Wrench,
+  Printer,
 } from "lucide-react";
 import { AUTO_GENERATED_REPORTS } from "../../utils/reportNavigation";
 
@@ -62,6 +63,7 @@ export const navConfig: NavNode[] = [
     onCallback: async () => {
       // await sendAlarm({ type: "reload" });
       // window.location.reload();
+      console.log("hi");
     },
   },
   {
@@ -193,162 +195,162 @@ export const navConfig: NavNode[] = [
     },
   },
 
-  // {
-  //   slug: "maintenance-operations",
-  //   label: "Maintenance Operations",
-  //   icon: <Printer />,
-  //   display: "buttons",
-  //   children: [
-  //     {
-  //       slug: "load-full-pack",
-  //       label: "Load Full Pack",
-  //       element: () => <BursterSelectionPanel />,
-  //     },
-  //     {
-  //       slug: "load-combined-pack",
-  //       label: "Load Combined Pack",
-  //       element: () => <GenericReport />,
-  //     },
-  //     {
-  //       slug: "unload-pack",
-  //       label: "Unload Pack",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "close-shift",
-  //       label: "Close Shift",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "important-telephone-numbers",
-  //       label: "Important Telephone Numbers",
-  //       element: () => <GenericReport />,
-  //     },
-  //     {
-  //       slug: "clear-customer-credits",
-  //       label: "Clear Customer Credits",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "pack-operations",
-  //       label: "Pack Operations",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     // Example of callback-only functionality (no navigation)
-  //     {
-  //       slug: "emergency-shutdown",
-  //       label: "Emergency Shutdown",
-  //       onCallback: async () => {
-  //         console.log("Emergency shutdown initiated...");
-  //         // Example: Could trigger system shutdown, show confirmation dialog, etc.
-  //         await new Promise((resolve) => setTimeout(resolve, 1000));
-  //         alert("Emergency shutdown completed");
-  //       },
-  //     },
-  //     // Example of callback + navigation functionality
-  //     {
-  //       slug: "system-backup",
-  //       label: "System Backup",
-  //       element: () => <GenericReport />,
-  //       onCallback: async () => {
-  //         console.log("Starting system backup...");
-  //         // Example: Could trigger backup process before showing backup interface
-  //         await new Promise((resolve) => setTimeout(resolve, 500));
-  //         console.log("Backup initiated, navigating to backup interface...");
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    slug: "maintenance-operations",
+    label: "Maintenance Operations",
+    icon: <Printer />,
+    display: "buttons",
+    children: [
+      {
+        slug: "load-full-pack",
+        label: "Load Full Pack",
+        element: () => <BursterSelectionPanel />,
+      },
+      {
+        slug: "load-combined-pack",
+        label: "Load Combined Pack",
+        element: () => <GenericReport />,
+      },
+      {
+        slug: "unload-pack",
+        label: "Unload Pack",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "close-shift",
+        label: "Close Shift",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "important-telephone-numbers",
+        label: "Important Telephone Numbers",
+        element: () => <GenericReport />,
+      },
+      {
+        slug: "clear-customer-credits",
+        label: "Clear Customer Credits",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "pack-operations",
+        label: "Pack Operations",
+        element: () => <ReportRendered />,
+      },
+      // Example of callback-only functionality (no navigation)
+      {
+        slug: "emergency-shutdown",
+        label: "Emergency Shutdown",
+        onCallback: async () => {
+          console.log("Emergency shutdown initiated...");
+          // Example: Could trigger system shutdown, show confirmation dialog, etc.
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          alert("Emergency shutdown completed");
+        },
+      },
+      // Example of callback + navigation functionality
+      {
+        slug: "system-backup",
+        label: "System Backup",
+        element: () => <GenericReport />,
+        onCallback: async () => {
+          console.log("Starting system backup...");
+          // Example: Could trigger backup process before showing backup interface
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          console.log("Backup initiated, navigating to backup interface...");
+        },
+      },
+    ],
+  },
 
-  // // ✨ ULTRA-SIMPLE: All reports auto-generated from single config file!
-  // // Add new reports by editing ONLY src/config/reportConfig.ts
-  // ...AUTO_GENERATED_REPORTS,
+  // ✨ ULTRA-SIMPLE: All reports auto-generated from single config file!
+  // Add new reports by editing ONLY src/config/reportConfig.ts
+  ...AUTO_GENERATED_REPORTS,
 
-  // {
-  //   slug: "lottery-sales-reports",
-  //   label: "Lottery Sales Rep",
-  //   icon: <Printer />,
-  //   children: [
-  //     {
-  //       slug: "return-tickets",
-  //       label: "Return Tickets",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "adjustments",
-  //       label: "Adjustments",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "field-order",
-  //       label: "Field Order",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "retailer-order",
-  //       label: "Retailer Order",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "order-parameters",
-  //       label: "Order Parameters",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "lsr-order",
-  //       label: "LSR Order",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "stock-recovery",
-  //       label: "Stock Recovery",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "order-detail",
-  //       label: "Order Detail",
-  //       element: () => <ReportRendered />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   slug: "dreamtouch-operations",
-  //   label: "Dreamtouch Operations",
-  //   icon: <Printer />,
-  //   display: "buttons",
-  //   children: [
-  //     {
-  //       slug: "cash-reconciliation-report",
-  //       label: "Cash Reconciliation Report (Interim)",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "cash-reconciliation-report-final",
-  //       label: "Cash Reconciliation Report (Final)",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "inventory-report",
-  //       label: "Inventory Report",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "transaction-history-report",
-  //       label: "Transaction History Report",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "sales-report",
-  //       label: "Sales Report With Calendar",
-  //       element: () => <ReportRendered />,
-  //     },
-  //     {
-  //       slug: "bin-out-of-stock-report",
-  //       label: "Bin Out of Stock Report",
-  //       element: () => <ReportRendered />,
-  //     },
-  //   ],
-  // },
+  {
+    slug: "lottery-sales-reports",
+    label: "Lottery Sales Rep",
+    icon: <Printer />,
+    children: [
+      {
+        slug: "return-tickets",
+        label: "Return Tickets",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "adjustments",
+        label: "Adjustments",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "field-order",
+        label: "Field Order",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "retailer-order",
+        label: "Retailer Order",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "order-parameters",
+        label: "Order Parameters",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "lsr-order",
+        label: "LSR Order",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "stock-recovery",
+        label: "Stock Recovery",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "order-detail",
+        label: "Order Detail",
+        element: () => <ReportRendered />,
+      },
+    ],
+  },
+  {
+    slug: "dreamtouch-operations",
+    label: "Dreamtouch Operations",
+    icon: <Printer />,
+    display: "buttons",
+    children: [
+      {
+        slug: "cash-reconciliation-report",
+        label: "Cash Reconciliation Report (Interim)",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "cash-reconciliation-report-final",
+        label: "Cash Reconciliation Report (Final)",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "inventory-report",
+        label: "Inventory Report",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "transaction-history-report",
+        label: "Transaction History Report",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "sales-report",
+        label: "Sales Report With Calendar",
+        element: () => <ReportRendered />,
+      },
+      {
+        slug: "bin-out-of-stock-report",
+        label: "Bin Out of Stock Report",
+        element: () => <ReportRendered />,
+      },
+    ],
+  },
   // {
   //   slug: "system-reports",
   //   label: "System Reports",

@@ -32,10 +32,18 @@ export const SideBar: React.FC<SideBarProps> = ({
     );
   };
 
+  const handleCallbackClick = async (node: NavNode) => {
+    if (node.onCallback) {
+      await node.onCallback();
+    }
+  };
+
   return (
     <aside className={clsx(styles.root, styles[variant], className)}>
       {items.map((node) => {
         const fullPath = `/${node.slug}`.replace(/\/+/g, "/") || "/";
+        const isCallbackOnly =
+          node.onCallback && !node.element && !node.children?.length;
 
         const content =
           variant === "buttons" ? (
@@ -48,6 +56,23 @@ export const SideBar: React.FC<SideBarProps> = ({
             node.label
           );
 
+        // Render callback-only items as buttons
+        if (isCallbackOnly) {
+          return (
+            <button
+              key={node.slug}
+              onClick={() => handleCallbackClick(node)}
+              className={clsx(
+                styles.item,
+                variant === "labels" ? styles.labelItem : styles.buttonItem
+              )}
+            >
+              {content}
+            </button>
+          );
+        }
+
+        // Render navigable items as NavLinks
         return (
           <NavLink
             key={node.slug}

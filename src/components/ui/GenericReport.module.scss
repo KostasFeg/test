@@ -1,66 +1,150 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
 .financial_sales {
-  padding: 24px;
-  background: #f9f9f9;
+  padding: $spacing-4 * 1.5;
+  background: $grey-100;
 }
 
 .title {
   font-weight: 600;
   font-size: 24px;
-  margin-bottom: 16px;
+  margin-bottom: $spacing-4;
   text-align: center;
+  color: $grey-800;
+  font-family: $font-family-sans;
 }
 
 .mock-image-scroller-wrapper {
-  margin: 24px auto;
+  margin: $spacing-4 * 1.5 auto;
   width: 100%;
   max-width: 800px;
 }
 
 .filters-row {
-  margin-bottom: 16px;
+  margin-bottom: $spacing-4;
   display: flex;
   align-items: center;
+  gap: $spacing-3;
+  flex-wrap: wrap;
 }
 
 .filter-margin {
-  margin-right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+  
+  span {
+    font-size: 12px;
+    font-weight: 600;
+    color: $grey-800;
+    font-family: $font-family-sans;
+  }
+
+  // Ensure react-datepicker integration styles
+  :global(.react-datepicker__input-container input) {
+    padding: $spacing-3 $spacing-4;
+    border: 1px solid $grey-300;
+    border-radius: $radius-md;
+    background: $white;
+    font-size: 14px;
+    font-family: $font-family-sans;
+    color: $grey-800;
+    cursor: pointer;
+    min-width: 180px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+
+    &:hover {
+      border-color: darken($grey-300, 10%);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $accent-color;
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.1);
+    }
+  }
+
+  :global(.react-datepicker-popper) {
+    z-index: 1000;
+  }
+
+  :global(.react-datepicker) {
+    border: 1px solid $grey-300;
+    border-radius: $radius-lg;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    font-family: $font-family-sans;
+  }
 }
 
 .print-btn {
-  margin-left: 16px;
-  background: #1d4ed8;
-  color: #fff;
+  background: $accent-color;
+  color: $white;
   border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
+  border-radius: $radius-md;
+  padding: $spacing-3 $spacing-4;
   font-weight: 600;
+  font-family: $font-family-sans;
   cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: darken($accent-color, 5%);
+    box-shadow: 0 2px 8px rgba($accent-color, 0.3);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
+  }
 }
 
 .sample-btn {
-  margin-left: 16px;
   background: #10b981;
-  color: #fff;
+  color: $white;
   border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
+  border-radius: $radius-md;
+  padding: $spacing-3 $spacing-4;
   font-weight: 600;
+  font-family: $font-family-sans;
   cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: darken(#10b981, 5%);
+    box-shadow: 0 2px 8px rgba(#10b981, 0.3);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(#10b981, 0.2);
+  }
 }
 
 .report-container {
-  background: #fff;
-  border-radius: 4px;
-  padding: 16px;
+  background: $white;
+  border-radius: $radius-lg;
+  padding: $spacing-4;
   min-height: 120px;
+  border: 1px solid $grey-300;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .report-error {
-  color: red;
+  color: #dc2626;
+  font-weight: 500;
+  font-family: $font-family-sans;
+  padding: $spacing-3;
+  background: rgba(#dc2626, 0.1);
+  border: 1px solid rgba(#dc2626, 0.2);
+  border-radius: $radius-md;
 }
 
 #report {
   width: 680px;
-  background: #fff;
-  font-family: DejavuSans-Book;
+  background: $white;
+  font-family: $font-family-sans;
+  color: $grey-800;
 } 

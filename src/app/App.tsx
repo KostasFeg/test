@@ -33,7 +33,7 @@ const AppContent: React.FC = () => {
             {buildRoutes(navConfig)}
             <Route
               path={ROUTES.HOME}
-              element={<Navigate to={ROUTES.MAINTENANCE_OPERATIONS} replace />}
+              element={<Navigate to="/reports" replace />}
             />
           </Routes>
         </Suspense>

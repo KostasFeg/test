@@ -22,7 +22,7 @@ const SimpleDatePicker: React.FC<SimpleDatePickerProps> = ({
   minDate,
   maxDate,
   showTimeSelect = false,
-  dateFormat = "yyyy-MM-dd",
+  dateFormat = "MM/dd/yyyy",
   timeFormat = "HH:mm",
   className = "",
 }) => {
@@ -91,7 +91,7 @@ const SimpleDatePicker: React.FC<SimpleDatePickerProps> = ({
             minDate={minDate}
             maxDate={maxDate}
             showTime={showTimeSelect}
-            title="Select Date"
+            title=""
             closeOnSelect={true}
           />
         </div>

@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------------
    DatePicker.tsx  ─  v2.0
-   A zero-dependency* React calendar for “single” or “range” picking.
+   A zero-dependency* React calendar for "single" or "range" picking.
 
    * date-fns is the only runtime dependency (already in your project).
 ------------------------------------------------------------------- */
@@ -42,27 +42,30 @@ export interface DatePickerProps {
   onChange?: (value: DateValue) => void;
 
   /* --- UX niceties (all optional) --- */
-  title?: string;                 // Heading text
-  actionLabel?: string | false;   // Bottom button label – false hides the button
+  title?: string; // Heading text
+  actionLabel?: string | false; // Bottom button label – false hides the button
   minDate?: Date;
   maxDate?: Date;
-  showTime?: boolean;             // Adds HH:mm input next to each date
-  closeOnSelect?: boolean;        // “single” mode: close after picking. Default = true.
-  disabledWeekdays?: number[];    // Array of 0–6 (Sun-Sat) to disable
+  showTime?: boolean; // Adds HH:mm input next to each date
+  closeOnSelect?: boolean; // "single" mode: close after picking. Default = true.
+  disabledWeekdays?: number[]; // Array of 0–6 (Sun-Sat) to disable
 }
 
 /* ------------------------------------------------------------------ */
-/* Utility helpers                                                    */
+/* Helper functions                                                   */
 /* ------------------------------------------------------------------ */
-const isBetween = (d: Date, min?: Date, max?: Date) =>
-  (!min || d >= min) && (!max || d <= max);
+function isBetween(date: Date, min?: Date, max?: Date): boolean {
+  if (min && date < min) return false;
+  if (max && date > max) return false;
+  return true;
+}
 
-const applyTime = (base: Date, hhmm: string) => {
-  const [h, m] = hhmm.split(":").map(Number);
-  const d = new Date(base);
-  d.setHours(h, m, 0, 0);
-  return d;
-};
+function applyTime(date: Date, timeStr: string): Date {
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  const newDate = new Date(date);
+  newDate.setHours(hours || 0, minutes || 0, 0, 0);
+  return newDate;
+}
 
 /* ------------------------------------------------------------------ */
 /* <DayCell>                                                          */
@@ -91,7 +94,8 @@ const DayCell: React.FC<DayCellProps> = ({
     mode === "single"
       ? selected && isSameDay(day, selected)
       : range.from &&
-        ((range.to && isWithinInterval(day, { start: range.from, end: range.to })) ||
+        ((range.to &&
+          isWithinInterval(day, { start: range.from, end: range.to })) ||
           isSameDay(day, range.from) ||
           (range.to && isSameDay(day, range.to)));
 
@@ -180,8 +184,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const nav = {
     prevMonth: () => setViewDate((d) => subMonths(d, 1)),
     nextMonth: () => setViewDate((d) => addMonths(d, 1)),
-    prevYear:  () => setViewDate((d) => subYears(d, 1)),
-    nextYear:  () => setViewDate((d) => addYears(d, 1)),
+    prevYear: () => setViewDate((d) => subYears(d, 1)),
+    nextYear: () => setViewDate((d) => addYears(d, 1)),
   };
 
   /* ───────────────── selection logic ───────────────── */
@@ -252,91 +256,72 @@ const DatePicker: React.FC<DatePickerProps> = ({
       );
     }
     return rows;
-  }, [startDate, endDate, monthStart, mode, selected, range, isDisabled, onSelect]);
+  }, [
+    startDate,
+    endDate,
+    monthStart,
+    mode,
+    selected,
+    range,
+    isDisabled,
+    onSelect,
+  ]);
 
   /* ───────────────── JSX ───────────────── */
   return (
     <div className="drp-container" role="application">
-      <h2 className="drp-title">{title}</h2>
+      {title && <h2 className="drp-title">{title}</h2>}
 
-      {/* Inputs */}
-      <div className="drp-inputs">
-        {mode === "single" ? (
-          <label className="drp-label" style={{ width: "100%" }}>
-            Date:
-            <input
-              className="drp-input"
-              readOnly
-              value={selected ? format(selected, "yyyy-MM-dd") : ""}
-            />
-            {showTime && selected && (
-              <input
-                type="time"
-                className="drp-time-input"
-                value={format(selected, "HH:mm")}
-                onChange={(e) => {
-                  const next = applyTime(selected, e.target.value);
-                  setSelected(next);
-                  commitChange(next);
-                }}
-              />
-            )}
-          </label>
-        ) : (
-          <>
-            <label className="drp-label">
-              From:
-              <input
-                className="drp-input"
-                readOnly
-                value={range.from ? format(range.from, "yyyy-MM-dd") : ""}
-              />
-              {showTime && range.from && (
-                <input
-                  type="time"
-                  className="drp-time-input"
-                  value={format(range.from, "HH:mm")}
-                  onChange={(e) => {
-                    const nextFrom = applyTime(range.from!, e.target.value);
-                    const next = { ...range, from: nextFrom };
-                    setRange(next);
-                    commitChange(next);
-                  }}
-                />
-              )}
-            </label>
-            <label className="drp-label">
-              To:
-              <input
-                className="drp-input"
-                readOnly
-                value={range.to ? format(range.to, "yyyy-MM-dd") : ""}
-              />
-              {showTime && range.to && (
-                <input
-                  type="time"
-                  className="drp-time-input"
-                  value={format(range.to, "HH:mm")}
-                  onChange={(e) => {
-                    const nextTo = applyTime(range.to!, e.target.value);
-                    const next = { ...range, to: nextTo };
-                    setRange(next);
-                    commitChange(next);
-                  }}
-                />
-              )}
-            </label>
-          </>
-        )}
-      </div>
+      {/* Compact date display - only show when range mode has selections */}
+      {mode === "range" && (range.from || range.to) && (
+        <div className="drp-selection-display">
+          <div className="drp-range-display">
+            <span>
+              {range.from
+                ? format(range.from, "MM/dd/yyyy")
+                : "Select start date"}
+              {showTime && range.from && ` ${format(range.from, "HH:mm")}`}
+            </span>
+            <span className="drp-range-separator">→</span>
+            <span>
+              {range.to ? format(range.to, "MM/dd/yyyy") : "Select end date"}
+              {showTime && range.to && ` ${format(range.to, "HH:mm")}`}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Navigation */}
       <div className="drp-nav">
-        <button className="drp-nav-btn" onClick={nav.prevYear}  aria-label="Previous year">&laquo;</button>
-        <button className="drp-nav-btn" onClick={nav.prevMonth} aria-label="Previous month">&lsaquo;</button>
-        <span   className="drp-nav-current">{format(viewDate, "MMMM yyyy")}</span>
-        <button className="drp-nav-btn" onClick={nav.nextMonth} aria-label="Next month">&rsaquo;</button>
-        <button className="drp-nav-btn" onClick={nav.nextYear}  aria-label="Next year">&raquo;</button>
+        <button
+          className="drp-nav-btn"
+          onClick={nav.prevYear}
+          aria-label="Previous year"
+        >
+          &laquo;
+        </button>
+        <button
+          className="drp-nav-btn"
+          onClick={nav.prevMonth}
+          aria-label="Previous month"
+        >
+          &lsaquo;
+        </button>
+        <span className="drp-nav-current">{format(viewDate, "MMMM yyyy")}</span>
+        <button
+          className="drp-nav-btn"
+          onClick={nav.nextMonth}
+          aria-label="Next month"
+        >
+          &rsaquo;
+        </button>
+        <button
+          className="drp-nav-btn"
+          onClick={nav.nextYear}
+          aria-label="Next year"
+        >
+          &raquo;
+        </button>
       </div>
 
       {/* Weekday header */}
@@ -354,9 +339,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
       </div>
 
       {/* Optional bottom button */}
-      {actionLabel && (
-        <button className="drp-action-btn">{actionLabel}</button>
-      )}
+      {actionLabel && <button className="drp-action-btn">{actionLabel}</button>}
     </div>
   );
 };

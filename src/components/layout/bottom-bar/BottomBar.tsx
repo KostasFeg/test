@@ -18,11 +18,8 @@ interface BottomBarProps {
 export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
   const [animating, setAnimating] = useState<string | null>(null);
-  const [tooltipPositions, setTooltipPositions] = useState<{
-    [key: string]: "center" | "left" | "right";
-  }>({});
   const [tooltipCoords, setTooltipCoords] = useState<{
-    [key: string]: { x: number; y: number };
+    [key: string]: { x: number; y: number; buttonCenter: number };
   }>({});
   const containerRef = useRef<HTMLElement>(null);
 
@@ -38,38 +35,26 @@ export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
     buttonElement: HTMLElement,
     tooltipKey: string
   ) => {
-    if (!containerRef.current) return "center";
-
-    const containerRect = containerRef.current.getBoundingClientRect();
     const buttonRect = buttonElement.getBoundingClientRect();
-    const tooltipWidth = 180; // Approximate tooltip width
+    const tooltipWidth = 200;
+    const margin = 20;
 
+    // Dead simple: center tooltip above button
     const buttonCenter = buttonRect.left + buttonRect.width / 2;
-    const containerLeft = containerRect.left;
-    const containerRight = containerRect.right;
-
-    // Calculate absolute coordinates for portal rendering
-    const tooltipY = buttonRect.top - 120; // Increased from 85 to 120 for more clearance
+    const tooltipY = buttonRect.top - 100;
     let tooltipX = buttonCenter - tooltipWidth / 2;
-    let position: "center" | "left" | "right" = "center";
 
-    // Check if tooltip would overflow on the left
-    if (buttonCenter - tooltipWidth / 2 < containerLeft + 20) {
-      position = "left";
-      tooltipX = buttonRect.left + 10;
-    }
-
-    // Check if tooltip would overflow on the right
-    if (buttonCenter + tooltipWidth / 2 > containerRight - 20) {
-      position = "right";
-      tooltipX = buttonRect.right - tooltipWidth - 10;
+    // Only adjust if going off screen
+    if (tooltipX < margin) tooltipX = margin;
+    if (tooltipX + tooltipWidth > window.innerWidth - margin) {
+      tooltipX = window.innerWidth - tooltipWidth - margin;
     }
 
     setTooltipCoords((prev) => ({
       ...prev,
-      [tooltipKey]: { x: tooltipX, y: tooltipY },
+      [tooltipKey]: { x: tooltipX, y: tooltipY, buttonCenter },
     }));
-    return position;
+    return "center";
   };
 
   const handleTooltipShow = (
@@ -79,9 +64,7 @@ export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
       | React.TouchEvent<HTMLButtonElement>
       | React.FocusEvent<HTMLButtonElement>
   ) => {
-    // For touch and focus events, we'll use the current target directly
-    const position = calculateTooltipPosition(event.currentTarget, label);
-    setTooltipPositions((prev) => ({ ...prev, [label]: position }));
+    calculateTooltipPosition(event.currentTarget, label);
     setActiveTooltip(label);
   };
 
@@ -95,16 +78,15 @@ export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
     if (activeTooltip !== item.label || !tooltipCoords[item.label]) return null;
 
     const coords = tooltipCoords[item.label];
-    const position = tooltipPositions[item.label];
+
+    // Dead simple arrow positioning - just point to button center
+    const arrowLeft = coords.buttonCenter - coords.x;
 
     return createPortal(
       <div
         className={clsx(
           styles["footer-tooltip"],
-          styles["footer-tooltip--portal"],
-          styles["footer-tooltip--active"],
-          position === "left" && styles["footer-tooltip--left"],
-          position === "right" && styles["footer-tooltip--right"]
+          styles["footer-tooltip--active"]
         )}
         style={{
           position: "fixed",
@@ -118,11 +100,10 @@ export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
             <strong>{status.label}:</strong> {status.value}
           </div>
         ))}
-        <span className={styles["footer-tooltip--arrow"]}>
-          <svg viewBox="0 0 18 18">
-            <polygon points="0,0 18,0 9,18" fill="#fff" />
-          </svg>
-        </span>
+        <div
+          className={styles["footer-tooltip--arrow"]}
+          style={{ left: `${arrowLeft}px` }}
+        />
       </div>,
       document.body
     );
@@ -140,9 +121,11 @@ export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
               flexDirection: "column",
               alignItems: "center",
               height: "100%",
+              flex: 1,
             }}
           >
             <button
+              data-label={item.label}
               className={clsx(
                 styles.item,
                 animating === item.label && styles["item--animating"]

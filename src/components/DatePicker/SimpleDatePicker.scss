@@ -1,36 +1,64 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
 .simple-date-picker {
   position: relative;
   display: inline-block;
 
   &__input {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: white;
+    padding: $spacing-3 $spacing-4;
+    border: 1px solid $grey-300;
+    border-radius: $radius-md;
+    background: $white;
     font-size: 14px;
+    font-family: $font-family-sans;
+    color: $grey-800;
     cursor: pointer;
-    min-width: 150px;
+    min-width: 180px;
+    transition: all 0.2s ease;
+    font-weight: 500;
 
     &:hover {
-      border-color: #888;
+      border-color: darken($grey-300, 10%);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     }
 
     &:focus {
       outline: none;
-      border-color: #4a90e2;
-      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+      border-color: $accent-color;
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.1);
+    }
+
+    &::placeholder {
+      color: lighten($grey-300, 5%);
+      font-weight: 400;
     }
   }
 
   &__dropdown {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 4px);
     left: 0;
+    right: 0;
     z-index: 1000;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    margin-top: 4px;
+    background: $white;
+    border: 1px solid $grey-300;
+    border-radius: $radius-lg;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    animation: fadeInDown 0.2s ease-out forwards;
+    transform-origin: top center;
+    width: 100%;
+    min-width: 320px;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 } 

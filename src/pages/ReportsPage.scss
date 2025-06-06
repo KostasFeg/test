@@ -1,19 +1,23 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
 .reports-page {
   height: 100%;
   display: flex;
   flex-direction: column;
   
   &__header {
-    padding: 20px;
-    border-bottom: 1px solid #e0e0e0;
-    background: white;
+    padding: $spacing-4 * 1.25;
+    border-bottom: 1px solid $grey-300;
+    background: $white;
   }
 
   &__title {
     margin: 0;
     font-size: 24px;
     font-weight: 600;
-    color: #333;
+    color: $grey-800;
+    font-family: $font-family-sans;
   }
 
   &__content {
@@ -24,50 +28,50 @@
   }
 
   &__loading {
-    display: flex;
+    @include flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 200px;
-    gap: 16px;
+    gap: $spacing-4;
     
     span {
-      color: #666;
+      color: darken($grey-300, 20%);
       font-size: 16px;
+      font-family: $font-family-sans;
     }
   }
 
   &__error {
-    padding: 20px;
+    padding: $spacing-4 * 1.25;
     
     .alert {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-      border-radius: 4px;
-      padding: 12px;
+      background: rgba(#dc2626, 0.1);
+      color: #dc2626;
+      border: 1px solid rgba(#dc2626, 0.2);
+      border-radius: $radius-md;
+      padding: $spacing-3;
       margin: 0;
+      font-family: $font-family-sans;
     }
     
     h2 {
-      color: #721c24;
-      margin-bottom: 10px;
+      color: #dc2626;
+      margin-bottom: $spacing-2;
+      font-family: $font-family-sans;
     }
   }
 
   &__no-data {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     height: 200px;
-    color: #666;
+    color: darken($grey-300, 20%);
     font-size: 16px;
+    font-family: $font-family-sans;
   }
 
   &__report {
     flex: 1;
     overflow: hidden;
-    padding: 20px;
+    padding: $spacing-4 * 1.25;
     
     .report-content {
       // Styling is handled inline for now
@@ -79,29 +83,35 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 20px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #e0e0e0;
-  gap: 20px;
+  padding: $spacing-4 * 1.25;
+  background: $grey-100;
+  border-bottom: 1px solid $grey-300;
+  gap: $spacing-4 * 1.25;
 
   &__print {
-    background: #4a90e2;
-    color: white;
+    background: $accent-color;
+    color: $white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: $spacing-3 $spacing-4;
+    border-radius: $radius-md;
     font-size: 14px;
     font-weight: 500;
+    font-family: $font-family-sans;
     cursor: pointer;
     transition: all 0.2s ease;
     
     &:hover:not(.disabled) {
-      background: #357abd;
-      transform: translateY(-1px);
+      background: darken($accent-color, 5%);
+      box-shadow: 0 2px 8px rgba($accent-color, 0.3);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
     }
     
     &.disabled {
-      background: #ccc;
+      background: $grey-300;
       cursor: not-allowed;
       opacity: 0.6;
     }
@@ -110,16 +120,17 @@
 
 .report-filters {
   display: flex;
-  gap: 24px;
+  gap: $spacing-4 * 1.5;
   align-items: flex-end;
   flex-wrap: wrap;
 
   &__label {
     display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $grey-800;
+    margin-bottom: $spacing-2;
+    font-family: $font-family-sans;
   }
 
   &__type {
@@ -129,27 +140,36 @@
 
   &__buttons {
     display: flex;
-    gap: 8px;
+    gap: $spacing-2;
   }
 
   &__button {
-    background: white;
-    border: 1px solid #ddd;
-    padding: 8px 16px;
-    border-radius: 4px;
+    background: $white;
+    border: 1px solid $grey-300;
+    padding: $spacing-2 $spacing-4;
+    border-radius: $radius-md;
     font-size: 14px;
+    font-family: $font-family-sans;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     
     &:hover {
-      border-color: #4a90e2;
-      color: #4a90e2;
+      border-color: $accent-color;
+      color: $accent-color;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($accent-color, 0.1);
     }
     
     &.active {
-      background: #4a90e2;
-      color: white;
-      border-color: #4a90e2;
+      background: $accent-color;
+      color: $white;
+      border-color: $accent-color;
+      box-shadow: 0 2px 6px rgba($accent-color, 0.3);
     }
   }
 

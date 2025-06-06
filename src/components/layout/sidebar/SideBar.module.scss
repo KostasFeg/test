@@ -3,7 +3,7 @@
 
 .root {
   background: linear-gradient(135deg, $white 0%, $grey-100 100%);
-  border-right: 1px solid $grey-300;
+  border-right: 1px solid rgba(212, 212, 212, 0.3);
   padding: $spacing-4 0;
   display: flex;
   flex-direction: column;
@@ -11,6 +11,9 @@
   overflow-y: auto;
   height: 100%;
   position: relative;
+  
+  // Add subtle shadow for depth
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.03);
 
   &::before {
     content: '';
@@ -21,8 +24,8 @@
     height: 100%;
     background: linear-gradient(to bottom, 
       transparent 0%, 
-      rgba(212, 212, 212, 0.3) 20%, 
-      rgba(212, 212, 212, 0.3) 80%, 
+      rgba(212, 212, 212, 0.2) 20%, 
+      rgba(212, 212, 212, 0.2) 80%, 
       transparent 100%);
   }
 }

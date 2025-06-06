@@ -1,5 +1,7 @@
 /* ImageScroller.module.scss  – only the .image-scroller-html class is new */
 .image-scroller-root {
+  /* CSS custom properties for theming */
+  --image-scroller-btn-hover-bg: var(--app-primary-color, rgba(30, 64, 175, 0.7));
   position: relative;
   overflow: hidden;
   border-radius: 16px;
@@ -11,7 +13,7 @@
 }
 
 .image-scroller-viewport {
-  max-height: 68vh;
+  // max-height: 68vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
@@ -78,7 +80,7 @@
 
 .image-scroller-btn:hover,
 .image-scroller-btn:active {
-  background: rgba(30, 64, 175, 0.7);
+  background: var(--image-scroller-btn-hover-bg, rgba(30, 64, 175, 0.7));
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
   opacity: 1;
 }
