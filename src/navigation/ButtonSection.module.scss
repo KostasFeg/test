@@ -1,16 +1,38 @@
 @import "../styles/variables";
 
 .buttonGrid {
-  display: flex;
-  flex-direction: column;     // one per row like the screenshot
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr; // Default single column
   gap: 36px;
   height: 100%;
   justify-content: center;
+  align-content: center;
+  justify-items: center;
+  
+  // When columns > 1, we use the inline style to override grid-template-columns
+  // Ensure proper spacing and alignment for multi-column layouts
+  &[style*="gridTemplateColumns"] {
+    max-width: 100%;
+    width: 100%;
+    gap: 24px 36px; // Different gap for rows vs columns
+    align-content: center;
+    
+    // Responsive behavior for smaller screens
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr !important; // Force single column on mobile
+      gap: 24px;
+    }
+    
+    @media (max-width: 1024px) {
+      gap: 20px 24px; // Smaller gaps on tablets
+    }
+  }
 }
 
 .item {
   min-width: 280px;
+  width: 100%;
+  max-width: 350px; // Prevent buttons from getting too wide in multi-column
   padding: 25px 18px;
   font-size: 15px;
   font-weight: 600;
@@ -21,6 +43,26 @@
   cursor: pointer;
   user-select: none;
   transition: filter .15s ease;
+  box-sizing: border-box;
 
-  &:hover { filter: brightness(0.95); }
+  &:hover { 
+    filter: brightness(0.95); 
+  }
+  
+  // Responsive sizing for multi-column layouts
+  .buttonGrid[style*="gridTemplateColumns"] & {
+    min-width: 200px;
+    
+    @media (max-width: 1024px) {
+      min-width: 180px;
+      padding: 20px 15px;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      min-width: 280px; // Back to original size on mobile
+      padding: 25px 18px;
+      font-size: 15px;
+    }
+  }
 }

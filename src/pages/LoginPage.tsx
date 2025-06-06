@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import nhLotteryLogo from "./nhlottery-logo.png";
 import { RetailerLevel } from "../permissions/access-model";
 import styles from "./LoginPage.module.scss";
 import { User } from "../shared/types/auth";
+import { useBranding } from "../hooks/useBranding";
 
 interface LoginPageProps {
   onLoginSuccess: (user: User, isOffline?: boolean) => void;
@@ -13,6 +13,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { loginLogo, loginTitle } = useBranding();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,11 +90,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
     <div className={styles.loginPageContainer}>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <img
-          src={nhLotteryLogo}
-          alt="NH Lottery Logo"
+          src={loginLogo.src}
+          alt={loginLogo.alt}
           className={styles.logo}
+          style={{
+            width: loginLogo.width ? `${loginLogo.width}px` : undefined,
+            height: loginLogo.height ? `${loginLogo.height}px` : undefined,
+          }}
         />
-        <h2 className={styles.heading}>Retailer Portal Login</h2>
+        <h2 className={styles.heading}>{loginTitle}</h2>
 
         <input
           type="text"

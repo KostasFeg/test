@@ -9,7 +9,15 @@ import {
 import styles from "./ButtonSection.module.scss";
 import type { NavNode } from "../shared/config/navigation.config";
 
-export const SectionWithButtons: React.FC<{ node: NavNode }> = ({ node }) => {
+interface SectionWithButtonsProps {
+  node: NavNode;
+  columns?: number; // New optional parameter for column layout
+}
+
+export const SectionWithButtons: React.FC<SectionWithButtonsProps> = ({
+  node,
+  columns = 1, // Default to 1 column (current behavior)
+}) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const basePath = useResolvedPath(".").pathname; // e.g. "/dreamtouch-operations"
@@ -17,15 +25,37 @@ export const SectionWithButtons: React.FC<{ node: NavNode }> = ({ node }) => {
   /* if we're *exactly* on "…/dreamtouch-operations" show menu, otherwise hide */
   const showMenu = pathname === basePath || pathname === `${basePath}/`;
 
+  const handleButtonClick = async (child: NavNode) => {
+    // Execute callback if provided
+    if (child.onCallback) {
+      await child.onCallback();
+    }
+
+    // Navigate only if no callback is provided, or if both callback and element exist
+    // This allows for flexible behavior: callback-only, navigation-only, or both
+    if (!child.onCallback || child.element) {
+      navigate(child.slug);
+    }
+  };
+
   return (
     <>
       {showMenu && (
-        <div className={styles.buttonGrid}>
+        <div
+          className={styles.buttonGrid}
+          style={
+            {
+              "--columns": columns,
+              gridTemplateColumns:
+                columns > 1 ? `repeat(${columns}, 1fr)` : undefined,
+            } as React.CSSProperties & { "--columns": number }
+          }
+        >
           {node.children!.map((child) => (
             <button
               key={child.slug}
               className={styles.item}
-              onClick={() => navigate(child.slug)}
+              onClick={() => handleButtonClick(child)}
             >
               {child.label}
             </button>

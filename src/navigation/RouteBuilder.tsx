@@ -19,7 +19,13 @@ export function buildRoutes(nodes: NavNode[], base = ""): React.ReactElement[] {
         <Route
           key={fullPath || "/"}
           path={node.slug || "/"}
-          element={<Wrapper node={node} />}
+          element={
+            node.display === "buttons" ? (
+              <SectionWithButtons node={node} columns={node.columns} />
+            ) : (
+              <Wrapper node={node} />
+            )
+          }
         >
           {buildRoutes(node.children!, fullPath)}
           {/* auto-redirect only for tabs */}

@@ -6,15 +6,7 @@ import {
   generateReportNavigation,
   getReportBySlug,
 } from "../config/reportConfig";
-
-export type NavNode = {
-  slug: string;
-  label: string;
-  icon?: React.ReactNode;
-  element?: () => React.ReactElement;
-  children?: NavNode[];
-  display?: "tabs" | "buttons";
-};
+import type { NavNode } from "../shared/config/navigation.config";
 
 // Lazy-loaded UniversalReportsPage
 const UniversalReportsPage = React.lazy(

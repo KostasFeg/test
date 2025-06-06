@@ -1,4 +1,5 @@
-import { SidebarVariant } from '../types/ui';
+import { SidebarVariant } from "../types/ui";
+import brandingConfig, { BrandingConfig } from "./branding.config";
 
 interface AppConfig {
   app: {
@@ -17,25 +18,29 @@ interface AppConfig {
     defaultSidebarVariant: SidebarVariant;
     defaultShowBottomBar: boolean;
   };
+  branding: BrandingConfig;
 }
 
 const config: AppConfig = {
   app: {
     name: "Retailer Portal",
-    version: "1.0.0"
+    version: "1.0.0",
   },
   auth: {
     persistKey: "loggedIn",
-    sessionTimeout: 8 * 60 * 60 * 1000 // 8 hours in milliseconds
+    sessionTimeout: 8 * 60 * 60 * 1000, // 8 hours in milliseconds
   },
   api: {
-    baseUrl: (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:3000/api',
-    timeout: 30000
+    baseUrl:
+      (import.meta as any).env?.VITE_API_BASE_URL ||
+      "http://localhost:3000/api",
+    timeout: 30000,
   },
   ui: {
-    defaultSidebarVariant: 'labels',
-    defaultShowBottomBar: false
-  }
+    defaultSidebarVariant: "labels",
+    defaultShowBottomBar: false,
+  },
+  branding: brandingConfig,
 };
 
-export default config; 
+export default config;

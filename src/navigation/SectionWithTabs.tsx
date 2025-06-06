@@ -1,11 +1,26 @@
 // SectionWithTabs.tsx
 import React from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Tabs.module.scss";
 import type { NavNode } from "../shared/config/navigation.config";
 
 export const SectionWithTabs: React.FC<{ node: NavNode }> = ({ node }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleTabClick = async (child: NavNode, event: React.MouseEvent) => {
+    // Execute callback if provided
+    if (child.onCallback) {
+      event.preventDefault(); // Prevent default NavLink behavior
+      await child.onCallback();
+
+      // Navigate after callback if element exists (to show content)
+      if (child.element) {
+        navigate(child.slug);
+      }
+    }
+    // If no callback, let NavLink handle navigation normally
+  };
 
   return (
     <>
@@ -18,6 +33,7 @@ export const SectionWithTabs: React.FC<{ node: NavNode }> = ({ node }) => {
           <NavLink
             key={child.slug}
             to={child.slug}
+            onClick={(event) => handleTabClick(child, event)}
             className={({ isActive }) =>
               isActive ? styles.active : styles.item
             }
@@ -28,7 +44,7 @@ export const SectionWithTabs: React.FC<{ node: NavNode }> = ({ node }) => {
       </nav>
 
       <div className={styles.tabContent}>
-        {node.element}
+        {node.element && node.element()}
         <Outlet />
       </div>
     </>

@@ -8,6 +8,7 @@ import FloatingBackButton from "../ui/FloatingBackButton";
 import { useUI } from "../../app/providers/UIProvider";
 import { peripherals } from "../../mocksHelper";
 import { NavNode } from "../../shared/config/navigation.config";
+import { useBranding } from "../../hooks/useBranding";
 
 interface LayoutProps {
   sidebarItems: NavNode[];
@@ -25,6 +26,7 @@ export const Layout: React.FC<LayoutProps> = ({
   children,
 }) => {
   const { sidebarVariant, showBottomBar } = useUI();
+  const { logo } = useBranding();
 
   return (
     <div
@@ -50,7 +52,19 @@ export const Layout: React.FC<LayoutProps> = ({
       <main className={styles.main}>{children}</main>
 
       {showBottomBar && (
-        <BottomBar className={styles.bottombar} items={peripherals} />
+        <>
+          <div className={styles.logo}>
+            <img
+              src={logo.src}
+              alt={logo.alt}
+              style={{
+                width: logo.width ? `${logo.width}px` : undefined,
+                height: logo.height ? `${logo.height}px` : undefined,
+              }}
+            />
+          </div>
+          <BottomBar className={styles.bottombar} items={peripherals} />
+        </>
       )}
       <FloatingBackButton />
     </div>
