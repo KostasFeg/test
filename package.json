@@ -1,7 +1,11 @@
 {
-  "name": "my-new-dir",
+  "name": "retailer-portal",
   "private": true,
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": " ssh://git@stash.intralot.com:7999/dx/sstretailerportal.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
