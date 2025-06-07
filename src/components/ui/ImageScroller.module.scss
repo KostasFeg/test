@@ -1,7 +1,14 @@
 /* ImageScroller.module.scss  – only the .image-scroller-html class is new */
+@import '../../styles/variables';
+
 .image-scroller-root {
-  /* CSS custom properties for theming */
-  --image-scroller-btn-hover-bg: var(--app-primary-color, rgba(30, 64, 175, 0.7));
+  /* CSS custom properties for theming - can be overridden externally */
+  --image-scroller-btn-base-bg: rgba(0, 0, 0, 0.25);
+  --image-scroller-btn-hover-bg: var(--app-primary-color, #{$accent-color});
+  --image-scroller-btn-active-bg: var(--app-primary-color-dark, #{darken($accent-color, 10%)});
+  --image-scroller-btn-border: rgba(255, 255, 255, 0.1);
+  --image-scroller-glow-color: var(--app-primary-color-glow, #{rgba($accent-color, 0.4)});
+  --image-scroller-glow-color-strong: var(--app-primary-color-glow-strong, #{rgba($accent-color, 0.5)});
   position: relative;
   overflow: hidden;
   border-radius: 16px;
@@ -10,6 +17,9 @@
   max-width: 800px;
   margin: 0 auto;
   background: #222;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px; // Default minimum height when not in fill mode
 }
 
 .image-scroller-viewport {
@@ -21,7 +31,10 @@
   -ms-overflow-style: none;
   touch-action: pan-y;
   overscroll-behavior: contain;
+  height: 100%;
+  min-height: 100%;
 }
+
 .image-scroller-viewport::-webkit-scrollbar {
   display: none;
 }
@@ -31,19 +44,57 @@
   display: block;
   user-select: none;
   pointer-events: auto;
+  object-fit: contain;
 }
 
 /* shared styling for rendered HTML / BBCode */
 .image-scroller-html {
-  padding: 1rem 1.25rem;
+  padding: 0;
   color: #eee;
   font-size: 1rem;
   line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
 }
+
 .image-scroller-html img,
 .image-scroller-html video {
-  max-width: 100%;
+  width: 100%;
   height: auto;
+  display: block;
+  object-fit: contain;
+  background: $white;
+}
+
+/* Special handling for content in fullscreen modal */
+.image-scroller-html > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ensure any direct image is full width */
+.image-scroller-html > img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Global image handling for better responsiveness */
+:global(.responsive-image-container) {
+  width: 100%;
+  height: auto;
+  display: block;
+  
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    background: $white;
+  }
 }
 
 .image-scroller-btn {
@@ -53,19 +104,46 @@
   height: 25%;
   min-height: 60px;
   max-height: 200px;
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--image-scroller-btn-base-bg);
   color: #fff;
-  border: none;
+  border: 1px solid var(--image-scroller-btn-border);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 2;
-  transition: background 0.2s, box-shadow 0.2s, opacity 0.2s;
+  transition: all 0.3s ease;
   font-size: 2rem;
   border-radius: 12px;
   opacity: 0.85;
   -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(4px);
+  
+  // Subtle glow effect using theme color
+  box-shadow: 0 0 0 0 transparent, 
+              0 2px 8px rgba(0, 0, 0, 0.1);
+              
+  // Subtle pulse animation to indicate interactivity
+  &:not(.image-scroller-btn--hidden) {
+    animation: subtlePulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 transparent, 
+                0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 8px var(--image-scroller-glow-color), 
+                0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.image-scroller-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--image-scroller-glow-color),
+              0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .image-scroller-btn--up {
@@ -78,24 +156,126 @@
   border-bottom-right-radius: 16px;
 }
 
-.image-scroller-btn:hover,
-.image-scroller-btn:active {
-  background: var(--image-scroller-btn-hover-bg, rgba(30, 64, 175, 0.7));
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+.image-scroller-btn:hover {
+  background: var(--image-scroller-btn-hover-bg);
+  border-color: var(--image-scroller-btn-hover-bg);
   opacity: 1;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--image-scroller-glow-color), 
+              0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.image-scroller-btn:active {
+  background: var(--image-scroller-btn-active-bg);
+  border-color: var(--image-scroller-btn-active-bg);
+  transform: scale(0.98);
+  box-shadow: 0 0 16px var(--image-scroller-glow-color-strong), 
+              0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.image-scroller-btn--hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
 }
 
 @media (hover: none) {
   .image-scroller-btn {
     opacity: 0.55;
+    
+    // On touch devices, show a subtle theme color hint
+    &:not(.image-scroller-btn--hidden) {
+      border-color: var(--image-scroller-glow-color);
+    }
+  }
+  
+  .image-scroller-btn--hidden {
+    opacity: 0;
+  }
+  
+  // Enhanced touch feedback
+  .image-scroller-btn:active {
+    opacity: 1;
+    background: var(--image-scroller-btn-hover-bg);
+    transform: scale(0.95);
   }
 }
 
 .image-scroller-root--fill {
-  width: 90%
-
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
+  flex: 1;
   
-  /* Optionally keep the background and border-radius for visual consistency */
-  /* background: #222; */
-  /* border-radius: 16px; */
+  /* Enhanced styling for fullscreen mode */
+  border-radius: $radius-lg;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  
+  /* Ensure proper image scaling for fullscreen */
+  .image-scroller-html {
+    img {
+      width: 100%;
+      min-width: 100%;
+      height: auto;
+      object-fit: contain;
+      object-position: center top;
+    }
+  }
+}
+
+.image-scroller-viewport--fill {
+  height: 100%;
+  border-radius: $radius-lg;
+  
+  // Better scrollbar styling for fullscreen
+  &::-webkit-scrollbar {
+    width: 8px;
+    display: block;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+  
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+}
+
+// Centering behavior when content is smaller than container
+.image-scroller-viewport--center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  // Ensure content is centered but can still overflow if needed
+  .image-scroller-html {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: auto;
+    width: 100%;
+    
+    // Center images specifically
+    img {
+      align-self: center;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
 }

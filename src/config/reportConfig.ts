@@ -91,6 +91,87 @@ export const REPORTS: Record<string, ReportConfig> = {
     filters: ['fromDate', 'toDate'],
     options: { withTime: true }
   },
+
+  // 📊 Financial Reports (Tab Layout Examples)
+  "daily-sales-summary": {
+    name: "Daily Sales Summary",
+    filters: ['fromDate', 'toDate'],
+    options: { withAutoTime: true }
+  },
+
+  "weekly-revenue-analysis": {
+    name: "Weekly Revenue Analysis", 
+    filters: ['type'],
+    options: { type: ['Week', 'Month'] }
+  },
+
+  "monthly-profit-loss": {
+    name: "Monthly P&L Statement",
+    filters: ['fromDate', 'toDate'],
+    options: { withTime: false }
+  },
+
+  "quarterly-financial-overview": {
+    name: "Quarterly Financial Overview",
+    filters: ['type'],
+    options: { type: ['Q1', 'Q2', 'Q3', 'Q4'] }
+  },
+
+  // 📈 Analytics Dashboard (Tab Layout)
+  "customer-analytics": {
+    name: "Customer Analytics Dashboard",
+    filters: ['fromDate', 'toDate', 'type'],
+    options: { 
+      type: ['Daily', 'Weekly', 'Monthly'],
+      withTime: true 
+    }
+  },
+
+  "product-performance": {
+    name: "Product Performance Analysis",
+    filters: ['type', 'scope'],
+    options: {
+      type: ['Category', 'Individual'],
+      scope: ['All Products', 'Top 10', 'Bottom 10']
+    }
+  },
+
+  "regional-comparison": {
+    name: "Regional Comparison Report",
+    filters: ['type'],
+    options: { type: ['North', 'South', 'East', 'West', 'All Regions'] }
+  },
+
+  "trend-analysis": {
+    name: "Trend Analysis Report",
+    filters: ['fromDate', 'toDate', 'type'],
+    options: {
+      type: ['Sales Trends', 'Customer Trends', 'Product Trends'],
+      withTime: false
+    }
+  },
+
+  // 🐛 Debug Reports with Long Content
+  "super-long-report": {
+    name: "Super Long Debug Report",
+    filters: [], // No filters for debugging
+  },
+
+  "image-heavy-report": {
+    name: "Image Heavy Debug Report", 
+    filters: [],
+  },
+
+  "mixed-content-report": {
+    name: "Mixed Content Debug Report",
+    filters: ['type'],
+    options: { type: ['Text Heavy', 'Image Heavy', 'Balanced'] }
+  },
+
+  "minimal-content-report": {
+    name: "Minimal Content Debug Report",
+    filters: [],
+  },
 };
 
 // Helper functions

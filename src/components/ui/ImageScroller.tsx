@@ -32,6 +32,7 @@ export default function ImageScroller({
   const downTime = useRef<number>(0);
   const movedInContinuous = useRef(false);
   const [needsScroll, setNeedsScroll] = useState(false);
+  const [shouldCenter, setShouldCenter] = useState(false);
 
   /* ───────── helpers ───────── */
   const now = () =>
@@ -48,8 +49,21 @@ export default function ImageScroller({
 
   const updateScrollNeeded = useCallback(() => {
     const el = viewport.current;
-    if (el) setNeedsScroll(el.scrollHeight > el.clientHeight + 1);
-  }, []);
+    if (el) {
+      // Use a small tolerance to account for fractional pixels and browser differences
+      const tolerance = 2;
+      const needsScrolling = el.scrollHeight > el.clientHeight + tolerance;
+      const shouldCenterContent = !needsScrolling && fill;
+
+      // Only update state if there's actually a change to prevent unnecessary re-renders
+      setNeedsScroll((prev) =>
+        prev !== needsScrolling ? needsScrolling : prev
+      );
+      setShouldCenter((prev) =>
+        prev !== shouldCenterContent ? shouldCenterContent : prev
+      );
+    }
+  }, [fill]);
 
   /* run on mount + whenever window size changes */
   useEffect(() => {
@@ -60,12 +74,65 @@ export default function ImageScroller({
 
   /* also re-check when images inside finish loading */
   useEffect(() => {
-    const imgs = viewport.current?.querySelectorAll?.("img") ?? [];
-    imgs.forEach((img) => img.addEventListener("load", updateScrollNeeded));
-    return () =>
-      imgs.forEach((img) =>
-        img.removeEventListener("load", updateScrollNeeded)
-      );
+    const el = viewport.current;
+    if (!el) return;
+
+    const imgs = el.querySelectorAll("img");
+    const handleImageLoad = () => {
+      // Small delay to ensure layout has settled
+      setTimeout(updateScrollNeeded, 50);
+    };
+
+    imgs.forEach((img) => {
+      if (img.complete) {
+        // Image already loaded, check immediately
+        handleImageLoad();
+      } else {
+        img.addEventListener("load", handleImageLoad);
+      }
+    });
+
+    return () => {
+      imgs.forEach((img) => img.removeEventListener("load", handleImageLoad));
+    };
+  }, [children, updateScrollNeeded]);
+
+  /* observe content size changes for better centering detection */
+  useEffect(() => {
+    const el = viewport.current;
+    if (!el) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      // Delay the check to allow for layout changes
+      setTimeout(updateScrollNeeded, 100);
+    });
+
+    // Also use MutationObserver to detect when content is added/removed
+    const mutationObserver = new MutationObserver(() => {
+      setTimeout(updateScrollNeeded, 50);
+    });
+
+    // Observe the viewport itself
+    resizeObserver.observe(el);
+
+    // Watch for DOM changes in the viewport
+    mutationObserver.observe(el, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "class"],
+    });
+
+    // Also observe the first child if it exists
+    const firstChild = el.firstElementChild;
+    if (firstChild) {
+      resizeObserver.observe(firstChild);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
+    };
   }, [children, updateScrollNeeded]);
 
   /* ───────── continuous scroll machinery ───────── */
@@ -117,7 +184,8 @@ export default function ImageScroller({
         ref={viewport}
         className={clsx(
           styles["image-scroller-viewport"],
-          fill && styles["image-scroller-viewport--fill"]
+          fill && styles["image-scroller-viewport--fill"],
+          shouldCenter && styles["image-scroller-viewport--center"]
         )}
         onScroll={updateScrollNeeded}
       >

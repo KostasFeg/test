@@ -39,7 +39,7 @@ export const SectionWithButtons: React.FC<SectionWithButtonsProps> = ({
   };
 
   return (
-    <>
+    <div className={styles.wrapper}>
       {showMenu && (
         <div
           className={styles.buttonGrid}
@@ -62,7 +62,10 @@ export const SectionWithButtons: React.FC<SectionWithButtonsProps> = ({
           ))}
         </div>
       )}
-      <Outlet /> {/* child page takes the whole area when showMenu === false */}
-    </>
+      <div className={styles.outletContainer}>
+        <Outlet />{" "}
+        {/* child page takes the whole area when showMenu === false */}
+      </div>
+    </div>
   );
 };

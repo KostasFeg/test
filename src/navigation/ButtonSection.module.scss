@@ -1,5 +1,17 @@
 @import "../styles/variables";
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.outletContainer {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
 .buttonGrid {
   display: grid;
   grid-template-columns: 1fr; // Default single column

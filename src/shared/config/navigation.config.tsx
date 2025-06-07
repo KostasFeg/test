@@ -194,6 +194,98 @@ export const navConfig: NavNode[] = [
   // Add new reports by editing ONLY src/config/reportConfig.ts
   ...AUTO_GENERATED_REPORTS,
 
+  // 📊 Tab Layout Examples with Mock Reports
+  {
+    slug: "financial-reports",
+    label: "Financial Reports",
+    icon: <FileText />,
+    display: "tabs", // Using tabs layout instead of buttons
+    children: [
+      {
+        slug: "daily-sales-summary",
+        label: "Daily Sales Summary",
+        element: () => <GenericReport reportSlug="daily-sales-summary" />,
+      },
+      {
+        slug: "weekly-revenue-analysis",
+        label: "Weekly Revenue Analysis",
+        element: () => <GenericReport reportSlug="weekly-revenue-analysis" />,
+      },
+      {
+        slug: "monthly-profit-loss",
+        label: "Monthly P&L Statement",
+        element: () => <GenericReport reportSlug="monthly-profit-loss" />,
+      },
+      {
+        slug: "quarterly-financial-overview",
+        label: "Quarterly Overview",
+        element: () => (
+          <GenericReport reportSlug="quarterly-financial-overview" />
+        ),
+      },
+    ],
+  },
+
+  // 📈 Analytics Tab Section
+  {
+    slug: "analytics-dashboard",
+    label: "Analytics Dashboard",
+    icon: <Monitor />,
+    display: "tabs",
+    children: [
+      {
+        slug: "customer-analytics",
+        label: "Customer Analytics",
+        element: () => <GenericReport reportSlug="customer-analytics" />,
+      },
+      {
+        slug: "product-performance",
+        label: "Product Performance",
+        element: () => <GenericReport reportSlug="product-performance" />,
+      },
+      {
+        slug: "regional-comparison",
+        label: "Regional Comparison",
+        element: () => <GenericReport reportSlug="regional-comparison" />,
+      },
+      {
+        slug: "trend-analysis",
+        label: "Trend Analysis",
+        element: () => <GenericReport reportSlug="trend-analysis" />,
+      },
+    ],
+  },
+
+  // 🐛 Debug Reports with Long Content
+  {
+    slug: "debug-reports",
+    label: "Debug Reports",
+    icon: <Wrench />,
+    display: "tabs",
+    children: [
+      {
+        slug: "super-long-report",
+        label: "Super Long Report",
+        element: () => <GenericReport reportSlug="super-long-report" />,
+      },
+      {
+        slug: "image-heavy-report",
+        label: "Image Heavy Report",
+        element: () => <GenericReport reportSlug="image-heavy-report" />,
+      },
+      {
+        slug: "mixed-content-report",
+        label: "Mixed Content Report",
+        element: () => <GenericReport reportSlug="mixed-content-report" />,
+      },
+      {
+        slug: "minimal-content-report",
+        label: "Minimal Content Report",
+        element: () => <GenericReport reportSlug="minimal-content-report" />,
+      },
+    ],
+  },
+
   {
     slug: "lottery-sales-reports",
     label: "Lottery Sales Rep",

@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import SimpleDatePicker from "../DatePicker/SimpleDatePicker";
 import ImageScroller from "./ImageScroller";
 import Spinner from "./Spinner";
 import {
@@ -317,7 +316,7 @@ const GenericReport: React.FC<GenericReportProps> = ({
               <span className={styles["filter-label"]}>
                 {propI18n.get(`${requiredField}_label`)}
               </span>
-              <DatePicker
+              <SimpleDatePicker
                 selected={preSelected}
                 placeholderText={"Select date"}
                 minDate={minDate}
@@ -455,7 +454,7 @@ const GenericReport: React.FC<GenericReportProps> = ({
         )}
 
         {!isLoading && htmlCode && (
-          <div className={styles["report-container"]}>
+          <div style={{ flex: 1, overflow: "hidden", minHeight: 0 }}>
             <ImageScroller fill>
               <div
                 ref={containerRef}

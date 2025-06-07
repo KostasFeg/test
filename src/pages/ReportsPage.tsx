@@ -338,12 +338,11 @@ const ReportsPage: React.FC<ReportsPageProps> = ({ reportSlug }) => {
           <div className="reports-page__report">
             <ImageScroller fill>
               <div
-                className="report-content"
+                className="report-content image-scroller-html"
                 style={{
                   minWidth: "680px",
                   background: "#fff",
                   fontFamily: "Arial, sans-serif",
-                  padding: "20px",
                 }}
                 dangerouslySetInnerHTML={{ __html: htmlCode }}
               />

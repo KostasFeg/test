@@ -54,13 +54,30 @@ const FullScreenImageModal: React.FC<FullScreenImageModalProps> = ({
     return el;
   }, []);
 
-  // ESC-key handler
+  // ESC-key and click outside handler
   React.useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && onClose) onClose();
     };
-    if (open) window.addEventListener("keyup", handleKey);
-    return () => window.removeEventListener("keyup", handleKey);
+
+    const handleClickOutside = (e: MouseEvent) => {
+      // Close when clicking on the modal backdrop (not the content)
+      if (e.target === e.currentTarget && onClose) {
+        onClose();
+      }
+    };
+
+    if (open) {
+      window.addEventListener("keyup", handleKey);
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      window.removeEventListener("keyup", handleKey);
+      // Restore body scroll
+      document.body.style.overflow = "";
+    };
   }, [open, onClose]);
 
   // Handle print functionality
@@ -76,7 +93,15 @@ const FullScreenImageModal: React.FC<FullScreenImageModalProps> = ({
   if (!open) return null;
 
   const modalContent = (
-    <div className={`${styles.modal} ${className}`}>
+    <div
+      className={`${styles.modal} ${className}`}
+      onClick={(e) => {
+        // Close when clicking on the backdrop
+        if (e.target === e.currentTarget && onClose) {
+          onClose();
+        }
+      }}
+    >
       {/* ImageScroller container - 90% height */}
       <div className={styles.scrollerContainer}>
         <ImageScroller fill className={styles.imageScroller}>
@@ -90,8 +115,9 @@ const FullScreenImageModal: React.FC<FullScreenImageModalProps> = ({
           className={styles.closeButton}
           onClick={onClose}
           aria-label={closeButtonText}
+          title={closeButtonText}
         >
-          <X size={28} />
+          <X size={32} />
           <span>{closeButtonText}</span>
         </button>
 
@@ -100,8 +126,9 @@ const FullScreenImageModal: React.FC<FullScreenImageModalProps> = ({
           onClick={handlePrint}
           disabled={printDisabled}
           aria-label={printButtonText}
+          title={printButtonText}
         >
-          <Printer size={28} />
+          <Printer size={32} />
           <span>{printButtonText}</span>
         </button>
       </div>

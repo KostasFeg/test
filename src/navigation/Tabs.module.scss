@@ -83,6 +83,9 @@ $color-text:      #212121;
 .tabContent {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 32px;
   width: 100%;
+  min-height: 0; // Important for flex child to shrink
+  overflow: hidden; // Prevent tab content from scrolling
 }
