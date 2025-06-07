@@ -1,97 +1,28 @@
 import React from "react";
 import { Printer } from "lucide-react";
-import {
-  REPORTS,
-  REPORT_CATEGORIES,
-  generateReportNavigation,
-  getReportBySlug,
-} from "../config/reportConfig";
+import { REPORTS, getReportSlugs } from "../config/reportConfig";
 import type { NavNode } from "../shared/config/navigation.config";
 
-// Lazy-loaded UniversalReportsPage
-const UniversalReportsPage = React.lazy(
-  () => import("../pages/UniversalReportsPage")
+// Lazy-loaded GenericReport
+const GenericReport = React.lazy(
+  () => import("../components/ui/GenericReport")
 );
 
 /**
- * Creates a navigation node for a specific report
+ * 🎯 DEAD SIMPLE: Auto-generate navigation from report config
+ * Just add reports to REPORTS in reportConfig.ts and they appear here!
  */
-function createReportNavNode(reportSlug: string): NavNode {
-  const report = getReportBySlug(reportSlug);
-  if (!report) {
-    throw new Error(`Report with slug "${reportSlug}" not found`);
-  }
-
-  return {
-    slug: reportSlug,
-    label: report.navigation.label,
-    element: () => <UniversalReportsPage />,
-  };
-}
-
-/**
- * Creates navigation structure from report configuration
- */
-export function createReportNavigation(): NavNode[] {
-  const navigation = generateReportNavigation();
-
-  return navigation.map((category) => ({
-    slug: category.slug,
-    label: category.label,
+export const AUTO_GENERATED_REPORTS: NavNode[] = [
+  {
+    slug: "reports",
+    label: "Reports",
     icon: <Printer />,
-    children: category.reports.map((report) =>
-      createReportNavNode(report.slug)
-    ),
-  }));
-}
-
-/**
- * Creates navigation structure with custom options
- */
-export function createReportNavigationWithOptions(
-  options: {
-    icon?: React.ReactNode;
-    display?: "tabs" | "buttons";
-  } = {}
-): NavNode[] {
-  const navigation = generateReportNavigation();
-
-  return navigation.map((category) => ({
-    slug: category.slug,
-    label: category.label,
-    icon: options.icon || <Printer />,
-    display: options.display,
-    children: category.reports.map((report) =>
-      createReportNavNode(report.slug)
-    ),
-  }));
-}
-
-/**
- * ✨ ULTIMATE SIMPLICITY: Single export that automatically provides ALL reports
- * Just import and spread this in your navigation config - NO OTHER SETUP REQUIRED!
- */
-export const AUTO_GENERATED_REPORTS = createReportNavigationWithOptions({
-  icon: <Printer />,
-});
-
-/**
- * Alternative: Get reports by category for custom layouts
- */
-export function getReportsByCategory(categoryKey: string): NavNode[] {
-  const navigation = generateReportNavigation();
-  const category = navigation.find((cat) => cat.slug.includes(categoryKey));
-
-  if (!category) {
-    return [];
-  }
-
-  return category.reports.map((report) => createReportNavNode(report.slug));
-}
-
-/**
- * Get all available report categories
- */
-export function getReportCategories(): string[] {
-  return Object.keys(REPORT_CATEGORIES);
-}
+    display: "buttons",
+    columns: 2,
+    children: getReportSlugs().map((slug) => ({
+      slug: slug,
+      label: REPORTS[slug].name,
+      element: () => <GenericReport />,
+    })),
+  },
+];

@@ -66,80 +66,8 @@ export const navConfig: NavNode[] = [
       console.log("hi");
     },
   },
-  {
-    slug: "reports",
-    label: "Reports",
-    icon: <FileText />,
-    display: "buttons",
-    columns: 2,
-    children: [
-      {
-        slug: "shift-report",
-        label: "Shift-Report (interim)",
-        element: () => <BursterSelectionPanel />,
-      },
-      {
-        slug: "daily-sales-report",
-        label: "Daily Sales Report",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "daily-adjustment-report",
-        label: "Daily Adjustment Report",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "summary-report",
-        label: "Summary Report",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "daily-cashes-report",
-        label: "Daily Cashes Report",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "commissions-report",
-        label: "Commissions Report",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "machine-settings-report",
-        label: "Machinbe Settings Report",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "current-jackpots-report",
-        label: "Current Jackpots Report",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "winning-numbers-last-draw-all-games",
-        label: "Winning Numbers Last Draw All Games",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "terminal-reports",
-        label: "Terminal Reports",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "terminal-reports",
-        label: "Winning Numbers Last Draw All Games",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "shift-report",
-        label: "Shift Report (Closed)",
-        element: () => <GenericReport />,
-      },
-      {
-        slug: "last-play-receipts-report",
-        label: "Last Play Receipts Report",
-        element: () => <GenericReport />,
-      },
-    ],
-  },
+  // 🎯 REMOVED: Manual report definitions - now using AUTO_GENERATED_REPORTS only!
+  // Just add reports to SIMPLE_REPORTS in reportConfig.ts and they appear automatically
   {
     slug: "restart",
     label: "Restart",
