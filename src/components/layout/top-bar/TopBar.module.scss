@@ -2,13 +2,22 @@
 @import "../../../styles/mixins";
 
 .root {
-  background: linear-gradient(135deg, $white 0%, $grey-100 100%);
-  border-bottom: 1px solid rgba(212, 212, 212, 0.3);
+  // Material UI surface styling with semantic variables
+  background: var(--topbar-bg);
+  border-bottom: 1px solid var(--topbar-border);
   display: flex;
   align-items: center;
   height: 100%;
   padding: 0 $spacing-4;
   position: relative;
+  
+  // Material UI elevation and shadow
+  box-shadow: var(--topbar-shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  // Smooth transitions
+  transition: all var(--transition-normal) var(--easing-default);
   
   &::after {
     content: '';
@@ -19,25 +28,46 @@
     height: 1px;
     background: linear-gradient(90deg, 
       transparent 0%, 
-      rgba(212, 212, 212, 0.2) 20%, 
-      rgba(212, 212, 212, 0.2) 80%, 
+      var(--topbar-border-subtle) 20%, 
+      var(--topbar-border-subtle) 80%, 
       transparent 100%);
   }
   
-  // Add subtle shadow for depth
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  // Elevated state for scrolled content
+  &.elevated {
+    box-shadow: var(--topbar-shadow-elevated);
+    background: var(--topbar-bg-elevated);
+  }
 }
 
 .section {
   display: flex;
   align-items: center;
   gap: $spacing-2;
+  color: var(--topbar-text);
+  
+  // Interactive elements in sections
+  button, a {
+    color: var(--topbar-text);
+    transition: color var(--transition-fast) var(--easing-default);
+    
+    &:hover {
+      color: var(--topbar-text-hover);
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--border-focus);
+      border-radius: var(--radius-sm);
+    }
+  }
 }
 
 .section:nth-child(1) {
   position: absolute;
   left: $spacing-4;
 }
+
 .section:nth-child(2) {
   margin: 0 auto;
   position: relative;
@@ -45,6 +75,7 @@
   right: 0;
   justify-content: center;
 }
+
 .section:nth-child(3) {
   position: absolute;
   right: $spacing-4;

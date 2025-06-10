@@ -3,7 +3,7 @@
 
 .financial_sales {
   padding: $spacing-4 * 1.5;
-  background: $grey-100;
+  background: var(--surface-secondary);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -15,8 +15,8 @@
   font-size: 24px;
   margin-bottom: $spacing-4;
   text-align: center;
-  color: $grey-800;
-  font-family: $font-family-sans;
+  color: var(--text-primary);
+  font-family: var(--font-family-sans);
 }
 
 .mock-image-scroller-wrapper {
@@ -41,33 +41,33 @@
   span {
     font-size: 12px;
     font-weight: 600;
-    color: $grey-800;
+    color: var(--color-grey-800, $grey-800);
     font-family: $font-family-sans;
   }
 
   // Ensure react-datepicker integration styles
   :global(.react-datepicker__input-container input) {
     padding: $spacing-3 $spacing-4;
-    border: 1px solid $grey-300;
-    border-radius: $radius-md;
-    background: $white;
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    background: var(--input-bg);
     font-size: 14px;
-    font-family: $font-family-sans;
-    color: $grey-800;
+    font-family: var(--font-family-sans);
+    color: var(--input-text);
     cursor: pointer;
     min-width: 180px;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast) var(--easing-default);
     font-weight: 500;
 
     &:hover {
-      border-color: darken($grey-300, 10%);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: var(--input-border-hover);
+      box-shadow: var(--input-shadow-hover);
     }
 
     &:focus {
       outline: none;
-      border-color: $accent-color;
-      box-shadow: 0 0 0 3px rgba($accent-color, 0.1);
+      border-color: var(--input-border-focus);
+      box-shadow: var(--input-shadow-focus);
     }
   }
 
@@ -76,7 +76,7 @@
   }
 
   :global(.react-datepicker) {
-    border: 1px solid $grey-300;
+    border: 1px solid var(--color-grey-300, $grey-300);
     border-radius: $radius-lg;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     font-family: $font-family-sans;
@@ -84,73 +84,141 @@
 }
 
 .print-btn {
-  background: $accent-color;
-  color: $white;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   border: none;
-  border-radius: $radius-md;
+  border-radius: var(--radius-md);
   padding: $spacing-3 $spacing-4;
   font-weight: 600;
-  font-family: $font-family-sans;
+  font-family: var(--font-family-sans);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast) var(--easing-default);
   
   &:hover {
-    background: darken($accent-color, 5%);
-    box-shadow: 0 2px 8px rgba($accent-color, 0.3);
+    background: var(--btn-primary-hover);
+    box-shadow: var(--btn-shadow-hover);
+    transform: translateY(-1px);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
+    box-shadow: 0 0 0 2px var(--border-focus);
+  }
+  
+  &:active {
+    background: var(--btn-primary-active);
+    transform: translateY(0) scale(0.98);
+    transition: transform 0.1s var(--easing-sharp);
   }
 }
 
 .sample-btn {
-  background: #10b981;
-  color: $white;
+  background: var(--status-success);
+  color: var(--status-success-contrast);
   border: none;
-  border-radius: $radius-md;
+  border-radius: var(--radius-md);
   padding: $spacing-3 $spacing-4;
   font-weight: 600;
-  font-family: $font-family-sans;
+  font-family: var(--font-family-sans);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast) var(--easing-default);
   
   &:hover {
-    background: darken(#10b981, 5%);
-    box-shadow: 0 2px 8px rgba(#10b981, 0.3);
+    background: var(--status-success-dark);
+    box-shadow: var(--btn-shadow-hover);
+    transform: translateY(-1px);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(#10b981, 0.2);
+    box-shadow: 0 0 0 2px var(--border-focus);
+  }
+  
+  &:active {
+    background: var(--status-success-dark);
+    transform: translateY(0) scale(0.98);
+    transition: transform 0.1s var(--easing-sharp);
+  }
+}
+
+.secondary-btn {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 1px solid var(--btn-secondary-border);
+  border-radius: var(--radius-md);
+  padding: $spacing-3 $spacing-4;
+  font-weight: 600;
+  font-family: var(--font-family-sans);
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-default);
+  
+  &:hover {
+    background: var(--btn-secondary-hover);
+    border-color: var(--btn-secondary-border-hover);
+    box-shadow: var(--btn-shadow-secondary);
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--form-secondary-focus);
+  }
+  
+  &:active {
+    background: var(--btn-secondary-active);
+    transform: translateY(0) scale(0.98);
+    transition: transform 0.1s var(--easing-sharp);
+  }
+}
+
+.info-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--status-secondary-bg);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  
+  &:hover {
+    background: var(--btn-ghost-secondary-hover);
+    color: var(--color-secondary-dark);
   }
 }
 
 .report-container {
-  background: $white;
-  border-radius: $radius-lg;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
   padding: $spacing-4;
   min-height: 120px;
-  border: 1px solid $grey-300;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: all var(--transition-fast) var(--easing-default);
+  
+  &:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-1px);
+  }
 }
 
 .report-error {
-  color: #dc2626;
+  color: var(--status-error-contrast);
   font-weight: 500;
-  font-family: $font-family-sans;
+  font-family: var(--font-family-sans);
   padding: $spacing-3;
-  background: rgba(#dc2626, 0.1);
-  border: 1px solid rgba(#dc2626, 0.2);
-  border-radius: $radius-md;
+  background: var(--status-error-bg);
+  border: 1px solid var(--status-error);
+  border-radius: var(--radius-md);
 }
 
 #report {
   width: 680px;
-  background: $white;
+  background: var(--color-white, $white);
   font-family: $font-family-sans;
-  color: $grey-800;
+  color: var(--color-grey-800, $grey-800);
 }
 
 // New layout styles for the updated GenericReport component
@@ -180,7 +248,7 @@
 .filter-label {
   font-size: 12px;
   font-weight: 600;
-  color: $grey-800;
+  color: var(--color-grey-800, $grey-800);
   font-family: $font-family-sans;
 }
 
@@ -191,10 +259,10 @@
 
 .filter-button {
   padding: $spacing-2 $spacing-3;
-  border: 1px solid $grey-300;
+  border: 1px solid var(--color-grey-300, $grey-300);
   border-radius: $radius-md;
-  background: $white;
-  color: $grey-700;
+  background: var(--color-white, $white);
+  color: var(--color-grey-700, $grey-700);
   font-size: 14px;
   font-family: $font-family-sans;
   cursor: pointer;
@@ -202,14 +270,14 @@
   font-weight: 500;
 
   &:hover {
-    border-color: darken($grey-300, 10%);
-    background: $grey-50;
+    border-color: var(--color-grey-400, #{darken($grey-300, 10%)});
+    background: var(--color-grey-50, $grey-50);
   }
 
   &.active {
-    background: $accent-color;
-    color: $white;
-    border-color: $accent-color;
+    background: var(--color-accent, $accent-color);
+    color: var(--color-white, $white);
+    border-color: var(--color-accent, $accent-color);
   }
 }
 
@@ -228,8 +296,8 @@
 }
 
 .generate-btn {
-  background: #10b981;
-  color: $white;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   border: none;
   border-radius: $radius-md;
   padding: $spacing-3 $spacing-4;
@@ -239,18 +307,20 @@
   transition: all 0.2s ease;
   
   &:hover:not(.disabled) {
-    background: darken(#10b981, 5%);
-    box-shadow: 0 2px 8px rgba(#10b981, 0.3);
+    background: var(--btn-primary-hover);
+    box-shadow: var(--btn-shadow-hover);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(#10b981, 0.2);
+    box-shadow: 0 0 0 3px var(--border-focus);
   }
 
   &.disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    background: var(--state-disabled);
+    color: var(--text-disabled);
   }
 }
 
@@ -269,19 +339,19 @@
   align-items: center;
   gap: $spacing-3;
   padding: $spacing-6;
-  color: $grey-600;
+  color: var(--color-grey-600, $grey-600);
   font-family: $font-family-sans;
 }
 
 .no-data {
   text-align: center;
   padding: $spacing-6;
-  color: $grey-600;
+  color: var(--color-grey-600, $grey-600);
   font-family: $font-family-sans;
 
   h4 {
     margin-bottom: $spacing-2;
-    color: $grey-700;
+    color: var(--color-grey-700, $grey-700);
   }
 
   p {
@@ -290,8 +360,8 @@
 }
 
 .retry-btn {
-  background: $accent-color;
-  color: $white;
+  background: var(--color-accent, $accent-color);
+  color: var(--color-white, $white);
   border: none;
   border-radius: $radius-md;
   padding: $spacing-2 $spacing-3;
@@ -301,7 +371,7 @@
   transition: all 0.2s ease;
   
   &:hover {
-    background: darken($accent-color, 5%);
+    background: var(--color-accent-dark, #{darken($accent-color, 5%)});
   }
 }
 
@@ -319,26 +389,26 @@
 .error-message {
   text-align: center;
   padding: $spacing-6;
-  color: $grey-600;
+  color: var(--color-grey-600, $grey-600);
   font-family: $font-family-sans;
 
   h3 {
     margin-bottom: $spacing-2;
-    color: $grey-700;
+    color: var(--color-grey-700, $grey-700);
   }
 }
 
 .debug-info {
   margin-top: $spacing-4;
   font-size: 12px;
-  color: $grey-600;
+  color: var(--color-grey-600, $grey-600);
   font-family: $font-family-mono;
 
   details {
-    background: $grey-50;
+    background: var(--color-grey-50, $grey-50);
     padding: $spacing-3;
     border-radius: $radius-md;
-    border: 1px solid $grey-200;
+    border: 1px solid var(--color-grey-200, $grey-200);
   }
 
   pre {

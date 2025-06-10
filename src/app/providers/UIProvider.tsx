@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { SidebarVariant } from "../../types/ui";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { SidebarVariant } from "../../shared/types/ui";
+import { useConfig } from "../../shared/hooks/useConfig";
 
 interface UIContextType {
   sidebarVariant: SidebarVariant;
@@ -15,9 +22,21 @@ interface UIProviderProps {
 }
 
 export const UIProvider: React.FC<UIProviderProps> = ({ children }) => {
-  const [sidebarVariant, setSidebarVariant] =
-    useState<SidebarVariant>("labels");
-  const [showBottomBar, setShowBottomBar] = useState(false);
+  const config = useConfig();
+
+  // Initialize state from configuration
+  const [sidebarVariant, setSidebarVariant] = useState<SidebarVariant>(
+    config.ui.defaultSidebarVariant
+  );
+  const [showBottomBar, setShowBottomBar] = useState(
+    config.ui.defaultShowBottomBar
+  );
+
+  // Update state when config changes
+  useEffect(() => {
+    setSidebarVariant(config.ui.defaultSidebarVariant);
+    setShowBottomBar(config.ui.defaultShowBottomBar);
+  }, [config.ui.defaultSidebarVariant, config.ui.defaultShowBottomBar]);
 
   const value = {
     sidebarVariant,

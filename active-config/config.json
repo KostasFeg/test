@@ -1,0 +1,52 @@
+{
+  "name": "Navigation Test",
+  "description": "Testing navigation changes work properly",
+  "config": {
+    "theme": {
+      "colors": {
+        "primary": "#ef4444"
+      }
+    },
+    "branding": {
+      "company": {
+        "name": "TEST NAVIGATION WORKS!"
+      }
+    },
+    "navigation": [
+      {
+        "slug": "test-home",
+        "label": "🏠 Test Home"
+      },
+      {
+        "slug": "test-menu",
+        "label": "🧪 Test Menu",
+        "display": "buttons",
+        "children": [
+          {
+            "slug": "button-1",
+            "label": "Test Button 1"
+          },
+          {
+            "slug": "button-2", 
+            "label": "Test Button 2"
+          }
+        ]
+      },
+      {
+        "slug": "test-tabs",
+        "label": "📊 Test Tabs",
+        "display": "tabs",
+        "children": [
+          {
+            "slug": "tab-1",
+            "label": "Tab One"
+          },
+          {
+            "slug": "tab-2",
+            "label": "Tab Two"
+          }
+        ]
+      }
+    ]
+  }
+} 

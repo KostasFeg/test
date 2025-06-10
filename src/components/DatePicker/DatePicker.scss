@@ -6,8 +6,8 @@
 .drp-container {
   width: 320px;
   padding: $spacing-4;
-  background: $white;
-  border: 1px solid $grey-300;
+  background: var(--color-white, $white);
+  border: 1px solid var(--color-grey-300, $grey-300);
   border-radius: $radius-lg;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   display: flex;
@@ -15,7 +15,7 @@
   gap: $spacing-3;
   font-family: $font-family-sans;
   font-size: 14px;
-  color: $grey-800;
+  color: var(--color-grey-800, $grey-800);
 }
 
 .drp-title { 
@@ -23,15 +23,15 @@
   font-weight: 600; 
   font-size: 16px;
   margin: 0;
-  color: $grey-800;
+  color: var(--color-grey-800, $grey-800);
 }
 
 /* Compact selection display */
-.drp-selection-display {
-  padding: $spacing-2 $spacing-3;
-  background: lighten($grey-100, 3%);
+  .drp-selection-display {
+    padding: $spacing-2 $spacing-3;
+    background: var(--color-grey-50, #{lighten($grey-100, 3%)});
   border-radius: $radius-md;
-  border: 1px solid $grey-300;
+  border: 1px solid var(--color-grey-300, $grey-300);
   font-size: 13px;
   text-align: center;
 }
@@ -45,12 +45,12 @@
   
   span {
     font-weight: 500;
-    color: $grey-800;
+    color: var(--color-grey-800, $grey-800);
   }
 }
 
 .drp-range-separator {
-  color: $accent-color;
+  color: var(--color-accent, $accent-color);
   font-weight: 600;
   font-size: 16px;
 }
@@ -67,43 +67,43 @@
   flex-direction: column;
   font-size: 12px;
   font-weight: 500;
-  color: $grey-800;
+  color: var(--color-grey-800, $grey-800);
   flex: 1;
 
   .drp-input {
     margin-top: $spacing-1;
     padding: $spacing-2 $spacing-3;
-    border: 1px solid $grey-300;
+    border: 1px solid var(--color-grey-300, $grey-300);
     border-radius: $radius-md;
     font-size: 13px;
-    background: $white;
-    color: $grey-800;
+    background: var(--color-white, $white);
+    color: var(--color-grey-800, $grey-800);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
     &:focus {
       outline: none;
-      border-color: $accent-color;
-      box-shadow: 0 0 0 3px rgba($accent-color, 0.1);
+      border-color: var(--color-accent, $accent-color);
+      box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 37, 99, 235), 0.1);
     }
 
-    &:hover {
-      border-color: darken($grey-300, 10%);
-    }
+          &:hover {
+        border-color: var(--color-grey-400, #{darken($grey-300, 10%)});
+      }
   }
 
   .drp-time-input {
     margin-top: $spacing-1;
     padding: $spacing-1 $spacing-2;
-    border: 1px solid $grey-300;
+    border: 1px solid var(--color-grey-300, $grey-300);
     border-radius: $radius-sm;
     font-size: 12px;
-    background: $white;
-    color: $grey-800;
+    background: var(--color-white, $white);
+    color: var(--color-grey-800, $grey-800);
     
     &:focus {
       outline: none;
-      border-color: $accent-color;
-      box-shadow: 0 0 0 2px rgba($accent-color, 0.1);
+      border-color: var(--color-accent, $accent-color);
+      box-shadow: 0 0 0 2px rgba(var(--color-accent-rgb, 37, 99, 235), 0.1);
     }
   }
 }
@@ -123,18 +123,18 @@
   cursor: pointer;
   padding: $spacing-2;
   border-radius: $radius-sm;
-  color: $grey-800;
+  color: var(--color-grey-800, $grey-800);
   transition: all 0.2s ease;
   
   &:hover { 
-    background: $accent-color-bg;
-    color: $accent-color;
+    background: var(--color-accent-bg, $accent-color-bg);
+    color: var(--color-accent, $accent-color);
   }
 
   &:focus {
     outline: none;
-    background: $accent-color-bg;
-    box-shadow: 0 0 0 2px rgba($accent-color, 0.2);
+    background: var(--color-accent-bg, $accent-color-bg);
+    box-shadow: 0 0 0 2px rgba(var(--color-accent-rgb, 37, 99, 235), 0.2);
   }
 }
 
@@ -143,7 +143,7 @@
   text-align: center; 
   font-weight: 600;
   font-size: 15px;
-  color: $grey-800;
+  color: var(--color-grey-800, $grey-800);
 }
 
 /* Weekdays header */
@@ -153,14 +153,14 @@
   text-align: center;
   font-size: 12px;
   font-weight: 600;
-  color: $grey-800;
+  color: var(--color-grey-800, $grey-800);
   margin-bottom: $spacing-2;
   gap: 1px;
 }
 
 .drp-weekday {
   padding: $spacing-2 0;
-  background: lighten($grey-100, 2%);
+  background: var(--color-grey-50, #{lighten($grey-100, 2%)});
   border-radius: $radius-sm;
 }
 
@@ -190,62 +190,62 @@
   position: relative;
 
   &:hover:not(&--disabled) { 
-    background: $accent-color-bg;
-    border-color: $accent-color;
-    color: $accent-color;
+    background: var(--color-accent-bg, $accent-color-bg);
+    border-color: var(--color-accent, $accent-color);
+    color: var(--color-accent, $accent-color);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba($accent-color, 0.3);
+    box-shadow: 0 0 0 2px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3);
   }
 
   &--muted { 
-    color: lighten($grey-300, 5%);
+    color: var(--color-grey-200, #{lighten($grey-300, 5%)});
     
     &:hover:not(.drp-day--disabled) {
-      color: $grey-800;
-      background: lighten($grey-100, 3%);
-      border-color: $grey-300;
+      color: var(--color-grey-800, $grey-800);
+      background: var(--color-grey-50, #{lighten($grey-100, 3%)});
+      border-color: var(--color-grey-300, $grey-300);
     }
   }
 
   &--saturday { 
-    color: #dc2626;
+    color: var(--status-error);
     font-weight: 600;
   }
 
   // Today gets a distinct green color to differentiate from selected
   &--today { 
-    background: #10b981;
-    color: $white;
+    background: var(--status-success);
+    color: var(--status-success-contrast);
     font-weight: 600;
-    box-shadow: 0 2px 4px rgba(#10b981, 0.3);
+    box-shadow: var(--btn-shadow-hover);
 
     &:hover {
-      background: darken(#10b981, 5%);
-      color: $white;
+      background: var(--status-success-dark);
+      color: var(--status-success-contrast);
       border-color: transparent;
     }
   }
 
   // Selected gets the main accent color (blue)
   &--selected { 
-    background: $accent-color;
-    color: $white;
+    background: var(--color-accent, $accent-color);
+    color: var(--color-white, $white);
     font-weight: 600;
-    box-shadow: 0 2px 6px rgba($accent-color, 0.4);
+    box-shadow: 0 2px 6px rgba(var(--color-accent-rgb, 37, 99, 235), 0.4);
 
     &:hover {
-      background: darken($accent-color, 5%);
-      color: $white;
+      background: var(--color-accent-dark, #{darken($accent-color, 5%)});
+      color: var(--color-white, $white);
       border-color: transparent;
     }
 
     // If today is also selected, use a gradient to show both states
     &.drp-day--today {
-      background: linear-gradient(135deg, #10b981 0%, $accent-color 100%);
-      box-shadow: 0 2px 8px rgba($accent-color, 0.4);
+      background: linear-gradient(135deg, var(--status-success) 0%, var(--color-accent, $accent-color) 100%);
+      box-shadow: 0 2px 8px rgba(var(--color-accent-rgb, 37, 99, 235), 0.4);
     }
   }
 
@@ -265,8 +265,8 @@
 .drp-action-btn {
   margin-top: $spacing-3; 
   padding: $spacing-3 $spacing-4;
-  background: $accent-color; 
-  color: $white;
+  background: var(--color-accent, $accent-color); 
+  color: var(--color-white, $white);
   border: none; 
   border-radius: $radius-md;
   font-size: 14px; 
@@ -275,13 +275,13 @@
   transition: all 0.2s ease;
   
   &:hover { 
-    background: darken($accent-color, 5%);
-    box-shadow: 0 2px 8px rgba($accent-color, 0.3);
+    background: var(--color-accent-dark, #{darken($accent-color, 5%)});
+    box-shadow: 0 2px 8px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
+    box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 37, 99, 235), 0.2);
   }
 
   &:active {

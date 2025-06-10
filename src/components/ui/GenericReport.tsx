@@ -460,10 +460,10 @@ const GenericReport: React.FC<GenericReportProps> = ({
                 ref={containerRef}
                 className={styles["report-content"]}
                 style={{
-                  minWidth: "680px",
+                  minWidth: window.innerWidth > 850 ? "680px" : "100%",
                   background: "#fff",
                   fontFamily: "Arial, sans-serif",
-                  padding: "20px",
+                  padding: window.innerWidth > 600 ? "20px" : "10px",
                 }}
                 dangerouslySetInnerHTML={{ __html: htmlCode }}
               />

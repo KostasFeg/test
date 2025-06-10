@@ -2,18 +2,125 @@
 @import "../../styles/mixins";
 
 .root {
+  // Layout and dimensions
   width: 260px;
   height: 88px;
-  background: $grey-300;
-  border: 2px solid $grey-800;
-  border-radius: $radius-sm;
-  @include flex-center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  
+  // Material UI button styling with semantic variables
+  background: var(--btn-secondary-bg);
+  border: 2px solid var(--btn-secondary-border);
+  border-radius: var(--radius-lg);
+  color: var(--btn-secondary-text);
+  
+  // Typography
+  font-family: var(--font-family-sans);
   font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  
+  // Interaction
   cursor: pointer;
-  transition: background .15s;
-
+  user-select: none;
+  text-decoration: none;
+  
+  // Smooth transitions
+  transition: all var(--transition-fast) var(--easing-default);
+  
+  // Interactive states
   &:hover {
-    background: $blue-100;
+    background: var(--btn-secondary-hover);
+    border-color: var(--btn-secondary-border-hover);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+    box-shadow: var(--btn-shadow-hover);
   }
-} 
+  
+  &:active {
+    background: var(--btn-secondary-active);
+    transform: translateY(0) scale(0.98);
+    transition: transform 0.1s var(--easing-sharp);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--border-focus);
+  }
+  
+  // Disabled state
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--state-disabled);
+    color: var(--text-disabled);
+    border-color: var(--border-tertiary);
+    pointer-events: none;
+  }
+  
+  // Button variants
+  &.primary {
+    background: var(--btn-primary-bg);
+    border-color: var(--btn-primary-border);
+    color: var(--btn-primary-text);
+    
+    &:hover {
+      background: var(--btn-primary-hover);
+      border-color: var(--btn-primary-border-hover);
+    }
+    
+    &:active {
+      background: var(--btn-primary-active);
+    }
+  }
+  
+  &.secondary {
+    background: var(--btn-secondary-bg);
+    border-color: var(--btn-secondary-border);
+    color: var(--btn-secondary-text);
+    
+    &:hover {
+      background: var(--btn-secondary-hover);
+      border-color: var(--btn-secondary-border-hover);
+      box-shadow: var(--btn-shadow-secondary);
+    }
+    
+    &:active {
+      background: var(--btn-secondary-active);
+    }
+  }
+  
+  &.info {
+    background: var(--status-secondary-bg);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+    
+    &:hover {
+      background: var(--btn-ghost-secondary-hover);
+      border-color: var(--color-secondary-dark);
+      color: var(--color-secondary-dark);
+    }
+    
+    &:active {
+      background: var(--color-secondary);
+      color: var(--color-secondary-contrast);
+    }
+  }
+  
+  &.ghost {
+    background: var(--btn-ghost-bg);
+    border-color: var(--btn-ghost-border);
+    color: var(--btn-ghost-text);
+    
+    &:hover {
+      background: var(--btn-ghost-hover);
+      border-color: var(--btn-ghost-border-hover);
+    }
+    
+    &:active {
+      background: var(--btn-ghost-active);
+    }
+  }
+}

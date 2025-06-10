@@ -39,55 +39,56 @@ export const SideBar: React.FC<SideBarProps> = ({
   };
 
   return (
-    <aside className={clsx(styles.root, styles[variant], className)}>
-      {items.map((node) => {
-        const fullPath = `/${node.slug}`.replace(/\/+/g, "/") || "/";
-        const isCallbackOnly =
-          node.onCallback && !node.element && !node.children?.length;
+    <aside
+      className={clsx(styles.sidebar, styles[`${variant}Variant`], className)}
+    >
+      <nav className={styles.navigation}>
+        {items.map((node) => {
+          const fullPath = `/${node.slug}`.replace(/\/+/g, "/") || "/";
+          const isCallbackOnly =
+            node.onCallback && !node.element && !node.children?.length;
 
-        const content =
-          variant === "buttons" ? (
-            <>
-              {/* icon can be undefined – guard it to avoid empty <span /> */}
-              {node.icon && <span className={styles.icon}>{node.icon}</span>}
-              <span className={styles.text}>{node.label}</span>
-            </>
-          ) : (
-            node.label
-          );
+          const content =
+            variant === "buttons" ? (
+              <>
+                {/* icon can be undefined – guard it to avoid empty <span /> */}
+                {node.icon && (
+                  <span className={styles.navIcon}>{node.icon}</span>
+                )}
+                <span className={styles.navLabel}>{node.label}</span>
+              </>
+            ) : (
+              node.label
+            );
 
-        // Render callback-only items as buttons
-        if (isCallbackOnly) {
+          // Render callback-only items as buttons
+          if (isCallbackOnly) {
+            return (
+              <button
+                key={node.slug}
+                onClick={() => handleCallbackClick(node)}
+                className={clsx(styles.navItem)}
+              >
+                {content}
+              </button>
+            );
+          }
+
+          // Render navigable items as NavLinks
           return (
-            <button
+            <NavLink
               key={node.slug}
-              onClick={() => handleCallbackClick(node)}
-              className={clsx(
-                styles.item,
-                variant === "labels" ? styles.labelItem : styles.buttonItem
-              )}
+              to={fullPath}
+              // with custom logic we don't need NavLink's 'end' prop
+              className={clsx(styles.navItem, {
+                [styles.active]: isRouteActive(node),
+              })}
             >
               {content}
-            </button>
+            </NavLink>
           );
-        }
-
-        // Render navigable items as NavLinks
-        return (
-          <NavLink
-            key={node.slug}
-            to={fullPath}
-            // with custom logic we don't need NavLink's 'end' prop
-            className={clsx(
-              styles.item,
-              variant === "labels" ? styles.labelItem : styles.buttonItem,
-              { [styles.active]: isRouteActive(node) }
-            )}
-          >
-            {content}
-          </NavLink>
-        );
-      })}
+        })}
+      </nav>
     </aside>
   );
 };

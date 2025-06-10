@@ -1,224 +1,381 @@
-@import "../../../styles/variables";
-@import "../../../styles/mixins";
+@import "../../../styles/_variables.scss";
 
-.root {
-  background: linear-gradient(135deg, $white 0%, $grey-100 100%);
-  border-right: 1px solid rgba(212, 212, 212, 0.3);
-  padding: $spacing-4 0;
+.sidebar {
+  // Layout & Positioning - unbreakable width system
+  position: relative;
+  height: 100%;
+  z-index: var(--z-sidebar);
   display: flex;
   flex-direction: column;
-  gap: $spacing-2;
-  overflow-y: auto;
-  height: 100%;
-  position: relative;
+  transition: all var(--transition-normal) var(--easing-default);
+  overflow: hidden; // Prevent sidebar from scrolling
   
-  // Add subtle shadow for depth
-  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.03);
+  // Unbreakable width constraints - prevent flex shrinking/growing
+  flex-shrink: 0;
+  flex-grow: 0;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(to bottom, 
-      transparent 0%, 
-      rgba(212, 212, 212, 0.2) 20%, 
-      rgba(212, 212, 212, 0.2) 80%, 
-      transparent 100%);
+  // Clean minimal design
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  box-shadow: 1px 0 3px var(--sidebar-shadow);
+
+  // Width variants with unbreakable constraints and fallbacks
+  &.buttonsVariant {
+    width: var(--sidebar-width-buttons, 80px);
+    min-width: var(--sidebar-width-buttons, 80px);
+    max-width: var(--sidebar-width-buttons, 80px);
+  }
+
+  &.labelsVariant {
+    width: var(--sidebar-width-labels, 280px);
+    min-width: var(--sidebar-width-labels, 280px);
+    max-width: var(--sidebar-width-labels, 280px);
+  }
+
+  // Responsive behavior - maintain width constraints
+  @media (max-width: 768px) {
+    transform: translateX(-100%);
+    z-index: calc(var(--z-sidebar) + 10);
+    
+    // Maintain width even when transformed
+    &.buttonsVariant {
+      width: var(--sidebar-width-buttons, 80px) !important;
+      min-width: var(--sidebar-width-buttons, 80px) !important;
+      max-width: var(--sidebar-width-buttons, 80px) !important;
+    }
+
+    &.labelsVariant {
+      transform: translateX(0);
+      width: var(--sidebar-width-labels, 280px) !important;
+      min-width: var(--sidebar-width-labels, 280px) !important;
+      max-width: var(--sidebar-width-labels, 280px) !important;
+    }
   }
 }
 
-.item {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.labelItem {
-  text-align: center;
-  font-weight: 600;
-  padding: $spacing-3;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  color: $grey-800;
+.navigation {
+  flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  border-bottom: 2px solid transparent;
-  width: 100%;
-  flex: 1 1 0;
+  flex-direction: column;
+  padding: var(--spacing-3) 0;
+  overflow: hidden;
   min-height: 0;
+  width: 100%;
   box-sizing: border-box;
-  transition: background 0.15s, color 0.15s, border-bottom 0.15s;
-  position: relative;
-  overflow: hidden;
-
-  &.active {
-    color: $accent-color;
-    background: $accent-color-bg;
-    border-bottom: 2px solid transparent;
-  }
-
-  &::after {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 20%;
-    right: 20%;
-    bottom: 0;
-    height: 2px;
-    background: $accent-color;
-    border-radius: 2px;
-    transform: scaleX(0);
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    pointer-events: none;
-  }
-
-  &.active::after {
-    transform: scaleX(1);
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-  }
 }
 
-.buttonItem {
-  margin: 0 $spacing-4;
-  padding: $spacing-4;
-  min-height: 64px;
+.navItem {
+  text-align: center;
+  // Base styles - equal height distribution
+  flex: 1;
+  width: 100%;
+  min-height: 48px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--sidebar-item-bg);
+  color: var(--sidebar-item-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-default);
   display: flex;
   align-items: center;
-  gap: $spacing-3;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: $grey-800;
-  background: $white;
-  border: 1px solid $grey-300;
-  border-radius: 12px;
-  cursor: pointer;
-  box-sizing: border-box;
+  gap: var(--spacing-2);
   position: relative;
-  overflow: hidden;
-  box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.05),
-    0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  font-weight: 500;
+  box-sizing: border-box;
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, 
-      rgba(37, 99, 235, 0.05) 0%, 
-      rgba(29, 78, 216, 0.02) 100%);
-    opacity: 0;
-    transition: opacity 0.2s ease;
+  // Prevent width from being overridden
+  flex-shrink: 0;
+  
+  // Variant-specific sizing to prevent overflow
+  .buttonsVariant & {
+    justify-content: center;
+    padding: var(--spacing-1); // Minimal padding: 4px all around
+    margin: var(--spacing-1) var(--spacing-1); // Minimal margins: 4px all around  
+    gap: 0; // No gap needed for icon-only
+    width: calc(100% - calc(var(--spacing-1) * 4)); // Account for margins: 80px - 16px = 64px
   }
-
+  
+  .labelsVariant & {
+    justify-content: center;
+    padding: var(--spacing-3) var(--spacing-3); // More generous padding for wide sidebar
+    margin: var(--spacing-1) var(--spacing-2); // Standard margins for 280px width
+    gap: var(--spacing-3); // Space between icon and text
+    width: calc(100% - calc(var(--spacing-2) * 2 + var(--spacing-3) * 0)); // Account for margins (16px) + padding (24px) = 240px
+  }
+  
+  // Typography
+  font-family: var(--font-family-sans);
+  line-height: 1.4;
+  
+  // Clean hover state
   &:hover {
-    background: $white;
-    border-color: rgba(212, 212, 212, 0.8);
-    box-shadow: 
-      0 4px 6px rgba(0, 0, 0, 0.07),
-      0 1px 3px rgba(0, 0, 0, 0.06);
-    transform: translateY(-1px);
-    
-    &::before {
-      opacity: 1;
-    }
-  }
-
-  &.active {
-    background: linear-gradient(135deg, $accent-color-bg 0%, rgba(219, 234, 254, 0.8) 100%);
-    border-color: $accent-color;
-    color: $accent-color;
-    box-shadow: 
-      0 4px 12px rgba(37, 99, 235, 0.15),
-      0 2px 4px rgba(37, 99, 235, 0.1);
-    
-    &::before {
-      background: linear-gradient(135deg, 
-        rgba(37, 99, 235, 0.1) 0%, 
-        rgba(29, 78, 216, 0.05) 100%);
-      opacity: 1;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 4px;
-      height: 60%;
-      background: linear-gradient(to bottom, $accent-color, $blue-500);
-      border-radius: 0 2px 2px 0;
-    }
+    background: var(--sidebar-item-hover);
+    color: var(--sidebar-item-text-hover);
   }
 
   &:active {
-    transform: translateY(0);
-    transition: transform 0.1s ease;
+    transform: translateX(1px) scale(0.98);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--border-focus);
+  }
+
+  // Clean minimal active state
+  &.active {
+    background: var(--sidebar-item-active);
+    color: var(--sidebar-item-text-active);
+    font-weight: 600;
+    
+    // Simple left border indicator
+    border-left: 2px solid var(--sidebar-indicator);
+  }
+
+  // Disabled state
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--state-disabled);
+    color: var(--text-disabled);
+    
+    &:hover {
+      transform: none;
+      background: var(--state-disabled);
+    }
   }
 }
 
-.icon {
+.navIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  color: inherit;
+  font-size: 16px;
+  transition: all var(--transition-fast) var(--easing-default);
   
+  // Icon color adjustments
+  color: inherit;
+  opacity: 0.8;
+  
+  .navItem:hover & {
+    opacity: 1;
+    // Remove scaling for minimal feel
+  }
+  
+  .navItem.active & {
+    opacity: 1;
+    color: var(--sidebar-item-text-active);
+  }
+
+  // SVG icons
   svg {
-    width: 20px;
-    height: 20px;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
   }
 }
 
-.text {
+.navLabel {
   flex: 1;
-  text-align: left;
-  line-height: 1.4;
-  font-weight: 600;
-}
-
-// Button variant specific container styling
-.buttons {
-  .root {
-    padding: $spacing-4 0;
+  font-size: 14px;
+  font-weight: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all var(--transition-fast) var(--easing-default);
+  
+  // Typography refinements
+  letter-spacing: -0.01em;
+  
+  .buttonsVariant & {
+    display: none;
+  }
+  
+  .labelsVariant & {
+    display: block;
   }
 }
 
-// Responsive adjustments
-@media (max-width: 900px) {
-  .buttonItem {
-    margin: 0 $spacing-2;
-    padding: $spacing-3;
-    min-height: 56px;
-    gap: $spacing-2;
-    font-size: 0.9rem;
-    border-radius: 10px;
+.navBadge {
+  background: var(--status-error);
+  color: var(--text-inverse);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  
+  // Clean styling - no heavy shadows
+  
+  .buttonsVariant & {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    transform: scale(0.9);
+  }
+}
+
+// Section dividers
+.navSection {
+  &:not(:first-child) {
+    margin-top: var(--spacing-6);
+    padding-top: var(--spacing-4);
+    border-top: 1px solid var(--border-primary);
+  }
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-2);
+  
+  .buttonsVariant & {
+    display: none; // Hidden in narrow sidebar
+  }
+  
+  .labelsVariant & {
+    padding: 0 var(--spacing-2) var(--spacing-2); // Match nav item margins
+  }
+}
+
+// Footer area
+.footer {
+  padding: var(--spacing-3); // Consistent padding all around
+  border-top: 1px solid var(--sidebar-border);
+  background: var(--surface-secondary);
+  
+  // User profile area or additional actions
+  .userProfile {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-2);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast) var(--easing-default);
     
-    .text {
+    &:hover {
+      background: var(--state-hover);
+    }
+  }
+  
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .userInfo {
+    flex: 1;
+    min-width: 0;
+    
+    .userName {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .userRole {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .buttonsVariant & {
       display: none;
     }
+  }
+}
+
+// Improved focus management
+.sidebar:focus-within {
+  .navItem:not(.active):not(:hover) {
+    opacity: 0.7;
+  }
+}
+
+// Animation enhancements
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sidebar {
+  animation: slideIn var(--transition-normal) var(--easing-default);
+  
+  .navItem {
+    animation: fadeIn var(--transition-slow) var(--easing-default);
+    animation-fill-mode: both;
     
-    .icon {
-      margin: 0 auto;
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.05}s;
+      }
     }
   }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .sidebar {
+    border-right-width: 2px;
+  }
   
-  .root {
-    padding: $spacing-3 0;
+  .navItem {
+    border: 1px solid var(--border-secondary);
+    
+    &.active {
+      border-color: var(--color-accent);
+      border-width: 2px;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .navItem,
+  .logo {
+    transition: none;
+    animation: none;
   }
 } 

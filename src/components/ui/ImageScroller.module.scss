@@ -16,7 +16,7 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  background: #222;
+  background: var(--surface-secondary);
   display: flex;
   flex-direction: column;
   min-height: 400px; // Default minimum height when not in fill mode
@@ -50,7 +50,7 @@
 /* shared styling for rendered HTML / BBCode */
 .image-scroller-html {
   padding: 0;
-  color: #eee;
+  color: var(--text-primary);
   font-size: 1rem;
   line-height: 1.5;
   display: flex;
@@ -66,7 +66,7 @@
   height: auto;
   display: block;
   object-fit: contain;
-  background: $white;
+  background: var(--color-white, $white);
 }
 
 /* Special handling for content in fullscreen modal */
@@ -93,7 +93,7 @@
     height: auto;
     display: block;
     object-fit: contain;
-    background: $white;
+    background: var(--color-white, $white);
   }
 }
 
@@ -105,7 +105,7 @@
   min-height: 60px;
   max-height: 200px;
   background: var(--image-scroller-btn-base-bg);
-  color: #fff;
+  color: var(--text-inverse);
   border: 1px solid var(--image-scroller-btn-border);
   display: flex;
   align-items: center;

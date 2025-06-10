@@ -1,4 +1,89 @@
-@import "../styles/variables";
+@import "../styles/_variables.scss";
+
+/* ========================================================================
+   AUTOMATED BUTTON STATE SYSTEM MIXINS
+   ======================================================================== */
+
+// Base interactive button with automatic state derivation
+@mixin button-base($bg: var(--nav-btn-bg), $color: var(--nav-btn-text), $border: var(--nav-btn-border)) {
+  background: #{$bg};
+  color: #{$color};
+  border: 1px solid #{$border};
+  box-shadow: var(--nav-btn-shadow);
+  transition: all var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  
+  // Automatic hover state - no manual definition needed
+  &:hover {
+    background: var(--nav-btn-hover);
+    border-color: var(--border-secondary);
+    color: var(--text-primary);
+    box-shadow: var(--nav-btn-shadow-hover);
+    transform: translateY(-2px) scale(1.02);
+  }
+  
+  // Automatic focus state
+  &:focus {
+    outline: none;
+    box-shadow: 
+      var(--nav-btn-shadow-hover),
+      0 0 0 2px var(--border-focus);
+  }
+  
+  // Automatic active/pressed state
+  &:active {
+    transform: translateY(-1px) scale(1.01);
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  // Automatic disabled state
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--state-disabled);
+    color: var(--text-disabled);
+    pointer-events: none;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Active/selected state mixin with automatic styling
+@mixin button-active-state() {
+  background: var(--nav-btn-active) !important;
+  border-color: var(--color-accent) !important;
+  color: var(--nav-btn-text-active) !important;
+  box-shadow: 
+    var(--nav-btn-shadow-hover),
+    0 0 0 1px var(--color-accent) !important;
+  
+  &:hover {
+    background: var(--nav-btn-active) !important;
+    transform: translateY(-2px) scale(1.02);
+  }
+}
+
+// Icon animation mixin
+@mixin button-icon-animations() {
+  .navButtonIcon {
+    transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  &:hover .navButtonIcon {
+    transform: scale(1.1);
+    color: var(--color-primary);
+  }
+  
+  &.active .navButtonIcon {
+    color: var(--color-accent);
+    transform: scale(1.1);
+  }
+}
+
+/* ========================================================================
+   LAYOUT STRUCTURE
+   ======================================================================== */
 
 .wrapper {
   display: flex;
@@ -12,69 +97,408 @@
   min-height: 0;
 }
 
+/* ========================================================================
+   NAVIGATION BUTTON GRID
+   ======================================================================== */
+
 .buttonGrid {
   display: grid;
-  grid-template-columns: 1fr; // Default single column
-  gap: 36px;
-  height: 100%;
-  justify-content: center;
-  align-content: center;
-  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--spacing-4);
+  padding: var(--spacing-6);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   
-  // When columns > 1, we use the inline style to override grid-template-columns
-  // Ensure proper spacing and alignment for multi-column layouts
-  &[style*="gridTemplateColumns"] {
-    max-width: 100%;
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--spacing-3);
+    padding: var(--spacing-4);
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3);
+  }
+}
+
+/* ========================================================================
+   BASE BUTTON STYLES - AUTOMATIC STATE HANDLING
+   ======================================================================== */
+
+.item {
+  @include button-base();
+  @include button-icon-animations();
+  
+  // Layout and structure
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-6) var(--spacing-4);
+  min-height: 120px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  
+  // Typography
+  font-family: var(--font-family-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  
+  // Active state using mixin
+  &.active {
+    @include button-active-state();
+  }
+}
+
+/* ========================================================================
+   LEGACY SUPPORT - EXTENDS BASE STYLES
+   ======================================================================== */
+
+.navButton {
+  @extend .item;
+}
+
+/* ========================================================================
+   BUTTON CONTENT ELEMENTS
+   ======================================================================== */
+
+.navButtonIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  font-size: 24px;
+  
+  svg {
     width: 100%;
-    gap: 24px 36px; // Different gap for rows vs columns
-    align-content: center;
+    height: 100%;
+    fill: currentColor;
+  }
+  
+  // Icon variants
+  &.large {
+    width: 40px;
+    height: 40px;
+    font-size: 28px;
+  }
+  
+  &.small {
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+  }
+}
+
+.navButtonText {
+  color: inherit;
+  font-weight: inherit;
+  text-align: center;
+  word-wrap: break-word;
+  hyphens: auto;
+  
+  // Typography variants
+  &.bold {
+    font-weight: 600;
+  }
+  
+  &.light {
+    font-weight: 400;
+    color: var(--text-secondary);
+  }
+}
+
+.navButtonDescription {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-top: var(--spacing-1);
+  line-height: 1.3;
+  max-width: 150px;
+  
+  // Auto-inherit hover/active colors from parent
+  .item:hover &,
+  .navButton:hover & {
+    color: var(--text-secondary);
+  }
+  
+  .item.active &,
+  .navButton.active & {
+    color: var(--text-primary);
+  }
+}
+
+/* ========================================================================
+   BADGES AND INDICATORS - AUTO-STYLED
+   ======================================================================== */
+
+.navButtonBadge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--status-error);
+  color: var(--text-inverse);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(var(--color-primary-rgb), 0.3);
+  
+  // Badge variants - automatically styled
+  &.info {
+    background: var(--status-info);
+    color: var(--status-info-contrast);
+  }
+  
+  &.success {
+    background: var(--status-success);
+    color: var(--status-success-contrast);
+  }
+  
+  &.warning {
+    background: var(--status-warning);
+    color: var(--status-warning-contrast);
+  }
+}
+
+/* ========================================================================
+   SECTION HEADERS
+   ======================================================================== */
+
+.sectionHeader {
+  grid-column: 1 / -1;
+  padding: var(--spacing-4) 0 var(--spacing-2);
+  margin-top: var(--spacing-6);
+  border-bottom: 1px solid var(--border-primary);
+  
+  &:first-child {
+    margin-top: 0;
+  }
+  
+  h2, h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  
+  p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: var(--spacing-2) 0 0;
+  }
+}
+
+/* ========================================================================
+   BUTTON VARIANTS - ALL AUTO-STYLED
+   ======================================================================== */
+
+// Primary button variant
+.item.primary {
+  @include button-base(var(--btn-primary-bg), var(--btn-primary-text), var(--btn-primary-border));
+  
+  &:hover {
+    background: var(--btn-primary-hover);
+    border-color: var(--btn-primary-border-hover);
+    box-shadow: var(--btn-shadow-hover);
+  }
+  
+  &.active {
+    background: var(--btn-primary-active);
+    border-color: var(--btn-primary-border);
+  }
+}
+
+// Secondary button variant  
+.item.secondary {
+  @include button-base(var(--btn-secondary-bg), var(--btn-secondary-text), var(--btn-secondary-border));
+  
+  &:hover {
+    background: var(--btn-secondary-hover);
+    border-color: var(--btn-secondary-border-hover);
+    box-shadow: var(--btn-shadow-secondary);
+  }
+  
+  &.active {
+    background: var(--btn-secondary-active);
+    border-color: var(--btn-secondary-border);
+  }
+}
+
+// Ghost button variant
+.item.ghost {
+  @include button-base(var(--btn-ghost-bg), var(--btn-ghost-text), var(--btn-ghost-border));
+  
+  &:hover {
+    background: var(--btn-ghost-hover);
+    border-color: var(--btn-ghost-border-hover);
+  }
+  
+  &.active {
+    background: var(--btn-ghost-active);
+  }
+}
+
+// Ghost secondary variant for subtle secondary actions
+.item.ghostSecondary {
+  @include button-base(var(--btn-ghost-secondary-bg), var(--btn-ghost-secondary-text), var(--btn-ghost-secondary-border));
+  
+  &:hover {
+    background: var(--btn-ghost-secondary-hover);
+    border-color: var(--btn-ghost-secondary-border-hover);
+  }
+  
+  &.active {
+    background: var(--btn-ghost-secondary-active);
+    color: var(--color-secondary);
+  }
+}
+
+// Info/Help variant using secondary color
+.item.info {
+  @include button-base(var(--status-secondary-bg), var(--color-secondary), var(--color-secondary));
+  
+  &:hover {
+    background: var(--btn-ghost-secondary-hover);
+    border-color: var(--color-secondary);
+  }
+  
+  &.active {
+    background: var(--color-secondary);
+    color: var(--color-secondary-contrast);
+  }
+}
+
+/* ========================================================================
+   SIZE VARIANTS
+   ======================================================================== */
+
+.buttonGrid.compact {
+  gap: var(--spacing-2);
+  
+  .item {
+    min-height: 80px;
+    padding: var(--spacing-3);
+    gap: var(--spacing-2);
     
-    // Responsive behavior for smaller screens
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr !important; // Force single column on mobile
-      gap: 24px;
+    .navButtonIcon {
+      width: 24px;
+      height: 24px;
+      font-size: 18px;
     }
     
-    @media (max-width: 1024px) {
-      gap: 20px 24px; // Smaller gaps on tablets
+    .navButtonText {
+      font-size: 13px;
     }
   }
 }
 
-.item {
-  min-width: 280px;
-  width: 100%;
-  max-width: 350px; // Prevent buttons from getting too wide in multi-column
-  padding: 25px 18px;
-  font-size: 15px;
-  font-weight: 600;
-  color: $accent-color;
-  background: $accent-color-bg;
-  border: 2px solid #333;
-  border-radius: 6px;
-  cursor: pointer;
-  user-select: none;
-  transition: filter .15s ease;
-  box-sizing: border-box;
+.buttonGrid.large {
+  gap: var(--spacing-6);
+  
+  .item {
+    min-height: 140px;
+    padding: var(--spacing-8) var(--spacing-6);
+    gap: var(--spacing-4);
+    
+    .navButtonIcon {
+      width: 40px;
+      height: 40px;
+      font-size: 28px;
+    }
+    
+    .navButtonText {
+      font-size: 16px;
+    }
+  }
+}
 
-  &:hover { 
-    filter: brightness(0.95); 
+/* ========================================================================
+   RESPONSIVE DESIGN
+   ======================================================================== */
+
+@media (max-width: 1024px) {
+  .item {
+    min-height: 100px;
+    padding: var(--spacing-4) var(--spacing-3);
+    gap: var(--spacing-2);
+  }
+}
+
+@media (max-width: 768px) {
+  .item {
+    min-height: 90px;
+    padding: var(--spacing-3);
+    gap: var(--spacing-2);
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .item {
+    flex-direction: row;
+    text-align: left;
+    min-height: 60px;
+    padding: var(--spacing-3);
+    gap: var(--spacing-3);
+    
+    .navButtonIcon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+/* ========================================================================
+   ACCESSIBILITY & PREFERENCE SUPPORT
+   ======================================================================== */
+
+@media (prefers-contrast: high) {
+  .item {
+    border-width: 2px;
+    
+    &.active {
+      border-width: 3px;
+    }
+    
+    &:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .navButtonIcon {
+    transition: none;
+    animation: none;
   }
   
-  // Responsive sizing for multi-column layouts
-  .buttonGrid[style*="gridTemplateColumns"] & {
-    min-width: 200px;
-    
-    @media (max-width: 1024px) {
-      min-width: 180px;
-      padding: 20px 15px;
-      font-size: 14px;
-    }
-    
-    @media (max-width: 768px) {
-      min-width: 280px; // Back to original size on mobile
-      padding: 25px 18px;
-      font-size: 15px;
-    }
+  .item:hover {
+    transform: none;
+  }
+}
+
+@media print {
+  .item {
+    box-shadow: none;
+    border: 1px solid var(--text-primary);
+    break-inside: avoid;
   }
 }

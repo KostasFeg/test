@@ -4,8 +4,8 @@
 }
 
 .burster {
-  background: #eef4f7;
-  border: 2px solid #c1c9d0;
+  background: var(--surface-secondary);
+  border: 2px solid var(--border-primary);
   border-radius: 6px;
   padding: 0.25rem;
   position: relative;
@@ -38,22 +38,22 @@
   }
 
   &--out {
-    background: #ffe6e6;
-    border-color: #ff6b6b;
+    background: var(--status-error-bg);
+    border-color: var(--status-error);
 
     .burster__label,
     .burster__icon {
-      color: #ff6b6b;
+      color: var(--status-error);
     }
   }
 
   &--low {
-    background: #fff9e6;
-    border-color: #ffc107;
+    background: var(--status-warning-bg);
+    border-color: var(--status-warning);
 
     .burster__label,
     .burster__icon {
-      color: #ffc107;
+      color: var(--status-warning);
     }
   }
 
@@ -96,7 +96,7 @@
     font-size: 0.7rem;
     margin-top: 0.25rem;
     line-height: 1.1;
-    color: #333;
+    color: var(--text-secondary);
   }
 
   &__price {
@@ -117,8 +117,8 @@
   border-radius: 6px;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(135deg, #38d39f 0%, #23a867 100%);
-  box-shadow: 0 2px 8px 0 rgba(56, 211, 159, 0.10);
+  background: linear-gradient(135deg, var(--status-success) 0%, var(--status-success-dark) 100%);
+  box-shadow: 0 2px 8px 0 rgba(var(--color-primary-rgb), 0.10);
   transition: height 0.7s cubic-bezier(0.4,0,0.2,1);
   animation: fullness-gradient-move 2.5s linear infinite alternate;
   opacity: 0.92;
@@ -134,4 +134,39 @@
   100% {
     background-position: 100% 0%;
   }
+}
+
+.burster-selection-header {
+  padding: 1rem;
+  text-align: center;
+  background: var(--surface-secondary);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.burster-selection-header h3 {
+  margin: 0 0 0.5rem;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.burster-selection-header .subtitle {
+  margin: 0;
+  color: var(--form-help-text);
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.burster-selection-header .info-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--status-secondary-bg);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
 }

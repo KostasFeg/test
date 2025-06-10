@@ -1,0 +1,1201 @@
+// Import existing variables and mixins
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+// Enhanced CSS custom properties for theming
+:root {
+  --config-primary: #2563eb;
+  --config-primary-light: #3b82f6;
+  --config-primary-dark: #1d4ed8;
+  --config-accent: #10b981;
+  --config-accent-light: #34d399;
+  --config-warning: #f59e0b;
+  --config-error: #ef4444;
+  --config-success: #10b981;
+  
+  --config-surface: #ffffff;
+  --config-surface-alt: #f8fafc;
+  --config-surface-raised: #ffffff;
+  
+  --config-text-primary: #0f172a;
+  --config-text-secondary: #64748b;
+  --config-text-muted: #94a3b8;
+  
+  --config-border: #e2e8f0;
+  --config-border-light: #f1f5f9;
+  --config-border-focus: var(--config-primary);
+  
+  --config-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --config-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --config-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --config-shadow-focus: 0 0 0 3px rgb(37 99 235 / 0.1);
+  
+  --config-radius-xs: 0.125rem;
+  --config-radius-sm: 0.25rem;
+  --config-radius-md: 0.375rem;
+  --config-radius-lg: 0.5rem;
+  --config-radius-xl: 0.75rem;
+  
+  --config-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --config-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Enhanced mobile breakpoints
+  --config-mobile-sm: 375px;
+  --config-mobile-md: 414px;
+  --config-tablet: 768px;
+  --config-laptop: 1024px;
+  --config-desktop: 1280px;
+}
+
+// Main editor container
+.configEditor {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--config-surface-alt);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--config-text-primary);
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+// Enhanced header section with improved mobile layout
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: var(--config-surface);
+  border-bottom: 1px solid var(--config-border);
+  box-shadow: var(--config-shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 80px;
+  
+  h2 {
+    margin: 0;
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+    font-weight: 700;
+    color: var(--config-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+    
+    &::before {
+      content: '⚙️';
+      font-size: clamp(1rem, 3vw, 1.25rem);
+    }
+  }
+  
+  // Mobile-first responsive breakpoints
+  @media (max-width: 480px) {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: auto;
+    
+    h2 {
+      font-size: 1.125rem;
+      justify-content: center;
+    }
+  }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--config-border);
+    border-radius: var(--config-radius-lg);
+    background: var(--config-surface);
+    color: var(--config-text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--config-transition);
+    box-shadow: var(--config-shadow-sm);
+    white-space: nowrap;
+    min-height: 44px; // Touch-friendly minimum height
+    
+    &:hover {
+      background: var(--config-surface-alt);
+      border-color: var(--config-primary);
+      color: var(--config-primary);
+      transform: translateY(-1px);
+      box-shadow: var(--config-shadow-md);
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: var(--config-shadow-focus);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+    
+    &.primary {
+      background: var(--config-primary);
+      color: white;
+      border-color: var(--config-primary);
+      
+      &:hover {
+        background: var(--config-primary-dark);
+        border-color: var(--config-primary-dark);
+        color: white;
+      }
+    }
+    
+    &.success {
+      background: var(--config-success);
+      color: white;
+      border-color: var(--config-success);
+      
+      &:hover {
+        background: #059669;
+        border-color: #059669;
+        color: white;
+      }
+    }
+    
+    &.secondary {
+      background: var(--btn-secondary-bg);
+      color: var(--btn-secondary-text);
+      border-color: var(--btn-secondary-border);
+      
+      &:hover {
+        background: var(--btn-secondary-hover);
+        border-color: var(--btn-secondary-border-hover);
+        color: var(--btn-secondary-text);
+        box-shadow: var(--btn-shadow-secondary);
+      }
+    }
+    
+    &.info {
+      background: var(--status-secondary-bg);
+      color: var(--color-secondary);
+      border-color: var(--color-secondary);
+      
+      &:hover {
+        background: var(--btn-ghost-secondary-hover);
+        border-color: var(--color-secondary-dark);
+        color: var(--color-secondary-dark);
+      }
+    }
+    
+    &.warning {
+      background: var(--config-warning);
+      color: white;
+      border-color: var(--config-warning);
+      
+      &:hover {
+        background: #d97706;
+        border-color: #d97706;
+        color: white;
+      }
+    }
+  }
+  
+  // Enhanced mobile button layout
+  @media (max-width: 640px) {
+    width: 100%;
+    justify-content: center;
+    
+    button {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.8125rem;
+      padding: 0.625rem 0.75rem;
+      
+      // Hide text on very small screens, keep icons
+      @media (max-width: 360px) {
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    gap: 0.5rem;
+    
+    button {
+      justify-content: center;
+    }
+  }
+}
+
+// Enhanced main content area with better mobile flow
+.content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0; // Important for proper flex behavior
+}
+
+// Improved navigation sidebar with mobile-first approach
+.navigation {
+  width: 280px;
+  background: var(--config-surface);
+  border-right: 1px solid var(--config-border);
+  overflow-y: auto;
+  flex-shrink: 0;
+  max-height: calc(100vh - 80px);
+  
+  .sectionNav {
+    padding: 1rem 0;
+  }
+  
+  .navItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--config-transition);
+    border-left: 3px solid transparent;
+    color: var(--config-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    min-height: 56px; // Touch-friendly height
+    
+    &:hover {
+      background: var(--config-surface-alt);
+      color: var(--config-text-primary);
+      border-left-color: var(--config-border);
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 2px var(--config-primary);
+    }
+    
+    &.active {
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.1) 0%, transparent 100%);
+      color: var(--config-primary);
+      border-left-color: var(--config-primary);
+      font-weight: 600;
+      
+      .navIcon {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+    
+    .navIcon {
+      margin-right: 0.75rem;
+      font-size: 1.125rem;
+      opacity: 0.7;
+      transition: var(--config-transition);
+      width: 1.25rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    
+    .navLabel {
+      font-size: 0.875rem;
+      line-height: 1.4;
+      flex: 1;
+    }
+  }
+}
+
+// Enhanced editor area with better mobile spacing
+.editor {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background: var(--config-surface-alt);
+  max-height: calc(100vh - 80px);
+  
+  .sectionHeader {
+    margin: 0 0 2rem 0;
+    color: var(--config-text-primary);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 5vw, 1.875rem);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    
+    &::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, var(--config-primary) 0%, transparent 100%);
+      margin-left: 1rem;
+    }
+  }
+}
+
+// Enhanced input group styling with better mobile touch targets
+.inputGroup {
+  position: relative;
+  background: var(--config-surface);
+  border: 1px solid var(--config-border);
+  border-radius: var(--config-radius-xl);
+  padding: 1.25rem;
+  transition: var(--config-transition);
+  box-shadow: var(--config-shadow-sm);
+  
+  &:hover {
+    border-color: var(--config-primary-light);
+    box-shadow: var(--config-shadow-md);
+  }
+  
+  &:focus-within {
+    border-color: var(--config-primary);
+    box-shadow: var(--config-shadow-focus);
+  }
+  
+  @media (max-width: 640px) {
+    padding: 1rem;
+    border-radius: var(--config-radius-lg);
+  }
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--config-text-primary);
+  margin-bottom: 0.75rem;
+  text-transform: capitalize;
+  
+  .labelText {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+// Enhanced help tooltip system
+.helpTooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.helpIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: var(--config-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: help;
+  transition: var(--config-transition);
+  flex-shrink: 0;
+  
+  &:hover {
+    background: var(--config-primary-dark);
+    transform: scale(1.1);
+  }
+  
+  // Better mobile touch target
+  @media (max-width: 768px) {
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 0.8125rem;
+  }
+}
+
+.tooltipContent {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--config-text-primary);
+  color: var(--config-surface);
+  border-radius: var(--config-radius-lg);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+  box-shadow: var(--config-shadow-lg);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--config-transition);
+  transform: translateY(-0.5rem);
+  max-width: 200px;
+  white-space: normal;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -0.25rem;
+    right: 0.75rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--config-text-primary);
+    transform: rotate(45deg);
+  }
+  
+  // Better mobile positioning
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    max-width: 280px;
+    padding: 1rem 1.25rem;
+    
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.helpIcon:hover + .tooltipContent,
+.tooltipContent:hover {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  
+  @media (max-width: 768px) {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.description {
+  font-size: 0.75rem;
+  color: var(--config-text-muted);
+  line-height: 1.5;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+// Enhanced input styling with better mobile experience
+.textInput {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--config-border);
+  border-radius: var(--config-radius-lg);
+  font-size: 1rem; // Prevents zoom on iOS
+  font-family: inherit;
+  background: var(--config-surface);
+  transition: var(--config-transition);
+  min-height: 44px; // Touch-friendly height
+  
+  &:focus {
+    outline: none;
+    border-color: var(--config-primary);
+    box-shadow: var(--config-shadow-focus);
+  }
+  
+  &:hover:not(:focus) {
+    border-color: var(--config-border);
+    background: var(--config-surface-alt);
+  }
+  
+  &.error {
+    border-color: var(--config-error);
+    background: rgba(239, 68, 68, 0.05);
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+  
+  &::placeholder {
+    color: var(--config-text-muted);
+  }
+  
+  @media (max-width: 640px) {
+    padding: 0.875rem;
+    font-size: 1rem; // Consistent mobile font size
+  }
+}
+
+.colorInputGroup {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+}
+
+.colorPicker {
+  width: 4rem;
+  height: 3rem;
+  border: 1px solid var(--config-border);
+  border-radius: var(--config-radius-lg);
+  cursor: pointer;
+  transition: var(--config-transition);
+  background: var(--config-surface);
+  overflow: hidden;
+  flex-shrink: 0;
+  
+  &:hover {
+    border-color: var(--config-primary);
+    transform: scale(1.02);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: var(--config-shadow-focus);
+  }
+  
+  // Webkit color picker styling
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border: none;
+  }
+  
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: calc(var(--config-radius-lg) - 1px);
+  }
+  
+  // Better mobile sizing
+  @media (max-width: 480px) {
+    width: 100%;
+    height: 3.5rem;
+  }
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: var(--config-radius-lg);
+  transition: var(--config-transition);
+  min-height: 44px; // Touch-friendly
+  
+  &:hover {
+    background: var(--config-surface-alt);
+  }
+}
+
+.checkboxInput {
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--config-border);
+  border-radius: var(--config-radius-sm);
+  background: var(--config-surface);
+  position: relative;
+  cursor: pointer;
+  transition: var(--config-transition);
+  margin: 0;
+  flex-shrink: 0;
+  
+  &:checked {
+    background: var(--config-primary);
+    border-color: var(--config-primary);
+    
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 0.875rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+  }
+  
+  &:hover {
+    border-color: var(--config-primary);
+    transform: scale(1.05);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: var(--config-shadow-focus);
+  }
+  
+  // Better mobile touch target
+  @media (max-width: 768px) {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+.error {
+  color: var(--config-error);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  
+  &::before {
+    content: '⚠️';
+    font-size: 0.875rem;
+  }
+}
+
+// Enhanced profile manager with better mobile layout
+.profileManager {
+  background: var(--config-surface);
+  border-bottom: 1px solid var(--config-border);
+  max-height: 70vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 80px;
+  z-index: 50;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--config-border);
+  
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--config-text-primary);
+  }
+  
+  @media (max-width: 640px) {
+    padding: 1rem;
+    
+    h3 {
+      font-size: 1.125rem;
+    }
+  }
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--config-text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--config-radius-md);
+  transition: var(--config-transition);
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background: var(--config-surface-alt);
+    color: var(--config-text-primary);
+  }
+}
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
+  }
+}
+
+.profileCard {
+  background: var(--config-surface-alt);
+  border: 1px solid var(--config-border);
+  border-radius: var(--config-radius-xl);
+  padding: 1.5rem;
+  transition: var(--config-transition);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--config-shadow-lg);
+    border-color: var(--config-primary-light);
+  }
+  
+  @media (max-width: 640px) {
+    padding: 1rem;
+  }
+}
+
+.profileInfo {
+  margin-bottom: 1rem;
+  
+  .profileTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    
+    h4 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--config-text-primary);
+      flex: 1;
+      min-width: 0;
+    }
+  }
+  
+  p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.875rem;
+    color: var(--config-text-secondary);
+    line-height: 1.4;
+  }
+  
+  .savedDate {
+    font-size: 0.75rem;
+    color: var(--config-text-muted);
+  }
+}
+
+.builtInBadge,
+.userBadge {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--config-radius-sm);
+  flex-shrink: 0;
+}
+
+.builtInBadge {
+  background: var(--config-accent);
+  color: white;
+}
+
+.userBadge {
+  background: var(--config-primary);
+  color: white;
+}
+
+.profileActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  
+  button {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--config-border);
+    border-radius: var(--config-radius-md);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--config-transition);
+    min-height: 40px;
+    
+    &.applyButton {
+      background: var(--config-primary);
+      color: white;
+      border-color: var(--config-primary);
+      
+      &:hover {
+        background: var(--config-primary-dark);
+      }
+    }
+    
+    &.downloadButton {
+      background: var(--config-surface);
+      color: var(--config-text-primary);
+      
+      &:hover {
+        background: var(--config-surface-alt);
+        border-color: var(--config-primary);
+      }
+    }
+    
+    &.deleteButton {
+      background: var(--config-error);
+      color: white;
+      border-color: var(--config-error);
+      
+      &:hover {
+        background: #dc2626;
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.noProfiles {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--config-text-secondary);
+  
+  p {
+    margin: 0 0 1rem 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.profileFooter {
+  padding: 1.5rem 2rem;
+  background: var(--config-surface-alt);
+  border-top: 1px solid var(--config-border);
+  
+  @media (max-width: 640px) {
+    padding: 1rem;
+  }
+}
+
+.dragDropArea {
+  position: relative;
+  border: 2px dashed var(--config-border);
+  border-radius: var(--config-radius-xl);
+  padding: 2rem;
+  text-align: center;
+  transition: var(--config-transition);
+  background: var(--config-surface);
+  
+  &:hover {
+    border-color: var(--config-primary);
+    background: rgba(37, 99, 235, 0.05);
+  }
+  
+  p {
+    margin: 0;
+    color: var(--config-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 640px) {
+    padding: 1.5rem 1rem;
+    
+    p {
+      font-size: 0.8125rem;
+    }
+  }
+}
+
+.fileInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+// Enhanced global grid layouts with better mobile behavior
+:global {
+  .config-section {
+    margin-bottom: 3rem;
+    
+    @media (max-width: 640px) {
+      margin-bottom: 2rem;
+    }
+  }
+  
+  .config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    @media (max-width: 480px) {
+      gap: 0.75rem;
+    }
+  }
+  
+  .config-subsections {
+    .subsection {
+      margin-bottom: 3rem;
+      
+      h3 {
+        margin: 0 0 1.5rem 0;
+        color: var(--config-text-primary);
+        font-size: clamp(1.125rem, 4vw, 1.375rem);
+        font-weight: 600;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid var(--config-border);
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 3rem;
+          height: 2px;
+          background: var(--config-primary);
+        }
+      }
+      
+      @media (max-width: 640px) {
+        margin-bottom: 2rem;
+        
+        h3 {
+          margin-bottom: 1rem;
+          padding-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+// Enhanced responsive design with mobile-first approach
+@media (max-width: 1200px) {
+  .navigation {
+    width: 260px;
+  }
+  
+  .editor {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .content {
+    flex-direction: column;
+  }
+  
+  .navigation {
+    width: 100%;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--config-border);
+    
+    .sectionNav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .navItem {
+      padding: 0.875rem 1rem;
+      border-radius: var(--config-radius-lg);
+      border-left: none;
+      text-align: center;
+      justify-content: center;
+      min-height: 48px;
+      
+      &.active {
+        background: var(--config-primary);
+        color: white;
+      }
+      
+      .navIcon {
+        margin-right: 0.5rem;
+      }
+      
+      .navLabel {
+        font-size: 0.8125rem;
+      }
+    }
+  }
+  
+  .editor {
+    padding: 1.5rem 1rem;
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .editor {
+    padding: 1rem;
+  }
+  
+  .inputGroup {
+    margin-bottom: 1rem;
+  }
+  
+  .navigation .sectionNav {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    
+    .navItem {
+      padding: 0.75rem 0.5rem;
+      min-height: 44px;
+      
+      .navLabel {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .navigation .sectionNav {
+    grid-template-columns: repeat(2, 1fr);
+    
+    .navItem {
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.75rem 0.5rem;
+      
+      .navIcon {
+        margin-right: 0;
+        margin-bottom: 0.25rem;
+        font-size: 1rem;
+      }
+      
+      .navLabel {
+        font-size: 0.6875rem;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .configEditor {
+    font-size: 0.875rem;
+  }
+  
+  .editor {
+    padding: 0.75rem 0.5rem;
+    
+    .sectionHeader {
+      margin-bottom: 1.5rem;
+      
+      &::after {
+        display: none;
+      }
+    }
+  }
+  
+  .navigation .sectionNav {
+    padding: 0.75rem 0.5rem;
+    gap: 0.25rem;
+    
+    .navItem {
+      padding: 0.625rem 0.375rem;
+      border-radius: var(--config-radius-md);
+      
+      .navLabel {
+        font-size: 0.625rem;
+        line-height: 1.2;
+      }
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .headerActions button span:not(.navIcon) {
+    display: none;
+  }
+  
+  .navigation .sectionNav .navItem .navLabel {
+    display: none;
+  }
+}
+
+// Enhanced dark mode support
+@media (prefers-color-scheme: dark) {
+  :root {
+    --config-surface: #0f172a;
+    --config-surface-alt: #1e293b;
+    --config-surface-raised: #334155;
+    
+    --config-text-primary: #f1f5f9;
+    --config-text-secondary: #cbd5e1;
+    --config-text-muted: #64748b;
+    
+    --config-border: #334155;
+    --config-border-light: #475569;
+  }
+}
+
+// Enhanced focus trap and accessibility improvements
+.configEditor {
+  &:focus-within {
+    .navigation .navItem:focus {
+      box-shadow: inset 0 0 0 2px var(--config-primary);
+      outline: none;
+    }
+  }
+}
+
+// Additional mobile-specific improvements
+@media (hover: none) and (pointer: coarse) {
+  // Touch device specific styles
+  .helpIcon:hover + .tooltipContent {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .helpIcon:active + .tooltipContent {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .navItem:hover {
+    background: none;
+  }
+  
+  .inputGroup:hover {
+    border-color: var(--config-border);
+    box-shadow: var(--config-shadow-sm);
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  :root {
+    --config-border: #000000;
+    --config-text-secondary: #000000;
+    --config-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --config-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+} 

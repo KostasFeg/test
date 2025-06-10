@@ -111,38 +111,31 @@ export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
 
   return (
     <>
-      <footer ref={containerRef} className={clsx(styles.root, className)}>
-        {items.map((item, index) => (
-          <div
-            key={item.label}
-            style={{
-              position: "relative",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              height: "100%",
-              flex: 1,
-            }}
-          >
-            <button
-              data-label={item.label}
-              className={clsx(
-                styles.item,
-                animating === item.label && styles["item--animating"]
-              )}
-              onClick={() => handleButtonClick(item.label, item.onClick)}
-              onMouseEnter={(e) => handleTooltipShow(item.label, e)}
-              onMouseLeave={() => setActiveTooltip(null)}
-              onTouchStart={(e) => handleTooltipShow(item.label, e)}
-              onTouchEnd={() => setActiveTooltip(null)}
-              onFocus={(e) => handleTooltipShow(item.label, e)}
-              onBlur={() => setActiveTooltip(null)}
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </button>
-          </div>
-        ))}
+      <footer ref={containerRef} className={clsx(styles.bottomBar, className)}>
+        <div className={styles.content}>
+          <nav className={styles.navigation}>
+            {items.map((item, index) => (
+              <button
+                key={item.label}
+                data-label={item.label}
+                className={clsx(
+                  styles.bottomBarItem,
+                  animating === item.label && styles["bottomBarItem--animating"]
+                )}
+                onClick={() => handleButtonClick(item.label, item.onClick)}
+                onMouseEnter={(e) => handleTooltipShow(item.label, e)}
+                onMouseLeave={() => setActiveTooltip(null)}
+                onTouchStart={(e) => handleTooltipShow(item.label, e)}
+                onTouchEnd={() => setActiveTooltip(null)}
+                onFocus={(e) => handleTooltipShow(item.label, e)}
+                onBlur={() => setActiveTooltip(null)}
+              >
+                <span className={styles.bottomBarIcon}>{item.icon}</span>
+                <span className={styles.bottomBarLabel}>{item.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
       </footer>
 
       {/* Render tooltips as portals */}

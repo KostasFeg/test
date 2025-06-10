@@ -7,30 +7,34 @@
 
   &__input {
     padding: $spacing-3 $spacing-4;
-    border: 1px solid $grey-300;
+    border: 1px solid var(--color-grey-300, $grey-300);
     border-radius: $radius-md;
-    background: $white;
+    background: var(--color-white, $white);
     font-size: 14px;
     font-family: $font-family-sans;
-    color: $grey-800;
+    color: var(--color-grey-800, $grey-800);
     cursor: pointer;
     min-width: 180px;
     transition: all 0.2s ease;
     font-weight: 500;
 
     &:hover {
-      border-color: darken($grey-300, 10%);
+      border-color: var(--color-grey-400, #{darken($grey-300, 10%)});
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     }
 
     &:focus {
       outline: none;
-      border-color: $accent-color;
-      box-shadow: 0 0 0 3px rgba($accent-color, 0.1);
+      border-color: var(--color-accent, $accent-color);
+      box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 37, 99, 235), 0.1);
+    }
+
+    &:disabled {
+      color: var(--color-grey-200, #{lighten($grey-300, 5%)});
     }
 
     &::placeholder {
-      color: lighten($grey-300, 5%);
+      color: var(--color-grey-200, #{lighten($grey-300, 5%)});
       font-weight: 400;
     }
   }
@@ -41,8 +45,8 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: $white;
-    border: 1px solid $grey-300;
+    background: var(--color-white, $white);
+    border: 1px solid var(--color-grey-300, $grey-300);
     border-radius: $radius-lg;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     animation: fadeInDown 0.2s ease-out forwards;

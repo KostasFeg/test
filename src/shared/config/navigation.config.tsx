@@ -9,6 +9,7 @@ import {
   Clock,
   Wrench,
   Printer,
+  Settings,
 } from "lucide-react";
 import { AUTO_GENERATED_REPORTS } from "../../utils/reportNavigation";
 
@@ -54,74 +55,78 @@ const BursterSelectionPanel = React.lazy(
   () => import("../../components/bursters/BursterSelectionPanel")
 );
 
+const ConfigEditor = React.lazy(
+  () => import("../../components/config-editor/ConfigEditor")
+);
+
 export const navConfig: NavNode[] = [
-  {
-    slug: "reload",
-    label: "Reload",
-    icon: <RefreshCw />,
-    display: "buttons",
-    onCallback: async () => {
-      // await sendAlarm({ type: "reload" });
-      // window.location.reload();
-      console.log("hi");
-    },
-  },
-  // 🎯 REMOVED: Manual report definitions - now using AUTO_GENERATED_REPORTS only!
-  // Just add reports to SIMPLE_REPORTS in reportConfig.ts and they appear automatically
-  {
-    slug: "restart",
-    label: "Restart",
-    icon: <RotateCcw />,
-    display: "buttons",
-    onCallback: async () => {
-      // app.peripheralManager.restartApp();
-    },
-  },
-  {
-    slug: "reboot",
-    label: "Reboot",
-    icon: <Power />,
-    display: "buttons",
-    onCallback: async () => {
-      // app.peripheralsManager.rebootDevice();
-    },
-  },
-  {
-    slug: "shutdown",
-    label: "Shutdown",
-    icon: <PowerOff />,
-    display: "buttons",
-    onCallback: async () => {
-      // app.peripheralsManager.shutdownDevice();
-    },
-  },
-  {
-    slug: "open-dmc-app",
-    label: "Open DMC App",
-    icon: <Monitor />,
-    display: "buttons",
-    onCallback: async () => {
-      // app.middleware.displayDmclientApp();
-    },
-  },
-  {
-    slug: "end-shift",
-    label: "End Shift",
-    icon: <Clock />,
-    display: "buttons",
-    onCallback: async () => {
-      // closeShift();
-    },
-  },
-  {
-    slug: "open-diagnostics-app",
-    label: "Open Diagnostics App",
-    icon: <Wrench />,
-    display: "buttons",
-    onCallback: async () => {
-      // app.middleware.displayDiagnostics();
-    },
-  },
+  // {
+  //   slug: "reload",
+  //   label: "Reload",
+  //   icon: <RefreshCw />,
+  //   display: "buttons",
+  //   onCallback: async () => {
+  //     // await sendAlarm({ type: "reload" });
+  //     // window.location.reload();
+  //     console.log("hi");
+  //   },
+  // },
+  // // 🎯 REMOVED: Manual report definitions - now using AUTO_GENERATED_REPORTS only!
+  // // Just add reports to SIMPLE_REPORTS in reportConfig.ts and they appear automatically
+  // {
+  //   slug: "restart",
+  //   label: "Restart",
+  //   icon: <RotateCcw />,
+  //   display: "buttons",
+  //   onCallback: async () => {
+  //     // app.peripheralManager.restartApp();
+  //   },
+  // },
+  // {
+  //   slug: "reboot",
+  //   label: "Reboot",
+  //   icon: <Power />,
+  //   display: "buttons",
+  //   onCallback: async () => {
+  //     // app.peripheralsManager.rebootDevice();
+  //   },
+  // },
+  // {
+  //   slug: "shutdown",
+  //   label: "Shutdown",
+  //   icon: <PowerOff />,
+  //   display: "buttons",
+  //   onCallback: async () => {
+  //     // app.peripheralsManager.shutdownDevice();
+  //   },
+  // },
+  // {
+  //   slug: "open-dmc-app",
+  //   label: "Open DMC App",
+  //   icon: <Monitor />,
+  //   display: "buttons",
+  //   onCallback: async () => {
+  //     // app.middleware.displayDmclientApp();
+  //   },
+  // },
+  // {
+  //   slug: "end-shift",
+  //   label: "End Shift",
+  //   icon: <Clock />,
+  //   display: "buttons",
+  //   onCallback: async () => {
+  //     // closeShift();
+  //   },
+  // },
+  // {
+  //   slug: "open-diagnostics-app",
+  //   label: "Open Diagnostics App",
+  //   icon: <Wrench />,
+  //   display: "buttons",
+  //   onCallback: async () => {
+  //     // app.middleware.displayDiagnostics();
+  //   },
+  // },
 
   {
     slug: "maintenance-operations",
@@ -393,4 +398,12 @@ export const navConfig: NavNode[] = [
   //     },
   //   ],
   // },
+
+  // 🎨 Configuration System
+  {
+    slug: "configuration",
+    label: "Configuration",
+    icon: <Settings />,
+    element: () => <ConfigEditor />,
+  },
 ];

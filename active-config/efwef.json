@@ -1,0 +1,61 @@
+{
+  "name": "Navigation Test Config",
+  "description": "Test configuration to verify navigation overrides work correctly",
+  "config": {
+    "theme": {
+      "colors": {
+        "primary": "#10b981",
+        "secondary": "#64748b"
+      }
+    },
+    "branding": {
+      "company": {
+        "name": "Test Navigation Company"
+      }
+    },
+    "navigation": [
+      {
+        "slug": "test-dashboard",
+        "label": "Test Dashboard"
+      },
+      {
+        "slug": "custom-reports",
+        "label": "Custom Reports",
+        "display": "tabs",
+        "children": [
+          {
+            "slug": "test-report-1",
+            "label": "Test Report 1"
+          },
+          {
+            "slug": "test-report-2", 
+            "label": "Test Report 2"
+          }
+        ]
+      },
+      {
+        "slug": "custom-operations",
+        "label": "Custom Operations",
+        "display": "buttons",
+        "children": [
+          {
+            "slug": "start-test",
+            "label": "Start Test"
+          },
+          {
+            "slug": "stop-test",
+            "label": "Stop Test"
+          },
+          {
+            "slug": "reset-test",
+            "label": "Reset Test"
+          }
+        ]
+      },
+      {
+        "slug": "test-settings",
+        "label": "Test Settings"
+      }
+    ]
+  }
+} 

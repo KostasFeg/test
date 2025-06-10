@@ -8,15 +8,15 @@
   
   &__header {
     padding: $spacing-4 * 1.25;
-    border-bottom: 1px solid $grey-300;
-    background: $white;
+    border-bottom: 1px solid var(--color-grey-300, $grey-300);
+    background: var(--color-white, $white);
   }
 
   &__title {
     margin: 0;
     font-size: 24px;
     font-weight: 600;
-    color: $grey-800;
+    color: var(--color-grey-800, $grey-800);
     font-family: $font-family-sans;
   }
 
@@ -34,8 +34,8 @@
     height: 200px;
     gap: $spacing-4;
     
-    span {
-      color: darken($grey-300, 20%);
+          span {
+        color: var(--color-grey-600, #{darken($grey-300, 20%)});
       font-size: 16px;
       font-family: $font-family-sans;
     }
@@ -45,9 +45,9 @@
     padding: $spacing-4 * 1.25;
     
     .alert {
-      background: rgba(#dc2626, 0.1);
-      color: #dc2626;
-      border: 1px solid rgba(#dc2626, 0.2);
+      background: var(--status-error-bg);
+      color: var(--status-error);
+      border: 1px solid var(--status-error-border);
       border-radius: $radius-md;
       padding: $spacing-3;
       margin: 0;
@@ -55,16 +55,16 @@
     }
     
     h2 {
-      color: #dc2626;
+      color: var(--status-error);
       margin-bottom: $spacing-2;
       font-family: $font-family-sans;
     }
   }
 
   &__no-data {
-    @include flex-center;
-    height: 200px;
-    color: darken($grey-300, 20%);
+          @include flex-center;
+      height: 200px;
+      color: var(--color-grey-600, #{darken($grey-300, 20%)});
     font-size: 16px;
     font-family: $font-family-sans;
   }
@@ -129,13 +129,13 @@
   justify-content: space-between;
   align-items: flex-end;
   padding: $spacing-4 * 1.25;
-  background: $grey-100;
-  border-bottom: 1px solid $grey-300;
+  background: var(--color-grey-100, $grey-100);
+  border-bottom: 1px solid var(--color-grey-300, $grey-300);
   gap: $spacing-4 * 1.25;
 
   &__print {
-    background: $accent-color;
-    color: $white;
+    background: var(--color-accent, $accent-color);
+    color: var(--color-white, $white);
     border: none;
     padding: $spacing-3 $spacing-4;
     border-radius: $radius-md;
@@ -145,18 +145,18 @@
     cursor: pointer;
     transition: all 0.2s ease;
     
-    &:hover:not(.disabled) {
-      background: darken($accent-color, 5%);
-      box-shadow: 0 2px 8px rgba($accent-color, 0.3);
-    }
+          &:hover:not(.disabled) {
+        background: var(--color-accent-dark, #{darken($accent-color, 5%)});
+        box-shadow: 0 2px 8px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3);
+      }
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba($accent-color, 0.2);
+      box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 37, 99, 235), 0.2);
     }
     
     &.disabled {
-      background: $grey-300;
+      background: var(--color-grey-300, $grey-300);
       cursor: not-allowed;
       opacity: 0.6;
     }
@@ -173,7 +173,7 @@
     display: block;
     font-size: 12px;
     font-weight: 600;
-    color: $grey-800;
+    color: var(--color-grey-800, $grey-800);
     margin-bottom: $spacing-2;
     font-family: $font-family-sans;
   }
@@ -189,8 +189,8 @@
   }
 
   &__button {
-    background: $white;
-    border: 1px solid $grey-300;
+    background: var(--color-white, $white);
+    border: 1px solid var(--color-grey-300, $grey-300);
     padding: $spacing-2 $spacing-4;
     border-radius: $radius-md;
     font-size: 14px;
@@ -200,21 +200,21 @@
     transition: all 0.2s ease;
     
     &:hover {
-      border-color: $accent-color;
-      color: $accent-color;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: var(--color-accent, $accent-color);
+      color: var(--color-accent, $accent-color);
     }
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba($accent-color, 0.1);
+      box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 37, 99, 235), 0.1);
+      border-color: var(--color-accent, $accent-color);
     }
     
     &.active {
-      background: $accent-color;
-      color: $white;
-      border-color: $accent-color;
-      box-shadow: 0 2px 6px rgba($accent-color, 0.3);
+      background: var(--color-accent, $accent-color);
+      color: var(--color-white, $white);
+      border-color: var(--color-accent, $accent-color);
+      box-shadow: 0 2px 6px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3);
     }
   }
 

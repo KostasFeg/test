@@ -14,6 +14,7 @@ interface AuthContextType {
   // Authentication state
   isAuthenticated: boolean;
   isOfflineMode: boolean;
+  isLoading: boolean;
   user?: User;
 
   // Authentication actions
@@ -33,6 +34,11 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | undefined>();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isOfflineMode, setIsOfflineMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Define logout function first so it can be used in useEffect
 
   // Initialize from localStorage on mount
   useEffect(() => {
@@ -49,11 +55,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (userData.level) {
           accessManager.setLevels([userData.level]);
         }
+
+        // Update local state to trigger re-render
+        setIsAuthenticated(true);
+        setIsOfflineMode(false); // Assume online mode on reload unless specified
       } catch (error) {
         console.error("Failed to restore user session:", error);
-        logout();
+        // Clear state on error instead of calling logout function
+        setUser(undefined);
+        setIsAuthenticated(false);
+        setIsOfflineMode(false);
+        accessManager.reset();
+        localStorage.removeItem(config.auth.persistKey);
+        localStorage.removeItem("user");
       }
     }
+
+    // Always set loading to false after checking localStorage
+    setIsLoading(false);
   }, []);
 
   const login = (userData: User, isOffline = false) => {
@@ -62,14 +81,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Update access manager
     if (isOffline) {
       accessManager.setOfflineLoggedIn(true);
+      setIsOfflineMode(true);
     } else {
       accessManager.setLoggedIn(true);
+      setIsOfflineMode(false);
     }
 
     // Set user permissions based on level
     if (userData.level) {
       accessManager.setLevels([userData.level]);
     }
+
+    // Update local state to trigger re-render
+    setIsAuthenticated(true);
 
     // Persist to localStorage
     localStorage.setItem(config.auth.persistKey, "true");
@@ -82,14 +106,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Clear access manager
     accessManager.reset();
 
+    // Update local state to trigger re-render
+    setIsAuthenticated(false);
+    setIsOfflineMode(false);
+
     // Clear localStorage
     localStorage.removeItem(config.auth.persistKey);
     localStorage.removeItem("user");
   };
 
   const value: AuthContextType = {
-    isAuthenticated: accessManager.isLoggedIn(),
-    isOfflineMode: accessManager.isOfflineLoggedIn(),
+    isAuthenticated,
+    isOfflineMode,
+    isLoading,
     user,
     login,
     logout,

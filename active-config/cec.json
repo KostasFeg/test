@@ -1,0 +1,274 @@
+{
+  "name": "Comprehensive Config Example",
+  "description": "Complete example showing all major configurable parameters",
+  "config": {
+    "theme": {
+      "colors": {
+        "primary": "#2563eb",
+        "secondary": "#64748b",
+        "accent": "#06b6d4",
+        "success": "#10b981",
+        "warning": "#f59e0b",
+        "error": "#ef4444",
+        "info": "#3b82f6",
+        "grey50": "#f9fafb",
+        "grey100": "#f3f4f6",
+        "grey200": "#e5e7eb",
+        "grey300": "#d1d5db",
+        "grey400": "#9ca3af",
+        "grey500": "#6b7280",
+        "grey600": "#4b5563",
+        "grey700": "#374151",
+        "grey800": "#1f2937",
+        "grey900": "#111827"
+      },
+      "typography": {
+        "fontFamilySans": "Inter, system-ui, sans-serif",
+        "fontFamilyMono": "JetBrains Mono, Menlo, monospace",
+        "fontSizeSmall": "0.875rem",
+        "fontSizeMedium": "1rem",
+        "fontSizeLarge": "1.125rem",
+        "fontSizeXLarge": "1.25rem",
+        "fontWeightNormal": 400,
+        "fontWeightMedium": 500,
+        "fontWeightSemibold": 600,
+        "fontWeightBold": 700
+      },
+      "spacing": {
+        "spacing1": "0.25rem",
+        "spacing2": "0.5rem",
+        "spacing3": "0.75rem",
+        "spacing4": "1rem",
+        "spacing5": "1.25rem",
+        "spacing6": "1.5rem",
+        "spacing8": "2rem",
+        "spacing12": "3rem"
+      },
+      "borderRadius": {
+        "radiusSmall": "0.375rem",
+        "radiusMedium": "0.5rem",
+        "radiusLarge": "0.75rem",
+        "radiusXLarge": "1rem"
+      },
+      "shadows": {
+        "shadowSmall": "0 1px 2px rgba(0, 0, 0, 0.05)",
+        "shadowMedium": "0 4px 6px rgba(0, 0, 0, 0.07)",
+        "shadowLarge": "0 10px 15px rgba(0, 0, 0, 0.1)",
+        "shadowXLarge": "0 20px 25px rgba(0, 0, 0, 0.15)",
+        "shadowInner": "inset 0 1px 2px rgba(0, 0, 0, 0.06)",
+        "shadowFocus": "0 0 0 3px rgba(37, 99, 235, 0.1)"
+      },
+      "transitions": {
+        "transitionFast": "0.15s",
+        "transitionMedium": "0.3s",
+        "transitionSlow": "0.5s",
+        "easingDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "easingBounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "easingSharp": "cubic-bezier(0.4, 0, 0.6, 1)"
+      },
+      "interactiveStates": {
+        "hoverOpacity": 0.8,
+        "activeScale": 0.98,
+        "focusRingWidth": "2px",
+        "focusRingOffset": "2px",
+        "disabledOpacity": 0.5
+      }
+    },
+    "layout": {
+      "sidebarWidth": {
+        "buttons": "80px",
+        "labels": "180px",
+        "mobile": "64px"
+      },
+      "topBarHeight": "64px",
+      "bottomBarHeight": "72px",
+      "mobile": {
+        "topBarHeight": "56px",
+        "sidebarWidthButtons": "64px",
+        "sidebarWidthLabels": "240px"
+      },
+      "breakpoints": {
+        "mobile": "768px",
+        "tablet": "1024px",
+        "desktop": "1280px"
+      },
+      "zIndex": {
+        "topbar": 100,
+        "sidebar": 50,
+        "bottombar": 200,
+        "modal": 1000,
+        "dropdown": 500
+      }
+    },
+    "ui": {
+      "defaultSidebarVariant": "labels",
+      "defaultShowBottomBar": false,
+      "animationFast": "0.15s",
+      "animationMedium": "0.3s",
+      "animationSlow": "0.5s",
+      "easingDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "easingBounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+      "easingSharp": "cubic-bezier(0.4, 0, 0.6, 1)"
+    },
+    "componentStyles": {
+      "buttons": {
+        "borderRadius": "0.5rem",
+        "paddingVertical": "0.75rem",
+        "paddingHorizontal": "1rem",
+        "fontWeight": 600,
+        "minHeight": "40px",
+        "minWidth": "120px",
+        "hoverTransform": "translateY(-1px)",
+        "hoverShadow": "0 4px 12px rgba(0, 0, 0, 0.15)",
+        "focusRingStyle": "0 0 0 3px rgba(59, 130, 246, 0.3)"
+      },
+      "inputs": {
+        "borderRadius": "0.5rem",
+        "padding": "0.75rem 1rem",
+        "fontSize": "0.875rem",
+        "borderWidth": "1px",
+        "focusRingWidth": "3px",
+        "focusRingColor": "rgba(59, 130, 246, 0.3)",
+        "placeholderOpacity": "0.5"
+      },
+      "cards": {
+        "borderRadius": "1rem",
+        "padding": "1rem",
+        "shadowLight": "0 1px 3px rgba(0, 0, 0, 0.05)",
+        "shadowMedium": "0 4px 6px rgba(0, 0, 0, 0.07)",
+        "shadowHeavy": "0 8px 24px rgba(0, 0, 0, 0.15)",
+        "borderWidth": "0px",
+        "borderStyle": "solid",
+        "hoverElevation": "0 8px 16px rgba(0, 0, 0, 0.12)"
+      }
+    },
+    "branding": {
+      "company": {
+        "name": "Your Company",
+        "displayName": "Your Company Display Name"
+      },
+      "logo": {
+        "src": "/your-logo.png",
+        "alt": "Your Company Logo",
+        "width": 180
+      },
+      "loginPage": {
+        "title": "Your Portal Login",
+        "logo": {
+          "src": "/your-logo.png",
+          "alt": "Your Company Logo",
+          "width": 180
+        }
+      },
+      "app": {
+        "name": "Your Portal",
+        "version": "2.0.0",
+        "description": "Your application description"
+      }
+    },
+    "api": {
+      "baseUrl": "https://api.yourcompany.com",
+      "timeout": 30000,
+      "retryAttempts": 3,
+      "retryDelay": 1000
+    },
+    "auth": {
+      "persistKey": "loggedIn",
+      "sessionTimeout": 28800000,
+      "autoLogoutWarning": 300000
+    },
+    "features": {
+      "enableDebugReports": true,
+      "enableAdvancedFilters": true,
+      "enableThemeCustomization": false,
+      "enableBulkOperations": true,
+      "enableOfflineMode": false
+    },
+    "navigation": [
+      {
+        "slug": "quick-actions",
+        "label": "Quick Actions",
+        "display": "buttons",
+        "children": [
+          {
+            "slug": "reload-system",
+            "label": "Reload System"
+          },
+          {
+            "slug": "export-data",
+            "label": "Export Data"
+          },
+          {
+            "slug": "backup-system",
+            "label": "Backup System"
+          }
+        ]
+      },
+      {
+        "slug": "financial-reports",
+        "label": "Financial Reports",
+        "display": "tabs",
+        "children": [
+          {
+            "slug": "daily-sales-summary",
+            "label": "Daily Sale Summary"
+          },
+          {
+            "slug": "weekly-revenue-analysis",
+            "label": "Weekly Revenue Analysis"
+          },
+          {
+            "slug": "monthly-profit-loss",
+            "label": "Monthly P&L Statement"
+          }
+        ]
+      },
+      {
+        "slug": "analytics-dashboard",
+        "label": "Analytics Dashboard",
+        "display": "tabs",
+        "children": [
+          {
+            "slug": "customer-analytics",
+            "label": "Customer Analytics"
+          },
+          {
+            "slug": "product-performance",
+            "label": "Product Performance"
+          },
+          {
+            "slug": "regional-comparison",
+            "label": "Regional Comparison"
+          }
+        ]
+      },
+      {
+        "slug": "maintenance-operations",
+        "label": "Maintenance Operations",
+        "display": "buttons",
+        "children": [
+          {
+            "slug": "load-full-pack",
+            "label": "Load Full Pack"
+          },
+          {
+            "slug": "load-combined-pack",
+            "label": "Load Combined Pack"
+          },
+          {
+            "slug": "unload-pack",
+            "label": "Unload Pack"
+          },
+          {
+            "slug": "close-shift",
+            "label": "Close Shift"
+          }
+        ]
+      },
+      {
+        "slug": "configuration",
+        "label": "Configuration"
+      }
+    ]
+  }
+} 

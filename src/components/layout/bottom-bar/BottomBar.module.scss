@@ -1,136 +1,599 @@
-@import "../../../styles/variables";
-@import "../../../styles/mixins";
+@import "../../../styles/_variables.scss";
 
-.root {
-  background: $grey-300;
-  border-top: 1px solid rgba(212, 212, 212, 0.3);
-  display: flex;
-  justify-content: stretch;
-  align-items: center;
-  gap: 0;
-  padding: 0;
-  height: 72px;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
+/* BottomBar.module.scss
+   ---------------------
+   Automated state system using semantic variables - like modern UI libraries
+   All navigation item states are automatically derived from semantic color variables
+*/
+
+/* ========================================================================
+   AUTOMATED BOTTOM BAR STATE SYSTEM MIXINS
+   ======================================================================== */
+
+// Base interactive item with automatic state derivation
+@mixin bottom-bar-item-base($bg: var(--bottombar-item-bg), $color: var(--bottombar-item-text)) {
+  background: #{$bg};
+  color: #{$color};
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   
-  // Add subtle shadow for depth
-  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.03);
+  // Automatic hover state - no manual definition needed
+  &:hover {
+    background: var(--bottombar-item-hover);
+    color: var(--text-primary);
+    transform: translateY(-1px) scale(1.05);
+  }
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, 
-      transparent 0%, 
-      rgba(212, 212, 212, 0.2) 20%, 
-      rgba(212, 212, 212, 0.2) 80%, 
-      transparent 100%);
+  // Automatic focus state
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--border-focus);
+    background: var(--bottombar-item-hover);
+  }
+  
+  // Automatic active/pressed state
+  &:active {
+    transform: translateY(0) scale(1.02);
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  // Automatic disabled state
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: var(--text-disabled);
+    background: var(--state-disabled);
+    pointer-events: none;
+    transform: none;
   }
 }
 
-.item {
+// Active state mixin with automatic styling
+@mixin bottom-bar-active-state() {
+  background: var(--bottombar-item-active) !important;
+  color: var(--bottombar-item-text-active) !important;
+  font-weight: 600;
+  transform: translateY(-2px);
+  
+  &:hover {
+    background: var(--bottombar-item-active) !important;
+    transform: translateY(-2px) scale(1.05);
+  }
+}
+
+// Icon animation mixin
+@mixin bottom-bar-icon-animations() {
+  .bottomBarIcon {
+    transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  &:hover .bottomBarIcon {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  
+  &.active .bottomBarIcon {
+    color: var(--color-primary-contrast);
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* ========================================================================
+   BOTTOM BAR CONTAINER
+   ======================================================================== */
+
+.bottomBar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-bottombar);
+  
+  // Automated styling using semantic variables
+  background: var(--bottombar-bg);
+  border-top: 1px solid var(--bottombar-border);
+  box-shadow: 0 -2px 8px var(--bottombar-shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: var(--font-family-sans);
+  transition: all var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Automatic state variations
+  &.hidden {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  &.elevated {
+    box-shadow: 0 -4px 16px var(--bottombar-shadow);
+  }
+  
+  // Responsive behavior
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: var(--bottombar-height);
+    padding: var(--spacing-2) 0;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+  
+  @media (max-width: 768px) {
+    padding: 0 var(--spacing-2);
+    justify-content: space-around;
+  }
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    gap: var(--spacing-1);
+    justify-content: space-around;
+  }
+}
+
+/* ========================================================================
+   BOTTOM BAR ITEMS - AUTOMATIC STATE HANDLING
+   ======================================================================== */
+
+.bottomBarItem {
+  @include bottom-bar-item-base();
+  @include bottom-bar-icon-animations();
+  
+  // Layout - equal width distribution
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: $spacing-1;
-  font-size: .875rem;
-  color: $grey-800;
-  background: transparent;
+  gap: var(--spacing-1);
+  padding: var(--spacing-3) var(--spacing-2);
+  min-width: 0; // Allow flex shrinking
+  height: 100%;
   border: none;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  flex: 1;
-  width: 100%;
-  height: 64px;
-  border-radius: 0;
-  border-right: 1px solid gray;
+  text-decoration: none;
+  user-select: none;
+  box-sizing: border-box;
+  
+  // Typography
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  
+  // Active state using mixin
+  &.active {
+    @include bottom-bar-active-state();
+  }
+  
+  // Mobile specific adjustments
+  @media (max-width: 768px) {
+    min-width: 60px;
+    padding: var(--spacing-2) var(--spacing-1);
+    font-size: 11px;
+  }
+  
+  @media (max-width: 480px) {
+    min-width: 48px;
+    padding: var(--spacing-1);
+    gap: 2px;
+  }
+}
 
+/* ========================================================================
+   BOTTOM BAR CONTENT ELEMENTS
+   ======================================================================== */
+
+.bottomBarIcon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  flex-shrink: 0;
+  font-size: 20px;
+  
   svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+  
+  // Icon variants
+  &.large {
+    width: 28px;
+    height: 28px;
+    font-size: 24px;
+  }
+  
+  &.small {
     width: 20px;
     height: 20px;
+    font-size: 16px;
   }
 }
 
-.item:last-child {
-  border-right: none;
+.bottomBarLabel {
+  color: inherit;
+  font-weight: inherit;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
 }
 
-.item:active svg {
-  transform: scale(1.25) rotate(-18deg);
-  transition: transform 0.18s cubic-bezier(0.4,0,0.2,1);
-  filter: drop-shadow(0 2px 8px rgba(30,64,175,0.18));
-}
-
-.item svg {
-  transition: transform 0.18s cubic-bezier(0.4,0,0.2,1), filter 0.18s;
-}
-
-.item--animating svg {
-  transform: scale(1.12);
-  filter: drop-shadow(0 0 8px #2563eb);
-}
+/* ========================================================================
+   ENHANCED TOOLTIP SYSTEM
+   ======================================================================== */
 
 .footer-tooltip {
-  min-width: 180px;
-  max-width: 220px;
-  background: rgba(40, 40, 40, 0.95);
-  backdrop-filter: blur(8px);
-  color: #fff;
-  font-size: 0.875rem;
-  padding: 14px 16px;
-  border-radius: 12px;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 4px 16px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
-  z-index: 300;
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.95) translateY(8px);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: inherit;
-  font-weight: 500;
+  position: fixed;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  font-size: 13px;
   line-height: 1.4;
+  color: var(--text-primary);
+  box-shadow: 0 8px 32px rgba(var(--color-primary-rgb), 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  max-width: 200px;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(8px) scale(0.95);
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
   
-  @media (max-width: 768px) {
-    max-width: 180px;
-    font-size: 0.8rem;
-    padding: 12px 14px;
+  &--active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  
+  div {
+    margin-bottom: var(--spacing-2);
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    strong {
+      color: var(--color-primary);
+      font-weight: 600;
+      margin-right: var(--spacing-2);
+    }
   }
 }
-
-.footer-tooltip--active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1) translateY(0px);
-}
-
-
 
 .footer-tooltip--arrow {
   position: absolute;
-  top: 100%;
-  transform: translateX(-50%);
+  bottom: -6px;
   width: 12px;
-  height: 6px;
-  pointer-events: none;
-  
-  &::before {
-    content: '';
+  height: 12px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-primary);
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 2px 0;
+  transform: rotate(45deg);
+}
+
+/* ========================================================================
+   BADGES AND INDICATORS - AUTO-STYLED
+   ======================================================================== */
+
+.bottomBarItem {
+  // Notification dot
+  .notificationBadge {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid rgba(40, 40, 40, 0.95);
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    top: 6px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background: var(--status-error);
+    border: 2px solid var(--surface-primary);
+    border-radius: var(--radius-full);
+    
+    &.large {
+      width: 12px;
+      height: 12px;
+      top: 4px;
+      right: 6px;
+    }
+    
+    // Auto-styled variants
+    &.info {
+      background: var(--status-info);
+    }
+    
+    &.success {
+      background: var(--status-success);
+    }
+    
+    &.warning {
+      background: var(--status-warning);
+    }
+  }
+  
+  // Counter badge
+  .itemBadge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 5px;
+    border-radius: var(--radius-full);
+    min-width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 0 0 2px var(--surface-primary);
+    
+    &.large {
+      font-size: 11px;
+      padding: 3px 6px;
+      min-width: 18px;
+      height: 18px;
+      top: 2px;
+      right: 2px;
+    }
+  }
+}
+
+/* ========================================================================
+   ITEM VARIANTS - ALL AUTO-STYLED
+   ======================================================================== */
+
+// Primary variant
+.bottomBarItem.primary {
+  @include bottom-bar-item-base(var(--btn-primary-bg), var(--btn-primary-text));
+  
+  &:hover {
+    background: var(--btn-primary-hover);
+  }
+  
+  &.active {
+    background: var(--btn-primary-active);
+    color: var(--btn-primary-text);
+  }
+}
+
+// Secondary variant  
+.bottomBarItem.secondary {
+  @include bottom-bar-item-base(var(--btn-secondary-bg), var(--btn-secondary-text));
+  
+  &:hover {
+    background: var(--btn-secondary-hover);
+  }
+  
+  &.active {
+    background: var(--btn-secondary-active);
+    color: var(--btn-secondary-text);
+  }
+}
+
+// Info variant for help/settings
+.bottomBarItem.info {
+  @include bottom-bar-item-base(var(--status-secondary-bg), var(--color-secondary));
+  
+  &:hover {
+    background: var(--btn-ghost-secondary-hover);
+    color: var(--color-secondary-dark);
+  }
+  
+  &.active {
+    background: var(--color-secondary);
+    color: var(--color-secondary-contrast);
+  }
+}
+
+// Ghost variant
+.bottomBarItem.ghost {
+  @include bottom-bar-item-base(var(--btn-ghost-bg), var(--btn-ghost-text));
+  
+  &:hover {
+    background: var(--btn-ghost-hover);
+  }
+  
+  &.active {
+    background: var(--btn-ghost-active);
+  }
+}
+
+/* ========================================================================
+   ACCESSIBILITY & PREFERENCE SUPPORT
+   ======================================================================== */
+
+@media (prefers-contrast: high) {
+  .bottomBarItem {
+    border: 1px solid var(--border-secondary);
+    
+    &.active {
+      border-width: 2px;
+      border-color: var(--color-primary);
+    }
+    
+    &:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottomBarItem,
+  .bottomBarIcon,
+  .footer-tooltip {
+    transition: none;
+    animation: none;
+  }
+  
+  .bottomBarItem:hover,
+  .bottomBarItem.active {
+    transform: none;
+  }
+}
+
+@media print {
+  .bottomBar {
+    display: none;
+  }
+}
+
+/* Bottom Bar Variants */
+
+// Compact variant
+.bottomBar.compact {
+  height: 48px;
+  
+  .bottomBarItem {
+    min-height: 40px;
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: 11px;
+    
+    .bottomBarIcon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// Minimal variant (icons only)
+.bottomBar.minimal {
+  .bottomBarLabel {
+    display: none;
+  }
+  
+  .bottomBarItem {
+    gap: 0;
+    padding: var(--spacing-3);
+    min-width: 48px;
+  }
+}
+
+// Glass morphism effect
+.bottomBar.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  
+  .bottomBarItem {
+    background: rgba(255, 255, 255, 0.1);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    &.active {
+      background: var(--color-primary);
+      color: var(--color-primary-contrast);
+    }
+  }
+}
+
+/* Animation Enhancements */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Initial animation
+.bottomBar {
+  animation: slideUp var(--transition-normal) var(--easing-default);
+}
+
+// Staggered item animation
+.bottomBarItem {
+  animation: bounceIn var(--transition-slow) var(--easing-default);
+  animation-fill-mode: both;
+  
+  @for $i from 1 through 8 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+}
+
+/* Safe Area Support (for mobile devices with notches) */
+@supports (padding: max(0px)) {
+  .bottomBar {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Dark Theme Adjustments */
+@media (prefers-color-scheme: dark) {
+  .bottomBar {
+    background: var(--surface-primary);
+    border-color: var(--border-primary);
+  }
+  
+  .bottomBarItem {
+    color: var(--text-primary);
+    
+    &:hover {
+      background: var(--state-hover);
+    }
+    
+    &.active {
+      background: var(--color-primary);
+      color: var(--color-primary-contrast);
+    }
+  }
+  
+  .fab {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 } 

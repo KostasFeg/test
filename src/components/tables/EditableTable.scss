@@ -10,29 +10,30 @@
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     font-size: 0.9rem;
+    color: var(--text-primary);
   
     th,
     td {
       padding: 6px 10px;
       text-align: center;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-primary);
       white-space: nowrap;
     }
   
     thead {
-      background: #f0f0f0;
+      background: var(--surface-secondary);
       font-weight: bold;
     }
   
     tbody tr:nth-child(odd) {
-      background: #ffffff;
+      background: var(--surface-primary);
     }
     tbody tr:nth-child(even) {
-      background: #fff8e0;
+      background: var(--surface-tertiary);
     }
   
     tbody tr.selected {
-      background: #e6e1f7;
+      background: var(--state-selected);
     }
   }
   
@@ -46,9 +47,10 @@
   .qty-btn {
     width: 24px;
     height: 24px;
-    border: 1px solid #555;
+    border: 1px solid var(--border-secondary);
     border-radius: 50%;
-    background: #fff;
+    background: var(--surface-primary);
+    color: var(--text-primary);
     font-size: 16px;
     line-height: 0;
     display: flex;

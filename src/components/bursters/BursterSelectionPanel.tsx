@@ -98,9 +98,10 @@ export const BursterSelectionPanel: React.FC<BursterSelectionPanelProps> = ({
     >
       {bursters.map((b) => {
         // Calculate fullness percentage for normal bursters
-        const targetFullness = b.status === "normal" && b.qty !== null && b.fullQty > 0
-          ? Math.max(0, Math.min(1, b.qty / b.fullQty))
-          : 0;
+        const targetFullness =
+          b.status === "normal" && b.qty !== null && b.fullQty > 0
+            ? Math.max(0, Math.min(1, b.qty / b.fullQty))
+            : 0;
         // Animate fullness
         const [animatedFullness, setAnimatedFullness] = useState(0);
         useEffect(() => {
@@ -151,22 +152,36 @@ export const BursterSelectionPanel: React.FC<BursterSelectionPanelProps> = ({
                   top: 0,
                   borderRadius: animatedFullness === 1 ? "6px" : "0 0 6px 6px",
                   zIndex: 0,
-                  transition: "transform 0.7s cubic-bezier(0.4,0,0.2,1), border-radius 0.3s",
+                  transition:
+                    "transform 0.7s cubic-bezier(0.4,0,0.2,1), border-radius 0.3s",
                   pointerEvents: "none",
                   opacity: 0.92,
                   willChange: "transform, border-radius",
                 }}
               />
             )}
-            <div className="burster__header" style={{ position: "relative", zIndex: 2 }}>
-              <span className="burster__number" style={{ position: "relative", zIndex: 2 }}>#{b.id}</span>
+            <div
+              className="burster__header"
+              style={{ position: "relative", zIndex: 2 }}
+            >
+              <span
+                className="burster__number"
+                style={{ position: "relative", zIndex: 2 }}
+              >
+                #{b.id}
+              </span>
               {b.status === "out" && (
                 <span className="burster__label">OUT</span>
               )}
-              {b.status === "low" && <span className="burster__label">LOW</span>}
+              {b.status === "low" && (
+                <span className="burster__label">LOW</span>
+              )}
             </div>
 
-            <div className="burster__body" style={{ position: "relative", zIndex: 1 }}>
+            <div
+              className="burster__body"
+              style={{ position: "relative", zIndex: 1 }}
+            >
               {/* Body shows either qty or an icon depending on the status */}
               {b.status === "normal" && b.qty !== null && (
                 <span className="burster__qty">{b.qty}</span>
@@ -178,14 +193,18 @@ export const BursterSelectionPanel: React.FC<BursterSelectionPanelProps> = ({
               )}
             </div>
 
-            <div className="burster__footer" style={{ position: "relative", zIndex: 1 }}>
+            <div
+              className="burster__footer"
+              style={{ position: "relative", zIndex: 1 }}
+            >
               <p className="burster__meta">
                 PID: {b.pid}
                 <br />
                 NAME: {b.name}
               </p>
               <p className="burster__price">
-                {b.pricePer.toFixed(2)} — <strong>{b.priceSale.toFixed(2)}</strong>
+                {b.pricePer.toFixed(2)} —{" "}
+                <strong>{b.priceSale.toFixed(2)}</strong>
               </p>
             </div>
           </div>

@@ -5,14 +5,20 @@ import { UIProvider } from "./providers/UIProvider";
 import LoginPage from "../pages/LoginPage";
 import { Layout } from "../components/layout/Layout";
 import { buildRoutes } from "../navigation/RouteBuilder";
-import { navConfig } from "../shared/config/navigation.config";
+import { useNavigationConfig } from "../shared/hooks/useConfig";
 import LoadingFallback from "../components/ui/LoadingFallback";
 import TestToggles from "../components/ui/TestToggles";
 import ErrorBoundary from "../components/feedback/ErrorBoundary";
 import { ROUTES } from "../shared/constants/routes";
 
 const AppContent: React.FC = () => {
-  const { isAuthenticated, user, login } = useAuth();
+  const { isAuthenticated, isLoading, user, login } = useAuth();
+  const navigation = useNavigationConfig();
+
+  // Show loading while checking authentication state
+  if (isLoading) {
+    return <LoadingFallback message="Loading..." />;
+  }
 
   if (!isAuthenticated) {
     return <LoginPage onLoginSuccess={login} />;
@@ -21,7 +27,7 @@ const AppContent: React.FC = () => {
   return (
     <BrowserRouter>
       <Layout
-        sidebarItems={navConfig}
+        sidebarItems={navigation}
         topLeft={"Retailer Portal"}
         topRight={`retailerId: ${user?.retailerId}`}
         topCenter={<TestToggles />}
@@ -30,7 +36,7 @@ const AppContent: React.FC = () => {
           fallback={<LoadingFallback message="Loading application..." />}
         >
           <Routes>
-            {buildRoutes(navConfig)}
+            {buildRoutes(navigation)}
             <Route
               path={ROUTES.HOME}
               element={<Navigate to="/reports" replace />}

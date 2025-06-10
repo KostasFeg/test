@@ -1,91 +1,680 @@
 /* Tabs.module.scss
    -----------------
+   Automated state system using semantic variables - like modern UI libraries
    Container  ── .tabBar
    Tab link   ── .item        (added by <NavLink className={styles.item}>)
    Active tab ── .active      (added by <NavLink … className={isActive ? styles.active : undefined}>)
 */
 
-@import "../styles/variables";
+@import "../styles/_variables.scss";
 
-$tab-height: 34px;
-$border-radius: 12px;
+/* ========================================================================
+   AUTOMATED STATE SYSTEM MIXINS
+   ======================================================================== */
 
-$color-bg:        #f1f1f1;
-$color-border:    #c8c8c8;
-$color-text:      #212121;
-
-/* --- container ---------------------------------------------------------- */
-.tabBar {
-  display: grid;
-  grid-template-columns: repeat(min(4, var(--tab-count, 1)), 1fr);
-  gap: 12px;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 0;
-  background: lighten($color-bg, 2%);
-  // border-bottom: 1px solid $color-border;
-  margin-bottom: 24px;
-}
-
-/* --- tabs --------------------------------------------------------------- */
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 500;
-  color: $color-text;
-  text-decoration: none;
-  user-select: none;
-  cursor: pointer;
-  background: $color-bg;
-  border: 1px solid $color-border;
-  border-radius: $border-radius;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-  width: 100%;
-  box-sizing: border-box;
-
+// Base interactive element with minimal state derivation
+@mixin interactive-base($bg: var(--tab-bg), $color: var(--tab-text), $border: var(--tab-border)) {
+  background: #{$bg};
+  color: #{$color};
+  border: 1px solid #{$border};
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  
+  // Minimal hover state
   &:hover {
-    background: $accent-color-bg;
+    background: var(--tab-hover);
+    color: var(--text-primary);
+    border-color: var(--tab-border-hover);
+  }
+  
+  // Simple focus state
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--border-focus);
+    background: var(--tab-hover);
+  }
+  
+  // Minimal active/pressed state
+  &:active {
+    transform: scale(0.98);
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-/* --- active state ------------------------------------------------------- */
+// Active state mixin with minimal styling
+@mixin active-state() {
+  background: var(--tab-active) !important;
+  color: var(--tab-text-active) !important;
+  border-color: var(--tab-border-active) !important;
+  font-weight: 600;
+  
+  &:hover {
+    background: var(--tab-active) !important;
+  }
+}
+
+// Icon animation mixin
+@mixin icon-animations() {
+  .tabIcon, svg, [class*="icon"] {
+    transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  &:hover .tabIcon,
+  &:hover svg,
+  &:hover [class*="icon"] {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  
+  &.active .tabIcon,
+  &.active svg,
+  &.active [class*="icon"] {
+    color: var(--color-primary-contrast, #ffffff);
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* ========================================================================
+   STANDALONE ACTIVE CLASS - INCLUDES BASE LAYOUT + ACTIVE STYLING
+   ======================================================================== */
+
+// Minimal active class for standalone use
 .active {
-  background: $accent-color;
-  border-color: darken($accent-color, 8%);
-  border-radius: 12px;
-  height: 40px;
-  color: #fff;
+  // Base layout styles (same as .item)
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 44px;
+  border-radius: var(--radius-md, 0.5rem);
+  font-size: 14px;
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: var(--font-family-sans, sans-serif);
+  position: relative;
+  transition: all var(--transition-fast, 0.2s) cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Minimal active state styling
+  background: var(--tab-active, rgba(var(--color-primary-rgb), 0.08)) !important;
+  color: var(--tab-text-active, var(--color-primary)) !important;
+  border: 1px solid var(--tab-border-active, rgba(var(--color-primary-rgb), 0.2)) !important;
+  font-weight: 600 !important;
+  
+  // Ensure all nested text uses primary color
+  *, span, div, p, i, em, strong {
+    color: var(--color-primary) !important;
+  }
+  
+  // Minimal hover state
+  &:hover {
+    background: var(--tab-active, rgba(var(--color-primary-rgb), 0.08)) !important;
+  }
+  
+  // Simple focus state
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--border-focus);
+  }
 }
 
+/* ========================================================================
+   TAB CONTAINER
+   ======================================================================== */
 
-
-/* --- dark-mode tweak (optional) ----------------------------------------- */
-/*
-@media (prefers-color-scheme: dark) {
-  $color-bg:      #424242;
-  $color-border:  #5f5f5f;
-  $color-hover:   #505050;
-  $color-text:    #ededed;
-
-  .tabBar { background: darken($color-bg, 4%); border-bottom: 1px solid $color-border; }
-  .item   { background: $color-bg; border: 1px solid $color-border; color: $color-text; }
+.tabBar {
+  display: grid;
+  grid-template-columns: repeat(min(4, var(--tab-count, 1)), 1fr);
+  gap: var(--spacing-2);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: var(--spacing-2);
+  background: var(--tab-container-bg);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-6);
+  box-shadow: var(--tab-container-shadow);
 }
-*/
+
+/* ========================================================================
+   BASE TAB STYLES - AUTOMATIC STATE HANDLING
+   ======================================================================== */
+
+.item {
+  @include interactive-base();
+  @include icon-animations();
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: var(--font-family-sans);
+  position: relative;
+  
+  // Minimal active state
+  &.active {
+    background: var(--tab-active, rgba(var(--color-primary-rgb), 0.08)) !important;
+    color: var(--tab-text-active, var(--color-primary)) !important;
+    border-color: var(--tab-border-active, rgba(var(--color-primary-rgb), 0.2)) !important;
+    font-weight: 600;
+    
+    // Icon styling for active state
+    .tabIcon {
+      color: var(--color-primary) !important;
+    }
+  }
+  
+  // Ensure text is visible in active state
+  &.active {
+    * {
+      color: var(--color-primary-contrast, #ffffff) !important;
+    }
+    
+    // Override any nested elements
+    span, div, p, i, em, strong {
+      color: inherit !important;
+    }
+  }
+}
 
 .tabContent {
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 32px;
+  gap: var(--spacing-8);
   width: 100%;
-  min-height: 0; // Important for flex child to shrink
-  overflow: hidden; // Prevent tab content from scrolling
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ========================================================================
+   ALTERNATIVE TAB SYSTEM - ALSO AUTOMATED
+   ======================================================================== */
+
+.tabsContainer {
+  position: relative;
+  width: 100%;
+  background: var(--surface-primary);
+  border-bottom: 1px solid var(--tab-border);
+  overflow-x: auto;
+  overflow-y: hidden;
+  
+  // Hide scrollbars
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.tabsList {
+  display: flex;
+  align-items: center;
+  min-width: 100%;
+  width: max-content;
+  position: relative;
+  background: var(--surface-primary);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tab {
+  @include interactive-base();
+  @include icon-animations();
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) var(--spacing-6);
+  min-height: 48px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: var(--font-family-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  
+  // Active state with automatic indicator
+  &.active {
+    @include active-state();
+    
+    // Automatic active indicator
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - var(--spacing-4));
+      height: 2px;
+      background: var(--tab-indicator);
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    }
+  }
+  
+  // Badge with automatic styling
+  .tabBadge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    border-radius: var(--radius-full);
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    min-width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Secondary tab variant for supporting content
+  &.secondary {
+    &:hover {
+      background: var(--tab-secondary-hover);
+      color: var(--color-secondary);
+    }
+    
+    &.active {
+      background: var(--tab-secondary-active);
+      color: var(--tab-secondary-text-active);
+      border-bottom-color: var(--tab-secondary-indicator);
+      
+      &::after {
+        background: var(--tab-secondary-indicator);
+      }
+    }
+  }
+  
+  // Info tab variant for help/documentation
+  &.info {
+    color: var(--color-secondary);
+    
+    &:hover {
+      background: var(--status-secondary-bg);
+      color: var(--color-secondary-dark);
+    }
+    
+    &.active {
+      background: var(--status-secondary-bg);
+      color: var(--color-secondary);
+      border-bottom-color: var(--color-secondary);
+      
+      &::after {
+        background: var(--color-secondary);
+      }
+    }
+  }
+}
+
+.tabIcon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+  
+  // Icon variants
+  &.large {
+    width: 24px;
+    height: 24px;
+  }
+  
+  &.small {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.tabText {
+  font-weight: inherit;
+  color: inherit;
+  transition: all var(--transition-fast) ease-out;
+  
+  // Text weight variations for active states
+  .tab.active & {
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ========================================================================
+   TAB VARIANTS - ENHANCED WITH PROPER COLORS & STYLING
+   ======================================================================== */
+
+// Bordered tabs variant - Clean minimal design
+.tabsContainer.bordered {
+  background: var(--surface-primary);
+  border-bottom: 1px solid var(--border-primary);
+  
+  .tab {
+    border: 1px solid var(--border-primary);
+    border-bottom: none;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    margin-right: -1px;
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    position: relative;
+    
+    &:hover {
+      background: var(--surface-primary);
+      border-color: var(--border-secondary);
+      color: var(--text-primary);
+      z-index: 2;
+    }
+    
+    &.active {
+      background: var(--surface-primary);
+      border-color: var(--color-primary);
+      border-bottom: 1px solid var(--surface-primary);
+      color: var(--color-primary);
+      z-index: 3;
+      font-weight: 600;
+      
+      .tabIcon {
+        color: var(--color-primary);
+      }
+      
+      &::after { display: none; }
+    }
+  }
+}
+
+// Pills variant - Clean rounded design
+.tabsContainer.pills {
+  background: var(--surface-secondary);
+  border: none;
+  padding: var(--spacing-2);
+  border-radius: var(--radius-xl);
+  
+  .tab {
+    border-radius: var(--radius-lg);
+    margin: 0 var(--spacing-1);
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    position: relative;
+    
+    &:hover {
+      background: rgba(var(--color-primary-rgb), 0.04);
+      color: var(--text-primary);
+    }
+    
+    &.active {
+      background: rgba(var(--color-primary-rgb), 0.1);
+      color: var(--color-primary);
+      font-weight: 600;
+      
+      .tabIcon {
+        color: var(--color-primary);
+      }
+      
+      &::after { display: none; }
+    }
+  }
+}
+
+// Underline variant (default) - Clean minimal design
+.tabsContainer.underline {
+  background: var(--surface-primary);
+  border-bottom: 1px solid var(--border-primary);
+  
+  .tab {
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-secondary);
+    position: relative;
+    
+    &:hover {
+      background: rgba(var(--color-primary-rgb), 0.04);
+      color: var(--text-primary);
+      border-bottom-color: rgba(var(--color-primary-rgb), 0.3);
+    }
+    
+    &.active {
+      background: rgba(var(--color-primary-rgb), 0.04);
+      border-bottom-color: var(--color-primary);
+      color: var(--color-primary);
+      font-weight: 600;
+      
+      .tabIcon {
+        color: var(--color-primary);
+      }
+      
+      &::after { display: none; }
+    }
+  }
+}
+
+// Card variant - Clean elevated design
+.tabsContainer.card {
+  background: var(--surface-secondary);
+  padding: var(--spacing-2);
+  border-radius: var(--radius-lg);
+  
+  .tab {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    margin: 0 var(--spacing-1);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    position: relative;
+    
+    &:hover {
+      background: var(--surface-elevated);
+      border-color: var(--border-secondary);
+      color: var(--text-primary);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+    
+    &.active {
+      background: rgba(var(--color-primary-rgb), 0.08);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(var(--color-primary-rgb), 0.1);
+      
+      .tabIcon {
+        color: var(--color-primary);
+      }
+      
+      &::after { display: none; }
+    }
+  }
+}
+
+/* ========================================================================
+   ENHANCED VARIANT - MINIMAL MODERN DESIGN
+   ======================================================================== */
+
+// Enhanced variant - combines best minimal styling from all variants
+.tabsContainer.enhanced {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-1);
+  
+  .tab {
+    border: none;
+    border-radius: var(--radius-md);
+    margin: 0 var(--spacing-1);
+    background: transparent;
+    color: var(--text-secondary);
+    position: relative;
+    
+    &:hover {
+      background: rgba(var(--color-primary-rgb), 0.04);
+      color: var(--text-primary);
+    }
+    
+    &.active {
+      background: rgba(var(--color-primary-rgb), 0.1);
+      color: var(--color-primary);
+      font-weight: 600;
+      border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+      
+      .tabIcon {
+        color: var(--color-primary);
+      }
+      
+      .tabText {
+        font-weight: 600;
+      }
+      
+      &::after { display: none; }
+    }
+  }
+}
+
+/* ========================================================================
+   SIZE VARIANTS
+   ======================================================================== */
+
+.tabsContainer.small {
+  .tab {
+    padding: var(--spacing-2) var(--spacing-4);
+    min-height: 32px;
+    font-size: 12px;
+    
+    .tabIcon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.tabsContainer.large {
+  .tab {
+    padding: var(--spacing-6) var(--spacing-8);
+    min-height: 56px;
+    font-size: 16px;
+    
+    .tabIcon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+/* ========================================================================
+   RESPONSIVE DESIGN
+   ======================================================================== */
+
+@media (max-width: 768px) {
+  .tabBar {
+    grid-template-columns: repeat(min(3, var(--tab-count, 1)), 1fr);
+    gap: var(--spacing-2);
+    padding: var(--spacing-1);
+  }
+  
+  .item {
+    height: 40px;
+    font-size: 13px;
+    padding: var(--spacing-2) var(--spacing-3);
+  }
+  
+  .tab {
+    padding: var(--spacing-3) var(--spacing-4);
+    min-height: 40px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabBar {
+    grid-template-columns: repeat(min(2, var(--tab-count, 1)), 1fr);
+    margin-bottom: var(--spacing-4);
+  }
+  
+  .item {
+    height: 36px;
+    font-size: 12px;
+  }
+  
+  .tab {
+    padding: var(--spacing-2) var(--spacing-3);
+    min-height: 36px;
+    
+    .tabIcon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+/* ========================================================================
+   ACCESSIBILITY & PREFERENCE SUPPORT
+   ======================================================================== */
+
+@media (prefers-contrast: high) {
+  .tab, .item {
+    border: 1px solid var(--border-secondary);
+    
+    &.active {
+      border-width: 2px;
+      border-color: var(--color-primary);
+    }
+    
+    &:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab, .item, .tabIcon {
+    transition: none;
+    animation: none;
+  }
+  
+  .tab:active, .item:active {
+    transform: none;
+  }
+}
+
+@media print {
+  .tabsContainer {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .tab, .item {
+    border: 1px solid var(--text-primary);
+    box-shadow: none;
+    
+    &.active {
+      background: var(--surface-secondary);
+    }
+  }
 }

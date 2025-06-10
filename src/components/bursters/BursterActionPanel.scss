@@ -18,27 +18,34 @@
 .burster-action-btn {
   min-width: 140px;
   padding: 0.45rem 0.75rem;
-  border: 1px solid #7e7e7e;
-  background: #ffffff;
+  border: 1px solid var(--border-secondary);
+  background: var(--surface-primary);
   border-radius: 4px;
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
   user-select: none;
   transition: background 0.15s ease, border-color 0.15s ease;
+  color: var(--text-primary);
 }
 
 .burster-action-btn:hover:not(:disabled) {
-  background: #f2f2f2;
+  background: var(--state-hover);
 }
 
 .burster-action-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+  background: var(--state-disabled);
+  color: var(--text-disabled);
 }
 
-/* simple “semantic” colour helpers (optional) */
-.burster-action-btn--primary   { background: #007acc; color: #fff; border-color: #007acc; }
-.burster-action-btn--danger    { background: #d62828; color: #fff; border-color: #d62828; }
-.burster-action-btn--primary:hover:not(:disabled) { background: #1f87d6; }
-.burster-action-btn--danger:hover:not(:disabled)  { background: #e33a3a; }
+/* simple "semantic" colour helpers (optional) */
+.burster-action-btn--primary   { background: var(--btn-primary-bg); color: var(--btn-primary-text); border-color: var(--btn-primary-border); }
+.burster-action-btn--secondary { background: var(--btn-secondary-bg); color: var(--btn-secondary-text); border-color: var(--btn-secondary-border); }
+.burster-action-btn--danger    { background: var(--status-error); color: var(--status-error-contrast); border-color: var(--status-error); }
+.burster-action-btn--info      { background: var(--status-secondary-bg); color: var(--color-secondary); border-color: var(--color-secondary); }
+.burster-action-btn--primary:hover:not(:disabled) { background: var(--btn-primary-hover); }
+.burster-action-btn--secondary:hover:not(:disabled) { background: var(--btn-secondary-hover); box-shadow: var(--btn-shadow-secondary); }
+.burster-action-btn--danger:hover:not(:disabled)  { background: var(--status-error-dark); }
+.burster-action-btn--info:hover:not(:disabled)    { background: var(--btn-ghost-secondary-hover); color: var(--color-secondary-dark); }
