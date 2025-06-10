@@ -1,4 +1,4 @@
-@import '../../styles/variables';
+// Variables are now handled by the new design system via CSS custom properties
 @import '../../styles/mixins';
 
 .simple-date-picker {
@@ -6,35 +6,35 @@
   display: inline-block;
 
   &__input {
-    padding: $spacing-3 $spacing-4;
-    border: 1px solid var(--color-grey-300, $grey-300);
-    border-radius: $radius-md;
-    background: var(--color-white, $white);
+    padding: var(--spacing-3) var(--spacing-4);
+    border: 1px solid var(--color-grey-300);
+    border-radius: var(--radius-medium);
+    background: var(--color-grey-50);
     font-size: 14px;
-    font-family: $font-family-sans;
-    color: var(--color-grey-800, $grey-800);
+    font-family: var(--font-family-sans);
+    color: var(--color-grey-800);
     cursor: pointer;
     min-width: 180px;
     transition: all 0.2s ease;
     font-weight: 500;
 
     &:hover {
-      border-color: var(--color-grey-400, #{darken($grey-300, 10%)});
+      border-color: var(--color-grey-400);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     }
 
     &:focus {
       outline: none;
-      border-color: var(--color-accent, $accent-color);
+      border-color: var(--color-accent);
       box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 37, 99, 235), 0.1);
     }
 
     &:disabled {
-      color: var(--color-grey-200, #{lighten($grey-300, 5%)});
+      color: var(--color-grey-200);
     }
 
     &::placeholder {
-      color: var(--color-grey-200, #{lighten($grey-300, 5%)});
+      color: var(--color-grey-200);
       font-weight: 400;
     }
   }
@@ -45,9 +45,9 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: var(--color-white, $white);
-    border: 1px solid var(--color-grey-300, $grey-300);
-    border-radius: $radius-lg;
+    background: var(--color-grey-50);
+    border: 1px solid var(--color-grey-300);
+    border-radius: var(--radius-large);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     animation: fadeInDown 0.2s ease-out forwards;
     transform-origin: top center;

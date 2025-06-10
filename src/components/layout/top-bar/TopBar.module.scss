@@ -1,4 +1,4 @@
-@import "../../../styles/variables";
+// Variables are now handled by the new design system via CSS custom properties
 @import "../../../styles/mixins";
 
 .root {
@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 $spacing-4;
+  padding: 0 var(--spacing-4);
   position: relative;
   
   // Material UI elevation and shadow
@@ -43,7 +43,7 @@
 .section {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: var(--spacing-2);
   color: var(--topbar-text);
   
   // Interactive elements in sections
@@ -65,7 +65,7 @@
 
 .section:nth-child(1) {
   position: absolute;
-  left: $spacing-4;
+  left: var(--spacing-4);
 }
 
 .section:nth-child(2) {
@@ -78,5 +78,54 @@
 
 .section:nth-child(3) {
   position: absolute;
-  right: $spacing-4;
+  right: var(--spacing-4);
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-4);
+  height: var(--layout-topbar-height, 60px);
+  background: var(--bg-paper);
+  border-bottom: 1px solid var(--color-grey-200);
+  font-family: var(--font-family-sans);
+  color: var(--text-primary);
+  z-index: var(--z-topbar, 200);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+  .logo {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+  }
+  
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+  }
+  
+  .action {
+    padding: var(--spacing-2);
+    border: none;
+    background: var(--color-grey-50);
+    color: var(--text-secondary);
+    border-radius: var(--radius-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:hover {
+      background: var(--color-grey-100);
+      color: var(--text-primary);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
 } 

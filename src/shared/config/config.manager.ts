@@ -1,6 +1,6 @@
 import { buildConfig } from "./config.builder";
 import { configPresets, getPresetById, ConfigPreset } from "./config.presets";
-import { injectCSSVariables, generateCSSVariables } from "./css-variables.generator";
+import { injectCSSVariablesFromMasterConfig } from "../design-system-integration";
 import { MasterConfig } from "./master.config";
 import { appConfig } from "./config.builder";
 
@@ -378,13 +378,10 @@ export class ConfigManager {
    */
   private injectCSSVariables(): void {
     try {
-      injectCSSVariables(this.config);
+      // Use the new design system to inject CSS variables
+      injectCSSVariablesFromMasterConfig(this.config);
       
-      // Also store the CSS variables in localStorage for SSR/hydration
-      const cssVars = generateCSSVariables(this.config);
-      localStorage.setItem('app-css-variables', cssVars);
-      
-      console.log('🎨 CSS variables updated from configuration');
+      console.log('🎨 CSS variables updated from configuration using new design system');
     } catch (error) {
       console.warn('Failed to inject CSS variables:', error);
     }

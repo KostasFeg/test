@@ -1,4 +1,4 @@
-@import '../styles/variables';
+// Variables are now handled by the new design system via CSS custom properties
 @import '../styles/mixins';
 
 .reports-page {
@@ -7,17 +7,17 @@
   flex-direction: column;
   
   &__header {
-    padding: $spacing-4 * 1.25;
-    border-bottom: 1px solid var(--color-grey-300, $grey-300);
-    background: var(--color-white, $white);
+    padding: calc(var(--spacing-4) * 1.25);
+    border-bottom: 1px solid var(--color-grey-300);
+    background: var(--color-grey-50);
   }
 
   &__title {
     margin: 0;
     font-size: 24px;
     font-weight: 600;
-    color: var(--color-grey-800, $grey-800);
-    font-family: $font-family-sans;
+    color: var(--color-grey-800);
+    font-family: var(--font-family-sans);
   }
 
   &__content {
@@ -32,41 +32,41 @@
     @include flex-center;
     flex-direction: column;
     height: 200px;
-    gap: $spacing-4;
+    gap: var(--spacing-4);
     
-          span {
-        color: var(--color-grey-600, #{darken($grey-300, 20%)});
+    span {
+      color: var(--color-grey-600);
       font-size: 16px;
-      font-family: $font-family-sans;
+      font-family: var(--font-family-sans);
     }
   }
 
   &__error {
-    padding: $spacing-4 * 1.25;
+    padding: calc(var(--spacing-4) * 1.25);
     
     .alert {
-      background: var(--status-error-bg);
-      color: var(--status-error);
-      border: 1px solid var(--status-error-border);
-      border-radius: $radius-md;
-      padding: $spacing-3;
+      background: var(--color-error-light);
+      color: var(--color-error);
+      border: 1px solid var(--color-error);
+      border-radius: var(--radius-medium);
+      padding: var(--spacing-3);
       margin: 0;
-      font-family: $font-family-sans;
+      font-family: var(--font-family-sans);
     }
     
     h2 {
-      color: var(--status-error);
-      margin-bottom: $spacing-2;
-      font-family: $font-family-sans;
+      color: var(--color-error);
+      margin-bottom: var(--spacing-2);
+      font-family: var(--font-family-sans);
     }
   }
 
   &__no-data {
-          @include flex-center;
-      height: 200px;
-      color: var(--color-grey-600, #{darken($grey-300, 20%)});
+    @include flex-center;
+    height: 200px;
+    color: var(--color-grey-600);
     font-size: 16px;
-    font-family: $font-family-sans;
+    font-family: var(--font-family-sans);
   }
 
   &__report {
@@ -91,15 +91,15 @@
         // Content inside should have proper padding
         * {
           &:not(img) {
-            padding-left: $spacing-6;
-            padding-right: $spacing-6;
+            padding-left: var(--spacing-6);
+            padding-right: var(--spacing-6);
             
             &:first-child {
-              padding-top: $spacing-6;
+              padding-top: var(--spacing-6);
             }
             
             &:last-child {
-              padding-bottom: $spacing-6;
+              padding-bottom: var(--spacing-6);
             }
           }
         }
@@ -107,16 +107,16 @@
         // Direct text nodes and tables need padding
         > * {
           &:not(img) {
-            padding-left: $spacing-6;
-            padding-right: $spacing-6;
+            padding-left: var(--spacing-6);
+            padding-right: var(--spacing-6);
           }
           
           &:first-child {
-            padding-top: $spacing-6;
+            padding-top: var(--spacing-6);
           }
           
           &:last-child {
-            padding-bottom: $spacing-6;
+            padding-bottom: var(--spacing-6);
           }
         }
       }
@@ -128,27 +128,27 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: $spacing-4 * 1.25;
-  background: var(--color-grey-100, $grey-100);
-  border-bottom: 1px solid var(--color-grey-300, $grey-300);
-  gap: $spacing-4 * 1.25;
+  padding: calc(var(--spacing-4) * 1.25);
+  background: var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grey-300);
+  gap: calc(var(--spacing-4) * 1.25);
 
   &__print {
-    background: var(--color-accent, $accent-color);
-    color: var(--color-white, $white);
+    background: var(--color-accent);
+    color: var(--color-grey-50);
     border: none;
-    padding: $spacing-3 $spacing-4;
-    border-radius: $radius-md;
+    padding: var(--spacing-3) var(--spacing-4);
+    border-radius: var(--radius-medium);
     font-size: 14px;
     font-weight: 500;
-    font-family: $font-family-sans;
+    font-family: var(--font-family-sans);
     cursor: pointer;
     transition: all 0.2s ease;
     
-          &:hover:not(.disabled) {
-        background: var(--color-accent-dark, #{darken($accent-color, 5%)});
-        box-shadow: 0 2px 8px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3);
-      }
+    &:hover:not(.disabled) {
+      background: var(--color-accent-dark);
+      box-shadow: 0 2px 8px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3);
+    }
 
     &:focus {
       outline: none;
@@ -156,7 +156,7 @@
     }
     
     &.disabled {
-      background: var(--color-grey-300, $grey-300);
+      background: var(--color-grey-300);
       cursor: not-allowed;
       opacity: 0.6;
     }
@@ -165,7 +165,7 @@
 
 .report-filters {
   display: flex;
-  gap: $spacing-4 * 1.5;
+  gap: calc(var(--spacing-4) * 1.5);
   align-items: flex-end;
   flex-wrap: wrap;
 
@@ -173,9 +173,9 @@
     display: block;
     font-size: 12px;
     font-weight: 600;
-    color: var(--color-grey-800, $grey-800);
-    margin-bottom: $spacing-2;
-    font-family: $font-family-sans;
+    color: var(--color-grey-800);
+    margin-bottom: var(--spacing-2);
+    font-family: var(--font-family-sans);
   }
 
   &__type {
@@ -185,35 +185,35 @@
 
   &__buttons {
     display: flex;
-    gap: $spacing-2;
+    gap: var(--spacing-2);
   }
 
   &__button {
-    background: var(--color-white, $white);
-    border: 1px solid var(--color-grey-300, $grey-300);
-    padding: $spacing-2 $spacing-4;
-    border-radius: $radius-md;
+    background: var(--color-grey-50);
+    border: 1px solid var(--color-grey-300);
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--radius-medium);
     font-size: 14px;
-    font-family: $font-family-sans;
+    font-family: var(--font-family-sans);
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     
     &:hover {
-      border-color: var(--color-accent, $accent-color);
-      color: var(--color-accent, $accent-color);
+      border-color: var(--color-accent);
+      color: var(--color-accent);
     }
 
     &:focus {
       outline: none;
       box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 37, 99, 235), 0.1);
-      border-color: var(--color-accent, $accent-color);
+      border-color: var(--color-accent);
     }
     
     &.active {
-      background: var(--color-accent, $accent-color);
-      color: var(--color-white, $white);
-      border-color: var(--color-accent, $accent-color);
+      background: var(--color-accent);
+      color: var(--color-grey-50);
+      border-color: var(--color-accent);
       box-shadow: 0 2px 6px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3);
     }
   }

@@ -6,14 +6,14 @@
    Active tab ── .active      (added by <NavLink … className={isActive ? styles.active : undefined}>)
 */
 
-@import "../styles/_variables.scss";
+// Variables are now handled by the new design system via CSS custom properties
 
 /* ========================================================================
    AUTOMATED STATE SYSTEM MIXINS
    ======================================================================== */
 
 // Base interactive element with minimal state derivation
-@mixin interactive-base($bg: var(--tab-bg), $color: var(--tab-text), $border: var(--tab-border)) {
+@mixin interactive-base($bg: var(--color-grey-50), $color: var(--text-secondary), $border: var(--color-grey-300)) {
   background: #{$bg};
   color: #{$color};
   border: 1px solid #{$border};
@@ -22,16 +22,16 @@
   
   // Minimal hover state
   &:hover {
-    background: var(--tab-hover);
+    background: var(--color-grey-100);
     color: var(--text-primary);
-    border-color: var(--tab-border-hover);
+    border-color: var(--color-grey-400);
   }
   
   // Simple focus state
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--border-focus);
-    background: var(--tab-hover);
+    box-shadow: 0 0 0 2px var(--color-accent);
+    background: var(--color-grey-100);
   }
   
   // Minimal active/pressed state
@@ -43,13 +43,13 @@
 
 // Active state mixin with minimal styling
 @mixin active-state() {
-  background: var(--tab-active) !important;
-  color: var(--tab-text-active) !important;
-  border-color: var(--tab-border-active) !important;
+  background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.08) !important;
+  color: var(--color-primary) !important;
+  border-color: rgba(var(--color-primary-rgb, 37, 99, 235), 0.2) !important;
   font-weight: 600;
   
   &:hover {
-    background: var(--tab-active) !important;
+    background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.08) !important;
   }
 }
 
@@ -69,7 +69,7 @@
   &.active .tabIcon,
   &.active svg,
   &.active [class*="icon"] {
-    color: var(--color-primary-contrast, #ffffff);
+    color: var(--color-primary);
     opacity: 1;
     transform: scale(1.1);
   }
@@ -86,7 +86,7 @@
   align-items: center;
   justify-content: center;
   height: 44px;
-  border-radius: var(--radius-md, 0.5rem);
+  border-radius: var(--radius-medium);
   font-size: 14px;
   text-decoration: none;
   user-select: none;
@@ -94,14 +94,14 @@
   width: 100%;
   box-sizing: border-box;
   text-align: center;
-  font-family: var(--font-family-sans, sans-serif);
+  font-family: var(--font-family-sans);
   position: relative;
-  transition: all var(--transition-fast, 0.2s) cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   // Minimal active state styling
-  background: var(--tab-active, rgba(var(--color-primary-rgb), 0.08)) !important;
-  color: var(--tab-text-active, var(--color-primary)) !important;
-  border: 1px solid var(--tab-border-active, rgba(var(--color-primary-rgb), 0.2)) !important;
+  background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.08) !important;
+  color: var(--color-primary) !important;
+  border: 1px solid rgba(var(--color-primary-rgb, 37, 99, 235), 0.2) !important;
   font-weight: 600 !important;
   
   // Ensure all nested text uses primary color
@@ -111,13 +111,13 @@
   
   // Minimal hover state
   &:hover {
-    background: var(--tab-active, rgba(var(--color-primary-rgb), 0.08)) !important;
+    background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.08) !important;
   }
   
   // Simple focus state
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--border-focus);
+    box-shadow: 0 0 0 2px var(--color-accent);
   }
 }
 
@@ -133,10 +133,10 @@
   max-width: 100%;
   box-sizing: border-box;
   padding: var(--spacing-2);
-  background: var(--tab-container-bg);
-  border-radius: var(--radius-lg);
+  background: var(--bg-paper);
+  border-radius: var(--radius-large);
   margin-bottom: var(--spacing-6);
-  box-shadow: var(--tab-container-shadow);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* ========================================================================
@@ -151,7 +151,7 @@
   align-items: center;
   justify-content: center;
   height: 44px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-medium);
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
@@ -165,9 +165,9 @@
   
   // Minimal active state
   &.active {
-    background: var(--tab-active, rgba(var(--color-primary-rgb), 0.08)) !important;
-    color: var(--tab-text-active, var(--color-primary)) !important;
-    border-color: var(--tab-border-active, rgba(var(--color-primary-rgb), 0.2)) !important;
+    background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.08) !important;
+    color: var(--color-primary) !important;
+    border-color: rgba(var(--color-primary-rgb, 37, 99, 235), 0.2) !important;
     font-weight: 600;
     
     // Icon styling for active state
@@ -179,7 +179,7 @@
   // Ensure text is visible in active state
   &.active {
     * {
-      color: var(--color-primary-contrast, #ffffff) !important;
+      color: var(--color-primary) !important;
     }
     
     // Override any nested elements
@@ -206,8 +206,8 @@
 .tabsContainer {
   position: relative;
   width: 100%;
-  background: var(--surface-primary);
-  border-bottom: 1px solid var(--tab-border);
+  background: var(--bg-paper);
+  border-bottom: 1px solid var(--color-grey-200);
   overflow-x: auto;
   overflow-y: hidden;
   
@@ -223,7 +223,7 @@
   min-width: 100%;
   width: max-content;
   position: relative;
-  background: var(--surface-primary);
+  background: var(--bg-paper);
   padding: 0;
   margin: 0;
   list-style: none;
@@ -263,8 +263,8 @@
       transform: translateX(-50%);
       width: calc(100% - var(--spacing-4));
       height: 2px;
-      background: var(--tab-indicator);
-      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      background: var(--color-primary);
+      border-radius: var(--radius-small) var(--radius-small) 0 0;
     }
   }
   
@@ -290,17 +290,17 @@
   // Secondary tab variant for supporting content
   &.secondary {
     &:hover {
-      background: var(--tab-secondary-hover);
+      background: var(--color-secondary-light);
       color: var(--color-secondary);
     }
     
     &.active {
-      background: var(--tab-secondary-active);
-      color: var(--tab-secondary-text-active);
-      border-bottom-color: var(--tab-secondary-indicator);
+      background: var(--color-secondary-light);
+      color: var(--color-secondary);
+      border-bottom-color: var(--color-secondary);
       
       &::after {
-        background: var(--tab-secondary-indicator);
+        background: var(--color-secondary);
       }
     }
   }
@@ -310,12 +310,12 @@
     color: var(--color-secondary);
     
     &:hover {
-      background: var(--status-secondary-bg);
+      background: var(--color-secondary-light);
       color: var(--color-secondary-dark);
     }
     
     &.active {
-      background: var(--status-secondary-bg);
+      background: var(--color-secondary-light);
       color: var(--color-secondary);
       border-bottom-color: var(--color-secondary);
       
@@ -371,29 +371,29 @@
 
 // Bordered tabs variant - Clean minimal design
 .tabsContainer.bordered {
-  background: var(--surface-primary);
-  border-bottom: 1px solid var(--border-primary);
+  background: var(--bg-paper);
+  border-bottom: 1px solid var(--color-grey-200);
   
   .tab {
-    border: 1px solid var(--border-primary);
+    border: 1px solid var(--color-grey-200);
     border-bottom: none;
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    border-radius: var(--radius-medium) var(--radius-medium) 0 0;
     margin-right: -1px;
-    background: var(--surface-secondary);
+    background: var(--color-grey-50);
     color: var(--text-secondary);
     position: relative;
     
     &:hover {
-      background: var(--surface-primary);
-      border-color: var(--border-secondary);
+      background: var(--bg-paper);
+      border-color: var(--color-grey-300);
       color: var(--text-primary);
       z-index: 2;
     }
     
     &.active {
-      background: var(--surface-primary);
+      background: var(--bg-paper);
       border-color: var(--color-primary);
-      border-bottom: 1px solid var(--surface-primary);
+      border-bottom: 1px solid var(--bg-paper);
       color: var(--color-primary);
       z-index: 3;
       font-weight: 600;
@@ -409,13 +409,13 @@
 
 // Pills variant - Clean rounded design
 .tabsContainer.pills {
-  background: var(--surface-secondary);
+  background: var(--color-grey-50);
   border: none;
   padding: var(--spacing-2);
   border-radius: var(--radius-xl);
   
   .tab {
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-large);
     margin: 0 var(--spacing-1);
     border: none;
     background: transparent;
@@ -423,12 +423,12 @@
     position: relative;
     
     &:hover {
-      background: rgba(var(--color-primary-rgb), 0.04);
+      background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.04);
       color: var(--text-primary);
     }
     
     &.active {
-      background: rgba(var(--color-primary-rgb), 0.1);
+      background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.1);
       color: var(--color-primary);
       font-weight: 600;
       
@@ -443,8 +443,8 @@
 
 // Underline variant (default) - Clean minimal design
 .tabsContainer.underline {
-  background: var(--surface-primary);
-  border-bottom: 1px solid var(--border-primary);
+  background: var(--bg-paper);
+  border-bottom: 1px solid var(--color-grey-200);
   
   .tab {
     border: none;
@@ -455,13 +455,13 @@
     position: relative;
     
     &:hover {
-      background: rgba(var(--color-primary-rgb), 0.04);
+      background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.04);
       color: var(--text-primary);
-      border-bottom-color: rgba(var(--color-primary-rgb), 0.3);
+      border-bottom-color: rgba(var(--color-primary-rgb, 37, 99, 235), 0.3);
     }
     
     &.active {
-      background: rgba(var(--color-primary-rgb), 0.04);
+      background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.04);
       border-bottom-color: var(--color-primary);
       color: var(--color-primary);
       font-weight: 600;
@@ -477,32 +477,32 @@
 
 // Card variant - Clean elevated design
 .tabsContainer.card {
-  background: var(--surface-secondary);
+  background: var(--color-grey-50);
   padding: var(--spacing-2);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-large);
   
   .tab {
-    background: var(--surface-primary);
-    border: 1px solid var(--border-primary);
+    background: var(--bg-paper);
+    border: 1px solid var(--color-grey-200);
     margin: 0 var(--spacing-1);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-medium);
     color: var(--text-secondary);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     position: relative;
     
     &:hover {
-      background: var(--surface-elevated);
-      border-color: var(--border-secondary);
+      background: var(--bg-elevated);
+      border-color: var(--color-grey-300);
       color: var(--text-primary);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     }
     
     &.active {
-      background: rgba(var(--color-primary-rgb), 0.08);
+      background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.08);
       border-color: var(--color-primary);
       color: var(--color-primary);
       font-weight: 600;
-      box-shadow: 0 2px 4px rgba(var(--color-primary-rgb), 0.1);
+      box-shadow: 0 2px 4px rgba(var(--color-primary-rgb, 37, 99, 235), 0.1);
       
       .tabIcon {
         color: var(--color-primary);
@@ -519,29 +519,29 @@
 
 // Enhanced variant - combines best minimal styling from all variants
 .tabsContainer.enhanced {
-  background: var(--surface-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
+  background: var(--bg-paper);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--radius-large);
   padding: var(--spacing-1);
   
   .tab {
     border: none;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-medium);
     margin: 0 var(--spacing-1);
     background: transparent;
     color: var(--text-secondary);
     position: relative;
     
     &:hover {
-      background: rgba(var(--color-primary-rgb), 0.04);
+      background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.04);
       color: var(--text-primary);
     }
     
     &.active {
-      background: rgba(var(--color-primary-rgb), 0.1);
+      background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.1);
       color: var(--color-primary);
       font-weight: 600;
-      border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+      border: 1px solid rgba(var(--color-primary-rgb, 37, 99, 235), 0.2);
       
       .tabIcon {
         color: var(--color-primary);
@@ -638,7 +638,7 @@
 
 @media (prefers-contrast: high) {
   .tab, .item {
-    border: 1px solid var(--border-secondary);
+    border: 1px solid var(--color-grey-300);
     
     &.active {
       border-width: 2px;
@@ -674,7 +674,7 @@
     box-shadow: none;
     
     &.active {
-      background: var(--surface-secondary);
+      background: var(--color-grey-50);
     }
   }
 }

@@ -1176,4 +1176,112 @@
       overflow: visible;
     }
   }
+
+  // Design System Demo Styles
+  .design-system-demo {
+    background: var(--config-surface);
+    border: 1px solid var(--config-border);
+    border-radius: var(--config-radius-lg);
+    padding: 1.5rem;
+    margin-top: 1rem;
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .demo-card {
+      background: var(--config-surface-alt);
+      border: 1px solid var(--config-border-light);
+      border-radius: var(--config-radius-md);
+      padding: 1rem;
+
+      h4 {
+        margin: 0 0 0.5rem 0;
+        color: var(--config-text-primary);
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0 0 0.75rem 0;
+        color: var(--config-text-secondary);
+        font-size: 0.75rem;
+      }
+    }
+
+    .color-scale {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .color-chip {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: var(--config-radius-sm);
+      border: 1px solid var(--config-border);
+      cursor: pointer;
+      
+      &:hover {
+        transform: scale(1.1);
+        transition: transform var(--config-transition-fast);
+      }
+    }
+
+    .spacing-demo {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      div {
+        border-radius: var(--config-radius-xs);
+        opacity: 0.8;
+      }
+    }
+
+    .technical-info {
+      background: var(--config-surface-raised);
+      border: 1px solid var(--config-border);
+      border-radius: var(--config-radius-md);
+      padding: 1rem;
+
+      details {
+        summary {
+          cursor: pointer;
+          padding: 0.25rem 0;
+          color: var(--config-text-primary);
+          
+          &:hover {
+            color: var(--config-primary);
+          }
+        }
+
+        ul {
+          margin: 0.75rem 0;
+          padding-left: 1.25rem;
+          
+          li {
+            color: var(--config-text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+          }
+        }
+
+        p {
+          margin: 0.75rem 0 0 0;
+          color: var(--config-text-muted);
+          font-size: 0.75rem;
+          
+          code {
+            background: var(--config-surface-alt);
+            padding: 0.125rem 0.25rem;
+            border-radius: var(--config-radius-xs);
+            font-family: var(--font-family-mono, monospace);
+          }
+        }
+      }
+    }
+  }
 } 

@@ -1,5 +1,7 @@
-@import "../../styles/variables";
 @import "../../styles/mixins";
+
+// Note: This file is being migrated to use the new design system CSS variables
+// Legacy SCSS variables will be gradually replaced with CSS custom properties
 
 html, body {
   width: 100vw;
@@ -10,72 +12,12 @@ html, body {
   box-sizing: border-box;
 }
 
-.root {
-  display: grid;
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-  overflow: hidden; // Prevent the grid itself from scrolling
-  grid-template-areas:
-    "topbar topbar"
-    "sidebar main"
-    "logo bottombar";
-  // Use clamp() to ensure reasonable min/max values
-  grid-template-columns: clamp(60px, var(--sidebar-width-buttons, 80px), 300px) 1fr;
-  grid-template-rows: 
-    clamp(40px, var(--topbar-height, 60px), 100px) 
-    1fr 
-    clamp(50px, var(--bottombar-height, 70px), 120px);
-  
-  // CSS custom property for bottom bar positioning
-  --current-sidebar-width: var(--sidebar-width-buttons, 80px);
-
-  @media (max-width: 900px) {
-    grid-template-areas:
-      "topbar topbar"
-      "sidebar main"
-      "logo bottombar";
-    grid-template-columns: clamp(60px, var(--sidebar-width-buttons, 80px), 200px) 1fr;
-    grid-template-rows: 
-      clamp(40px, var(--topbar-height, 60px), 80px) 
-      1fr 
-      clamp(50px, var(--bottombar-height, 70px), 100px);
-  }
-  
-  // Extra narrow screens (like 850px wide)
-  @media (max-width: 850px) {
-    grid-template-columns: clamp(60px, var(--sidebar-width-buttons, 80px), 80px) 1fr;
-    grid-template-rows: 
-      clamp(40px, var(--topbar-height, 60px), 60px) 
-      1fr 
-      clamp(50px, var(--bottombar-height, 70px), 80px);
-  }
-}
-
-.root.labelsVariant {
-  grid-template-columns: clamp(180px, var(--sidebar-width-labels, 240px), 400px) 1fr;
-  --current-sidebar-width: var(--sidebar-width-labels, 240px);
-}
-
-.topbar {
-  grid-area: topbar;
-  z-index: var(--z-topbar);
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.sidebar {
-  grid-area: sidebar;
-  z-index: var(--z-sidebar);
-  height: 100%;
-  box-sizing: border-box;
-  position: relative;
-}
+// Grid-based layout system (used by Layout.tsx)
 
 .main {
   grid-area: main;
-  padding: $spacing-4;
-  background: var(--surface-secondary);
+  padding: var(--spacing-4);
+  background: var(--bg-default);
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -89,11 +31,11 @@ html, body {
   
   // Responsive padding for small screens
   @media (max-width: 900px) {
-    padding: $spacing-2;
+    padding: var(--spacing-2);
   }
   
   @media (max-width: 600px) {
-    padding: $spacing-1;
+    padding: var(--spacing-1);
   }
   
   // Ensure content can expand to fill available space when appropriate
@@ -130,37 +72,72 @@ html, body {
   }
   
   &::-webkit-scrollbar-track {
-    background: var(--surface-tertiary);
+    background: var(--color-grey-100);
   }
   
   &::-webkit-scrollbar-thumb {
-    background: var(--border-secondary);
+    background: var(--color-grey-400);
     border-radius: 4px;
   }
   
   &::-webkit-scrollbar-thumb:hover {
-    background: var(--border-primary);
+    background: var(--color-grey-500);
   }
 }
 
-.bottombar {
-  grid-area: bottombar;
-  z-index: var(--z-bottombar);
-  width: 100%;
-  height: 100%;
+// Grid-based layout continues with root class below
+
+.root {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
   box-sizing: border-box;
-  position: relative;
+  overflow: hidden; // Prevent the grid itself from scrolling
+  grid-template-areas:
+    "topbar topbar"
+    "sidebar main"
+    "logo bottombar";
+  // Fixed dimensions that work
+  grid-template-columns: 80px 1fr;
+  grid-template-rows: 60px 1fr 70px;
+
+  @media (max-width: 900px) {
+    grid-template-areas:
+      "topbar topbar"
+      "sidebar main"
+      "logo bottombar";
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: 60px 1fr 80px;
+  }
+  
+  // Extra narrow screens (like 850px wide)
+  @media (max-width: 850px) {
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: 50px 1fr 60px;
+  }
+}
+
+.root.labelsVariant {
+  grid-template-columns: 280px 1fr;
+  
+  @media (max-width: 900px) {
+    grid-template-columns: 240px 1fr;
+  }
+  
+  @media (max-width: 850px) {
+    grid-template-columns: 200px 1fr;
+  }
 }
 
 .logo {
   grid-area: logo;
-  background: var(--surface-tertiary);
-  border-top: 1px solid var(--border-secondary);
-  border-right: 1px solid var(--border-secondary);
+  background: var(--bg-paper, #ffffff);
+  border-top: 1px solid var(--color-grey-200, #e5e7eb);
+  border-right: 1px solid var(--color-grey-200, #e5e7eb);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-2);
+  padding: var(--spacing-2, 0.5rem);
   z-index: calc(var(--z-bottombar) + 1);
   box-sizing: border-box;
   
@@ -176,7 +153,7 @@ html, body {
   grid-template-areas:
     "topbar topbar"
     "sidebar main";
-  grid-template-rows: clamp(40px, var(--topbar-height, 60px), 100px) 1fr;
+  grid-template-rows: 60px 1fr;
   
   .logo {
     display: none;
@@ -188,15 +165,42 @@ html, body {
     grid-template-areas:
       "topbar topbar"
       "sidebar main";
-    grid-template-rows: clamp(40px, var(--topbar-height, 60px), 80px) 1fr;
+    grid-template-rows: 60px 1fr;
   }
-  
-  @media (max-width: 850px) {
-    .root.noBottomBar {
-      grid-template-rows: clamp(40px, var(--topbar-height, 60px), 60px) 1fr;
-    }
+}
+
+@media (max-width: 850px) {
+  .root.noBottomBar {
+    grid-template-rows: 50px 1fr;
   }
-  
+}
+
+.topbar {
+  grid-area: topbar;
+  z-index: var(--z-topbar, 200);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  z-index: var(--z-sidebar, 100);
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.bottombar {
+  grid-area: bottombar;
+  z-index: var(--z-bottombar, 100);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+// Responsive logo sizing for smaller screens
+@media (max-width: 850px) {
   .logo {
     padding: var(--spacing-1);
     
@@ -205,16 +209,4 @@ html, body {
       max-height: 80%;
     }
   }
-}
-
-// Remove the old bottom bar positioning override
-// .root.labelsVariant:not(.noBottomBar) {
-//   .bottomBar {
-//     left: var(--sidebar-width-labels);
-//   }
-// }
-
-// When bottom bar is enabled, sidebar should be shorter
-// .root:not(.noBottomBar) {
-//   --sidebar-bottom-offset: var(--bottombar-height);
-// } 
+} 

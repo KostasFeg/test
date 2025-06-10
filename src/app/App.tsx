@@ -10,10 +10,14 @@ import LoadingFallback from "../components/ui/LoadingFallback";
 import TestToggles from "../components/ui/TestToggles";
 import ErrorBoundary from "../components/feedback/ErrorBoundary";
 import { ROUTES } from "../shared/constants/routes";
+import { useDesignSystemInjection } from "../shared/design-system-integration";
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, login } = useAuth();
   const navigation = useNavigationConfig();
+
+  // Initialize the new design system
+  useDesignSystemInjection();
 
   // Show loading while checking authentication state
   if (isLoading) {

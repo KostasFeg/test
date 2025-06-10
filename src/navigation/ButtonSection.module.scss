@@ -1,25 +1,25 @@
-@import "../styles/_variables.scss";
+// Variables are now handled by the new design system via CSS custom properties
 
 /* ========================================================================
    AUTOMATED BUTTON STATE SYSTEM MIXINS
    ======================================================================== */
 
 // Base interactive button with automatic state derivation
-@mixin button-base($bg: var(--nav-btn-bg), $color: var(--nav-btn-text), $border: var(--nav-btn-border)) {
+@mixin button-base($bg: var(--color-grey-50), $color: var(--text-primary), $border: var(--color-grey-300)) {
   background: #{$bg};
   color: #{$color};
   border: 1px solid #{$border};
-  box-shadow: var(--nav-btn-shadow);
-  transition: all var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   
   // Automatic hover state - no manual definition needed
   &:hover {
-    background: var(--nav-btn-hover);
-    border-color: var(--border-secondary);
+    background: var(--color-grey-100);
+    border-color: var(--color-grey-400);
     color: var(--text-primary);
-    box-shadow: var(--nav-btn-shadow-hover);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px) scale(1.02);
   }
   
@@ -27,8 +27,8 @@
   &:focus {
     outline: none;
     box-shadow: 
-      var(--nav-btn-shadow-hover),
-      0 0 0 2px var(--border-focus);
+      0 4px 12px rgba(0, 0, 0, 0.15),
+      0 0 0 2px var(--color-accent);
   }
   
   // Automatic active/pressed state
@@ -41,7 +41,7 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background: var(--state-disabled);
+    background: var(--color-grey-200);
     color: var(--text-disabled);
     pointer-events: none;
     transform: none;
@@ -51,15 +51,15 @@
 
 // Active/selected state mixin with automatic styling
 @mixin button-active-state() {
-  background: var(--nav-btn-active) !important;
+  background: var(--color-accent) !important;
   border-color: var(--color-accent) !important;
-  color: var(--nav-btn-text-active) !important;
+  color: var(--color-accent-contrast) !important;
   box-shadow: 
-    var(--nav-btn-shadow-hover),
+    0 4px 12px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3),
     0 0 0 1px var(--color-accent) !important;
   
   &:hover {
-    background: var(--nav-btn-active) !important;
+    background: var(--color-accent-dark) !important;
     transform: translateY(-2px) scale(1.02);
   }
 }
@@ -76,7 +76,7 @@
   }
   
   &.active .navButtonIcon {
-    color: var(--color-accent);
+    color: var(--color-accent-contrast);
     transform: scale(1.1);
   }
 }
@@ -141,7 +141,7 @@
   min-height: 120px;
   text-decoration: none;
   cursor: pointer;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-large);
   
   // Typography
   font-family: var(--font-family-sans);
@@ -232,7 +232,7 @@
   
   .item.active &,
   .navButton.active & {
-    color: var(--text-primary);
+    color: var(--color-accent-contrast);
   }
 }
 
@@ -244,8 +244,8 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background: var(--status-error);
-  color: var(--text-inverse);
+  background: var(--color-error);
+  color: var(--color-error-contrast);
   font-size: 11px;
   font-weight: 600;
   padding: 2px 6px;
@@ -260,18 +260,18 @@
   
   // Badge variants - automatically styled
   &.info {
-    background: var(--status-info);
-    color: var(--status-info-contrast);
+    background: var(--color-info);
+    color: var(--color-info-contrast);
   }
   
   &.success {
-    background: var(--status-success);
-    color: var(--status-success-contrast);
+    background: var(--color-success);
+    color: var(--color-success-contrast);
   }
   
   &.warning {
-    background: var(--status-warning);
-    color: var(--status-warning-contrast);
+    background: var(--color-warning);
+    color: var(--color-warning-contrast);
   }
 }
 
@@ -283,7 +283,7 @@
   grid-column: 1 / -1;
   padding: var(--spacing-4) 0 var(--spacing-2);
   margin-top: var(--spacing-6);
-  border-bottom: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--color-grey-200);
   
   &:first-child {
     margin-top: 0;
@@ -310,72 +310,75 @@
 
 // Primary button variant
 .item.primary {
-  @include button-base(var(--btn-primary-bg), var(--btn-primary-text), var(--btn-primary-border));
+  @include button-base(var(--color-primary), var(--color-primary-contrast), var(--color-primary));
   
   &:hover {
-    background: var(--btn-primary-hover);
-    border-color: var(--btn-primary-border-hover);
-    box-shadow: var(--btn-shadow-hover);
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    box-shadow: 0 4px 12px rgba(var(--color-primary-rgb, 37, 99, 235), 0.3);
   }
   
   &.active {
-    background: var(--btn-primary-active);
-    border-color: var(--btn-primary-border);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
   }
 }
 
 // Secondary button variant  
 .item.secondary {
-  @include button-base(var(--btn-secondary-bg), var(--btn-secondary-text), var(--btn-secondary-border));
+  @include button-base(var(--color-grey-50), var(--text-primary), var(--color-grey-300));
   
   &:hover {
-    background: var(--btn-secondary-hover);
-    border-color: var(--btn-secondary-border-hover);
-    box-shadow: var(--btn-shadow-secondary);
+    background: var(--color-grey-100);
+    border-color: var(--color-grey-400);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   }
   
   &.active {
-    background: var(--btn-secondary-active);
-    border-color: var(--btn-secondary-border);
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary-contrast);
   }
 }
 
 // Ghost button variant
 .item.ghost {
-  @include button-base(var(--btn-ghost-bg), var(--btn-ghost-text), var(--btn-ghost-border));
+  @include button-base(transparent, var(--text-secondary), transparent);
   
   &:hover {
-    background: var(--btn-ghost-hover);
-    border-color: var(--btn-ghost-border-hover);
+    background: var(--color-grey-50);
+    border-color: var(--color-grey-300);
   }
   
   &.active {
-    background: var(--btn-ghost-active);
+    background: var(--color-accent-light);
+    color: var(--color-accent);
+    border-color: var(--color-accent);
   }
 }
 
 // Ghost secondary variant for subtle secondary actions
 .item.ghostSecondary {
-  @include button-base(var(--btn-ghost-secondary-bg), var(--btn-ghost-secondary-text), var(--btn-ghost-secondary-border));
+  @include button-base(transparent, var(--color-secondary), transparent);
   
   &:hover {
-    background: var(--btn-ghost-secondary-hover);
-    border-color: var(--btn-ghost-secondary-border-hover);
+    background: var(--color-secondary-light);
+    border-color: var(--color-secondary);
   }
   
   &.active {
-    background: var(--btn-ghost-secondary-active);
-    color: var(--color-secondary);
+    background: var(--color-secondary);
+    color: var(--color-secondary-contrast);
   }
 }
 
 // Info/Help variant using secondary color
 .item.info {
-  @include button-base(var(--status-secondary-bg), var(--color-secondary), var(--color-secondary));
+  @include button-base(var(--color-secondary-light), var(--color-secondary), var(--color-secondary));
   
   &:hover {
-    background: var(--btn-ghost-secondary-hover);
-    border-color: var(--color-secondary);
+    background: var(--color-secondary-100);
+    border-color: var(--color-secondary-dark);
   }
   
   &.active {
