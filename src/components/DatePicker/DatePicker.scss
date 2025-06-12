@@ -1,7 +1,7 @@
 /* DatePicker.scss — Modern calendar styling aligned with design system */
 
 // Variables are now handled by the new design system via CSS custom properties
-@import '../../styles/mixins';
+@use '../../styles/mixins' as mixins;
 
 .drp-container {
   width: 320px;
@@ -110,7 +110,7 @@
 
 /* Navigation */
 .drp-nav { 
-  @include flex-center;
+  @include mixins.flex-center;
   gap: var(--spacing-2);
   margin: var(--spacing-2) 0;
 }
@@ -180,7 +180,7 @@
 .drp-day {
   width: 40px; 
   height: 40px;
-  @include flex-center;
+  @include mixins.flex-center;
   border: 1px solid transparent;
   border-radius: var(--radius-small);
   user-select: none; 

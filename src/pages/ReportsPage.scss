@@ -1,5 +1,5 @@
 // Variables are now handled by the new design system via CSS custom properties
-@import '../styles/mixins';
+@use '../styles/mixins' as mixins;
 
 .reports-page {
   height: 100%;
@@ -29,7 +29,7 @@
   }
 
   &__loading {
-    @include flex-center;
+    @include mixins.flex-center;
     flex-direction: column;
     height: 200px;
     gap: var(--spacing-4);
@@ -62,7 +62,7 @@
   }
 
   &__no-data {
-    @include flex-center;
+    @include mixins.flex-center;
     height: 200px;
     color: var(--color-grey-600);
     font-size: 16px;

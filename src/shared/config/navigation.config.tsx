@@ -11,7 +11,6 @@ import {
   Printer,
   Settings,
 } from "lucide-react";
-import { AUTO_GENERATED_REPORTS } from "../../utils/reportNavigation";
 
 export type NavNode = {
   /** URL segment, *not* the full path */
@@ -71,8 +70,7 @@ export const navConfig: NavNode[] = [
   //     console.log("hi");
   //   },
   // },
-  // // 🎯 REMOVED: Manual report definitions - now using AUTO_GENERATED_REPORTS only!
-  // // Just add reports to SIMPLE_REPORTS in reportConfig.ts and they appear automatically
+
   // {
   //   slug: "restart",
   //   label: "Restart",
@@ -195,98 +193,53 @@ export const navConfig: NavNode[] = [
     ],
   },
 
-  // ✨ ULTRA-SIMPLE: All reports auto-generated from single config file!
-  // Add new reports by editing ONLY src/config/reportConfig.ts
-  ...AUTO_GENERATED_REPORTS,
-
-  // 📊 Tab Layout Examples with Mock Reports
+  // 📊 Reports Section - Manual configuration for better control
   {
-    slug: "financial-reports",
-    label: "Financial Reports",
-    icon: <FileText />,
-    display: "tabs", // Using tabs layout instead of buttons
+    slug: "reports",
+    label: "Reports",
+    icon: <Printer />,
+    display: "buttons",
+    columns: 2,
     children: [
       {
-        slug: "daily-sales-summary",
-        label: "Daily Sales Summary",
-        element: () => <GenericReport reportSlug="daily-sales-summary" />,
+        slug: "sales",
+        label: "Sales Report",
+        element: () => <GenericReport />,
       },
       {
-        slug: "weekly-revenue-analysis",
-        label: "Weekly Revenue Analysis",
-        element: () => <GenericReport reportSlug="weekly-revenue-analysis" />,
+        slug: "commissions",
+        label: "Commission Report",
+        element: () => <GenericReport />,
       },
       {
-        slug: "monthly-profit-loss",
-        label: "Monthly P&L Statement",
-        element: () => <GenericReport reportSlug="monthly-profit-loss" />,
+        slug: "cashes",
+        label: "Cash Report",
+        element: () => <GenericReport />,
       },
       {
-        slug: "quarterly-financial-overview",
-        label: "Quarterly Overview",
-        element: () => (
-          <GenericReport reportSlug="quarterly-financial-overview" />
-        ),
-      },
-    ],
-  },
-
-  // 📈 Analytics Tab Section
-  {
-    slug: "analytics-dashboard",
-    label: "Analytics Dashboard",
-    icon: <Monitor />,
-    display: "tabs",
-    children: [
-      {
-        slug: "customer-analytics",
-        label: "Customer Analytics",
-        element: () => <GenericReport reportSlug="customer-analytics" />,
+        slug: "transaction-history",
+        label: "Transaction History",
+        element: () => <GenericReport />,
       },
       {
-        slug: "product-performance",
-        label: "Product Performance",
-        element: () => <GenericReport reportSlug="product-performance" />,
+        slug: "shifts",
+        label: "Shifts Report",
+        element: () => <GenericReport />,
       },
       {
-        slug: "regional-comparison",
-        label: "Regional Comparison",
-        element: () => <GenericReport reportSlug="regional-comparison" />,
+        slug: "current-jackpots",
+        label: "Current Jackpots",
+        element: () => <GenericReport />,
       },
       {
-        slug: "trend-analysis",
-        label: "Trend Analysis",
-        element: () => <GenericReport reportSlug="trend-analysis" />,
-      },
-    ],
-  },
-
-  // 🐛 Debug Reports with Long Content
-  {
-    slug: "debug-reports",
-    label: "Debug Reports",
-    icon: <Wrench />,
-    display: "tabs",
-    children: [
-      {
-        slug: "super-long-report",
-        label: "Super Long Report",
-        element: () => <GenericReport reportSlug="super-long-report" />,
+        slug: "winning-numbers",
+        label: "Winning Numbers",
+        element: () => <GenericReport />,
       },
       {
-        slug: "image-heavy-report",
-        label: "Image Heavy Report",
-        element: () => <GenericReport reportSlug="image-heavy-report" />,
-      },
-      {
-        slug: "mixed-content-report",
-        label: "Mixed Content Report",
-        element: () => <GenericReport reportSlug="mixed-content-report" />,
-      },
-      {
-        slug: "minimal-content-report",
-        label: "Minimal Content Report",
-        element: () => <GenericReport reportSlug="minimal-content-report" />,
+        slug: "inventory",
+        label: "Inventory Report",
+        element: () => <GenericReport />,
       },
     ],
   },
@@ -399,11 +352,13 @@ export const navConfig: NavNode[] = [
   //   ],
   // },
 
-  // 🎨 Configuration System
+  // 🎨 Configuration System - Hidden from normal navigation but accessible via route
   {
     slug: "configuration",
     label: "Configuration",
     icon: <Settings />,
     element: () => <ConfigEditor />,
+    // This route is hidden from navigation menus but accessible via direct URL
+    // Used by the config button in the top bar
   },
 ];

@@ -1,5 +1,5 @@
 // Variables are now handled by the new design system via CSS custom properties
-@import "../../styles/mixins";
+@use "../../styles/mixins" as mixins;
 
 .root {
   // Layout and dimensions
@@ -11,10 +11,10 @@
   text-align: center;
   
   // Material UI button styling with semantic variables
-  background: var(--btn-secondary-bg);
-  border: 2px solid var(--btn-secondary-border);
-  border-radius: var(--radius-lg);
-  color: var(--btn-secondary-text);
+  background: var(--color-grey-50);
+  border: 2px solid var(--color-grey-300);
+  border-radius: var(--radius-large);
+  color: var(--text-primary);
   
   // Typography
   font-family: var(--font-family-sans);

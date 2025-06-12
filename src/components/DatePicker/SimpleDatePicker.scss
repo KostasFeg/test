@@ -1,5 +1,5 @@
 // Variables are now handled by the new design system via CSS custom properties
-@import '../../styles/mixins';
+@use '../../styles/mixins' as mixins;
 
 .simple-date-picker {
   position: relative;

@@ -1,5 +1,5 @@
 // Variables are now handled by the new design system via CSS custom properties
-@import "./mixins";
+@use "./mixins" as mixins;
 
 * {
   box-sizing: border-box;

@@ -131,8 +131,23 @@ export const buildDesignTokens = (cfg: DesignSystemConfig): DesignTokens => {
   /* defaults then user‑override */
   const typo: Required<TypographyConfig> = { ...defaultType, ...typography };
 
-  const defaultSpacing: SpacingConfig = { spacing1: '0.25rem', spacing2: '0.5rem' };
+  const defaultSpacing: SpacingConfig = {
+    spacing1: '0.25rem',
+    spacing2: '0.5rem',
+    spacing3: '0.75rem',
+    spacing4: '1rem',
+    spacing5: '1.25rem',
+    spacing6: '1.5rem',
+  };
   const defaultRadius: BorderRadiusConfig = { radiusMedium: '0.5rem' };
+
+  /* Default transition durations – used by many SCSS modules */
+  const defaultTransitions: TransitionsConfig = {
+    fast: '150ms',
+    normal: '300ms',
+    slow: '450ms',
+    easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  };
 
   return {
     palette,
@@ -140,7 +155,8 @@ export const buildDesignTokens = (cfg: DesignSystemConfig): DesignTokens => {
     spacing: { ...defaultSpacing, ...spacing },
     radius: { ...defaultRadius, ...borderRadius },
     shadows,
-    transitions,
+    /* merge so user-provided overrides win but sensible fallbacks always exist */
+    transitions: { ...defaultTransitions, ...transitions },
     interactive: interactiveStates,
     layout: rest.layout ?? {},
     _raw: rest,
@@ -477,6 +493,41 @@ export const generateCSSVariables = (tokens: DesignTokens): string => {
     '',
     '  /* Transitions */',
     ...Object.entries(transitions).map(([key, value]) => `  --transition-${key.replace('transition', '').toLowerCase()}: ${value};`),
+    '',
+    '  /* Easing Curves */',
+    '  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);',
+    '  --easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);',
+    '',
+    '  /* Button Variables – auto-derived from palette */',
+    `  --btn-primary-bg: ${palette.primary.main};`,
+    `  --btn-primary-border: ${palette.primary.dark};`,
+    `  --btn-primary-border-hover: ${palette.primary.dark};`,
+    `  --btn-primary-text: ${palette.primary.contrastText};`,
+    `  --btn-primary-hover: ${palette.primary.dark};`,
+    `  --btn-primary-active: ${palette.primary[700]};`,
+    '',
+    `  --btn-secondary-bg: ${palette.secondary.main};`,
+    `  --btn-secondary-border: ${palette.secondary.main};`,
+    `  --btn-secondary-border-hover: ${palette.secondary.dark};`,
+    `  --btn-secondary-text: ${palette.secondary.contrastText};`,
+    `  --btn-secondary-hover: ${palette.secondary.dark};`,
+    `  --btn-secondary-active: ${palette.secondary[700]};`,
+    '',
+    `  --btn-shadow-hover: 0 2px 8px rgba(0,0,0,0.12);`,
+    `  --btn-shadow-secondary: 0 0 0 2px ${palette.secondary.main};`,
+    '',
+    `  --btn-ghost-bg: transparent;`,
+    `  --btn-ghost-border: transparent;`,
+    `  --btn-ghost-text: ${palette.text.primary};`,
+    `  --btn-ghost-hover: ${palette.grey[50]};`,
+    `  --btn-ghost-border-hover: ${palette.grey[300]};`,
+    `  --btn-ghost-active: ${palette.grey[100]};`,
+    `  --btn-ghost-secondary-hover: ${palette.secondary.light};`,
+    '',
+    '  /* Disabled & State */',
+    `  --state-disabled: ${palette.grey[200]};`,
+    `  --border-focus: ${palette.accent.main};`,
+    `  --border-tertiary: ${palette.grey[300]};`,
     '',
     '  /* Interactive States */',
     ...Object.entries(interactive).map(([key, value]) => `  --interactive-${key}: ${value};`),

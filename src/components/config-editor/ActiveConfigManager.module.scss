@@ -88,7 +88,21 @@
           color: var(--color-text-secondary, #6c757d);
           margin-top: 0.25rem;
         }
+        
+        .staleWarning {
+          font-size: 0.85rem;
+          color: var(--color-warning, #ff8c00);
+          margin-top: 0.25rem;
+          font-weight: 500;
+        }
       }
+    }
+    
+    .actionButtons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
     }
     
     .clearButton {
@@ -99,11 +113,42 @@
       border-radius: 6px;
       font-weight: 500;
       cursor: pointer;
-      margin-top: 1rem;
       transition: all 0.2s ease;
       
       &:hover {
         background: #ffb300;
+        transform: translateY(-1px);
+      }
+    }
+    
+    .debugButton {
+      background: var(--color-info, #17a2b8);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: #138496;
+        transform: translateY(-1px);
+      }
+    }
+    
+    .forceReloadButton {
+      background: var(--color-error, #dc3545);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: #c82333;
         transform: translateY(-1px);
       }
     }

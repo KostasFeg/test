@@ -7,6 +7,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import styles from "./ButtonSection.module.scss";
+import Button from "../components/primitives/Button";
 import type { NavNode } from "../shared/config/navigation.config";
 
 interface SectionWithButtonsProps {
@@ -52,13 +53,14 @@ export const SectionWithButtons: React.FC<SectionWithButtonsProps> = ({
           }
         >
           {node.children!.map((child) => (
-            <button
+            <Button
               key={child.slug}
+              variant="ghost"
               className={styles.item}
               onClick={() => handleButtonClick(child)}
             >
               {child.label}
-            </button>
+            </Button>
           ))}
         </div>
       )}

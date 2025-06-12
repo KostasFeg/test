@@ -1,5 +1,5 @@
 // Variables are now handled by the new design system via CSS custom properties
-@import '../../styles/mixins';
+@use '../../styles/mixins' as mixins;
 
 .financial_sales {
   padding: calc(var(--spacing-4) * 1.5);
@@ -417,3 +417,8 @@
     white-space: pre-wrap;
   }
 }
+
+/* Temporary alias classes while migrating to Button primitive */
+.generateBtn { @extend .generate-btn; }
+.printBtn    { @extend .print-btn;    }
+.retryBtn    { @extend .retry-btn;    }

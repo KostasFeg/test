@@ -25,17 +25,31 @@ export class ConfigManager {
     this.config = appConfig;
     this.activeConfigPath = `${ACTIVE_CONFIG_FOLDER}/${CONFIG_FILE_NAME}`;
     
-    // Create the active config directory if it doesn't exist
-    this.initializeActiveConfigFolder();
-    
-    // Check for existing active config and load it
-    this.loadActiveConfig();
-    
-    // Start watching for config changes
-    this.startWatching();
-    
-    // Inject CSS variables on startup
-    this.injectCSSVariables();
+    // Initialize the system properly and handle async loading
+    this.initialize();
+  }
+
+  /**
+   * Initialize the config manager with proper async handling
+   */
+  private async initialize(): Promise<void> {
+    try {
+      // Create the active config directory if it doesn't exist
+      await this.initializeActiveConfigFolder();
+      
+      // Check for existing active config and load it
+      await this.loadActiveConfig();
+      
+      // Start watching for config changes
+      this.startWatching();
+      
+      // Inject CSS variables after all config loading is complete
+      this.injectCSSVariables();
+    } catch (error) {
+      console.warn('Failed to initialize ConfigManager:', error);
+      // Fallback to default config
+      this.injectCSSVariables();
+    }
   }
 
   /**
@@ -87,11 +101,20 @@ export class ConfigManager {
   private async loadActiveConfig(): Promise<void> {
     try {
       // First, try to load from physical file system (for development/local usage)
-      await this.loadFromFileSystem();
+      const fileSystemConfigLoaded = await this.loadFromFileSystem();
       
-      // Fallback to localStorage (for web environment persistence)
+      if (fileSystemConfigLoaded) {
+        // File system config was loaded successfully, we're done
+        return;
+      }
+      
+      // No file system config found, check localStorage (for web environment persistence)
       const activeConfigData = localStorage.getItem('active-config-data');
       if (activeConfigData) {
+        // We have localStorage data but no file system config
+        // This could mean the config.json was deleted but localStorage persists
+        console.log('⚠️ Found localStorage config but no file system config - this may be stale data');
+        
         const configData = JSON.parse(activeConfigData);
         const timestamp = localStorage.getItem('active-config-timestamp');
         
@@ -99,11 +122,15 @@ export class ConfigManager {
           this.lastConfigModified = parseInt(timestamp);
         }
         
-        // Apply the active config
+        // Apply the active config but warn about potential staleness
         this.applyActiveConfig(configData);
-        console.log('✅ Active config loaded successfully from localStorage');
+        console.log('✅ Active config loaded from localStorage (no file system config found)');
+        console.log('💡 To clear this cached config, use the "Clear Active Config" button or delete localStorage data');
         return;
       }
+      
+      // No config found anywhere, stay with default
+      console.log('📋 No active config found, using default configuration');
       
     } catch (error) {
       console.warn('Failed to load active config:', error);
@@ -113,7 +140,7 @@ export class ConfigManager {
   /**
    * Load config from physical file system (when possible)
    */
-  private async loadFromFileSystem(): Promise<void> {
+  private async loadFromFileSystem(): Promise<boolean> {
     try {
       // Try to fetch the config file via HTTP (works in development)
       const response = await fetch('/active-config/config.json');
@@ -134,12 +161,13 @@ export class ConfigManager {
         localStorage.setItem('active-config-data', JSON.stringify(configData));
         localStorage.setItem('active-config-timestamp', this.lastConfigModified.toString());
         
-        return;
+        return true; // Successfully loaded from file system
       }
     } catch (error) {
       // File system access not available, continue with localStorage
       console.log('📁 File system config not available, using localStorage fallback');
     }
+    return false; // No file system config found
   }
 
   /**
@@ -147,6 +175,8 @@ export class ConfigManager {
    */
   private applyActiveConfig(configData: any): void {
     if (configData.config) {
+      console.log('🎨 Applying active config data:', configData.name || 'Unnamed');
+      console.log('🎨 Config overrides:', configData.config);
       // Use the config builder to properly handle the active config
       this.config = buildConfig(configData.config);
       this.injectCSSVariables();
@@ -225,6 +255,15 @@ export class ConfigManager {
             await this.loadFromFileSystem();
           }
         }
+      } else if (response.status === 404) {
+        // Config file was deleted from file system
+        const hasLocalStorageConfig = localStorage.getItem('active-config-data') !== null;
+        if (hasLocalStorageConfig) {
+          console.log('🗑️ File system config was deleted but localStorage config exists');
+          console.log('💡 You can clear the cached config using the "Clear Active Config" button');
+          // We could auto-clear here, but let's be conservative and let user decide
+          // this.clearActiveConfig();
+        }
       }
     } catch (error) {
       // File system not available, that's okay
@@ -270,14 +309,26 @@ export class ConfigManager {
     fileName: string;
     lastModified: number;
     watchingStatus: boolean;
+    isStaleLocalStorage: boolean;
   } {
+    const hasLocalStorageConfig = localStorage.getItem('active-config-data') !== null;
+    
     return {
-      isActive: localStorage.getItem('active-config-data') !== null,
+      isActive: hasLocalStorageConfig,
       folderPath: ACTIVE_CONFIG_FOLDER,
       fileName: CONFIG_FILE_NAME,
       lastModified: this.lastConfigModified,
-      watchingStatus: this.isWatching
+      watchingStatus: this.isWatching,
+      isStaleLocalStorage: hasLocalStorageConfig && this.lastConfigModified === 0 // localStorage exists but no recent file system activity
     };
+  }
+
+  /**
+   * Check if current config might be stale localStorage data
+   */
+  isConfigStale(): boolean {
+    const hasLocalStorageConfig = localStorage.getItem('active-config-data') !== null;
+    return hasLocalStorageConfig && this.lastConfigModified === 0;
   }
 
   /**
@@ -420,6 +471,23 @@ export class ConfigManager {
     
     return result;
   }
+
+  /**
+   * Force reload config from file system (debug helper)
+   */
+  async forceReloadFromFileSystem(): Promise<void> {
+    console.log('🔄 Force reloading config from file system...');
+    
+    // Clear localStorage first
+    localStorage.removeItem('active-config-data');
+    localStorage.removeItem('active-config-timestamp');
+    
+    // Try to load from file system
+    const loaded = await this.loadFromFileSystem();
+    if (!loaded) {
+      console.log('❌ Failed to load from file system');
+    }
+  }
 }
 
 // Singleton instance
@@ -429,4 +497,8 @@ export const configManager = new ConfigManager();
 export const switchConfigPreset = (presetId: string) => configManager.switchToPreset(presetId);
 export const getCurrentConfig = () => configManager.getCurrentConfig();
 export const getAvailablePresets = () => configManager.getAvailablePresets();
-export const subscribeToConfigChanges = (listener: (config: MasterConfig) => void) => configManager.subscribe(listener); 
+export const subscribeToConfigChanges = (listener: (config: MasterConfig) => void) => configManager.subscribe(listener);
+export const forceReloadConfig = () => configManager.forceReloadFromFileSystem();
+
+// Debug: Make configManager available globally for debugging
+(window as any).configManager = configManager; 

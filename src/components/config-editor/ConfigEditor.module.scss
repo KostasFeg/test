@@ -1,6 +1,6 @@
 // Import existing variables and mixins
 // Variables are now handled by the new design system via CSS custom properties
-@import '../../styles/mixins';
+@use '../../styles/mixins' as mixins;
 
 // Enhanced CSS custom properties for theming
 :root {

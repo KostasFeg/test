@@ -11,7 +11,7 @@
    ======================================================================== */
 
 // Base interactive item with automatic state derivation
-@mixin bottom-bar-item-base($bg: var(--bottombar-item-bg), $color: var(--bottombar-item-text)) {
+@mixin bottom-bar-item-base($bg: var(--color-grey-50), $color: var(--text-primary)) {
   background: #{$bg};
   color: #{$color};
   transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
@@ -19,7 +19,7 @@
   
   // Automatic hover state - no manual definition needed
   &:hover {
-    background: var(--bottombar-item-hover);
+    background: var(--color-grey-100);
     color: var(--text-primary);
     transform: translateY(-1px) scale(1.05);
   }
@@ -27,8 +27,8 @@
   // Automatic focus state
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--border-focus);
-    background: var(--bottombar-item-hover);
+    box-shadow: 0 0 0 2px var(--color-accent);
+    background: var(--color-grey-100);
   }
   
   // Automatic active/pressed state
@@ -42,7 +42,7 @@
     opacity: 0.5;
     cursor: not-allowed;
     color: var(--text-disabled);
-    background: var(--state-disabled);
+    background: var(--color-grey-200);
     pointer-events: none;
     transform: none;
   }
@@ -50,13 +50,13 @@
 
 // Active state mixin with automatic styling
 @mixin bottom-bar-active-state() {
-  background: var(--bottombar-item-active) !important;
-  color: var(--bottombar-item-text-active) !important;
+  background: var(--color-accent) !important;
+  color: var(--color-accent-contrast) !important;
   font-weight: 600;
   transform: translateY(-2px);
   
   &:hover {
-    background: var(--bottombar-item-active) !important;
+    background: var(--color-accent) !important;
     transform: translateY(-2px) scale(1.05);
   }
 }
@@ -192,7 +192,7 @@
   min-width: 0; // Allow flex shrinking
   height: 100%;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-medium);
   cursor: pointer;
   text-decoration: none;
   user-select: none;

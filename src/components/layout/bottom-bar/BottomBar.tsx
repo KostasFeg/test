@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import clsx from "clsx";
+import BottomBarButton from "./BottomBarButton";
 // @ts-ignore
 import styles from "./BottomBar.module.scss";
 
@@ -115,13 +116,10 @@ export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
         <div className={styles.content}>
           <nav className={styles.navigation}>
             {items.map((item, index) => (
-              <button
+              <BottomBarButton
                 key={item.label}
-                data-label={item.label}
-                className={clsx(
-                  styles.bottomBarItem,
-                  animating === item.label && styles["bottomBarItem--animating"]
-                )}
+                label={item.label}
+                icon={item.icon}
                 onClick={() => handleButtonClick(item.label, item.onClick)}
                 onMouseEnter={(e) => handleTooltipShow(item.label, e)}
                 onMouseLeave={() => setActiveTooltip(null)}
@@ -129,10 +127,11 @@ export const BottomBar: React.FC<BottomBarProps> = ({ items, className }) => {
                 onTouchEnd={() => setActiveTooltip(null)}
                 onFocus={(e) => handleTooltipShow(item.label, e)}
                 onBlur={() => setActiveTooltip(null)}
-              >
-                <span className={styles.bottomBarIcon}>{item.icon}</span>
-                <span className={styles.bottomBarLabel}>{item.label}</span>
-              </button>
+                className={clsx(
+                  animating === item.label && styles["bottomBarItem--animating"]
+                )}
+                data-label={item.label}
+              />
             ))}
           </nav>
         </div>

@@ -1,4 +1,4 @@
-@import "../../styles/mixins";
+@use "../../styles/mixins" as mixins;
 
 // Note: This file is being migrated to use the new design system CSS variables
 // Legacy SCSS variables will be gradually replaced with CSS custom properties

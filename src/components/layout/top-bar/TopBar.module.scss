@@ -1,10 +1,10 @@
 // Variables are now handled by the new design system via CSS custom properties
-@import "../../../styles/mixins";
+@use "../../../styles/mixins" as mixins;
 
 .root {
   // Material UI surface styling with semantic variables
-  background: var(--topbar-bg);
-  border-bottom: 1px solid var(--topbar-border);
+  background: var(--bg-paper);
+  border-bottom: 1px solid var(--color-grey-200);
   display: flex;
   align-items: center;
   height: 100%;
@@ -12,12 +12,12 @@
   position: relative;
   
   // Material UI elevation and shadow
-  box-shadow: var(--topbar-shadow);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   
   // Smooth transitions
-  transition: all var(--transition-normal) var(--easing-default);
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   &::after {
     content: '';
@@ -28,15 +28,15 @@
     height: 1px;
     background: linear-gradient(90deg, 
       transparent 0%, 
-      var(--topbar-border-subtle) 20%, 
-      var(--topbar-border-subtle) 80%, 
+      var(--color-grey-200) 20%, 
+      var(--color-grey-200) 80%, 
       transparent 100%);
   }
   
   // Elevated state for scrolled content
   &.elevated {
-    box-shadow: var(--topbar-shadow-elevated);
-    background: var(--topbar-bg-elevated);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: var(--bg-paper);
   }
 }
 
@@ -44,21 +44,21 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  color: var(--topbar-text);
+  color: var(--text-primary);
   
   // Interactive elements in sections
   button, a {
-    color: var(--topbar-text);
-    transition: color var(--transition-fast) var(--easing-default);
+    color: var(--text-primary);
+    transition: color var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
     
     &:hover {
-      color: var(--topbar-text-hover);
+      color: var(--color-accent);
     }
     
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 2px var(--border-focus);
-      border-radius: var(--radius-sm);
+      box-shadow: 0 0 0 2px var(--color-accent);
+      border-radius: var(--radius-small);
     }
   }
 }
