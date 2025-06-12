@@ -1,0 +1,133 @@
+{
+  "name": "Reports Configuration Example",
+  "description": "Demonstrates how to add custom reports via config.json - SUPER EASY!",
+  "config": {
+    "branding": {
+      "company": {
+        "name": "Custom Reports Demo"
+      }
+    },
+    "theme": {
+      "colors": {
+        "primary": "#7c3aed",
+        "accent": "#06b6d4"
+      }
+    },
+    "navigation": [
+      {
+        "slug": "dashboard",
+        "label": "🏠 Dashboard"
+      },
+      {
+        "slug": "custom-reports",
+        "label": "📊 Custom Reports",
+        "display": "buttons",
+        "columns": 2,
+        "children": [
+          {
+            "slug": "monthly-sales",
+            "label": "Monthly Sales Report"
+          },
+          {
+            "slug": "customer-analytics",
+            "label": "Customer Analytics"
+          },
+          {
+            "slug": "inventory-status",
+            "label": "Inventory Status"
+          },
+          {
+            "slug": "performance-metrics",
+            "label": "Performance Metrics"
+          }
+        ]
+      },
+      {
+        "slug": "financial-reports",
+        "label": "💰 Financial Reports",
+        "display": "tabs",
+        "children": [
+          {
+            "slug": "profit-loss",
+            "label": "P&L Statement"
+          },
+          {
+            "slug": "cash-flow",
+            "label": "Cash Flow"
+          },
+          {
+            "slug": "budget-variance",
+            "label": "Budget Variance"
+          }
+        ]
+      },
+      {
+        "slug": "settings",
+        "label": "⚙️ Settings"
+      }
+    ],
+    "reports": {
+      "monthly-sales": {
+        "name": "Monthly Sales Report",
+        "filters": ["type", "fromDate", "toDate"],
+        "options": {
+          "type": ["Summary", "Detailed", "By Category"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "customer-analytics": {
+        "name": "Customer Analytics Report",
+        "filters": ["scope", "fromDate", "toDate"],
+        "options": {
+          "scope": ["All Customers", "VIP Customers", "New Customers"],
+          "withTime": true
+        }
+      },
+      "inventory-status": {
+        "name": "Inventory Status Report",
+        "filters": ["type"],
+        "options": {
+          "type": ["Current Stock", "Low Stock Alert", "Overstock Items", "Out of Stock"]
+        }
+      },
+      "performance-metrics": {
+        "name": "Performance Metrics Report",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Sales Performance", "Staff Performance", "Product Performance"],
+          "scope": ["Store Level", "Department Level", "Individual Level"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "profit-loss": {
+        "name": "Profit & Loss Statement",
+        "filters": ["type", "fromDate", "toDate"],
+        "options": {
+          "type": ["Monthly", "Quarterly", "Yearly"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "cash-flow": {
+        "name": "Cash Flow Report",
+        "filters": ["type", "fromDate", "toDate"],
+        "options": {
+          "type": ["Operating", "Investing", "Financing", "Combined"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "budget-variance": {
+        "name": "Budget Variance Analysis",
+        "filters": ["scope", "fromDate", "toDate"],
+        "options": {
+          "scope": ["Revenue", "Expenses", "Both"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      }
+    }
+  }
+} 

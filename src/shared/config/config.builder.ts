@@ -2,6 +2,7 @@ import { MasterConfig, defaultConfig } from "./master.config";
 import { navConfig } from "./navigation.config";
 import { REPORTS } from "../../config/reportConfig";
 import brandingConfig from "./branding.config";
+import React from "react";
 
 // ==========================================
 // CONFIGURATION BUILDER
@@ -24,7 +25,7 @@ export interface ConfigOverrides {
   api?: Partial<MasterConfig['api']>;
   auth?: Partial<MasterConfig['auth']>;
   features?: Partial<MasterConfig['features']>;
-  navigation?: MasterConfig['navigation'];
+  navigation?: any[]; // Allow JSON navigation items
   reports?: Partial<MasterConfig['reports']>;
 }
 
@@ -42,6 +43,93 @@ function deepMerge<T>(target: T, source: Partial<T>): T {
   }
   
   return result;
+}
+
+/**
+ * Auto-generate navigation items from reports configuration
+ * This makes it super easy to add reports via config.json
+ */
+export function generateReportsNavigation(reports: Record<string, any>) {
+  const GenericReport = React.lazy(() => import("../../components/ui/GenericReport"));
+  
+  return Object.entries(reports).map(([slug, config]) => ({
+    slug,
+    label: config.name || slug.replace(/[-_]/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
+    element: () => React.createElement(GenericReport),
+  }));
+}
+
+/**
+ * Transform JSON navigation items into proper NavNode objects with element functions
+ * This is the missing piece that converts config.json navigation items into working React components
+ */
+export function transformJsonNavigationToNavNodes(jsonNavigation: any[], reports: Record<string, any> = {}): any[] {
+  console.log('🔄 Transforming JSON navigation items:', jsonNavigation);
+  console.log('🔄 Available reports for transformation:', reports);
+  
+  if (!Array.isArray(jsonNavigation)) {
+    console.error('❌ jsonNavigation is not an array:', jsonNavigation);
+    return [];
+  }
+  
+  const GenericReport = React.lazy(() => import("../../components/ui/GenericReport"));
+  const ReportRendered = React.lazy(() => import("../../components/ui/ReportRendered"));
+  
+  const transformedItems = jsonNavigation.map(item => {
+    try {
+      console.log('🔄 Processing navigation item:', item.slug, item.label);
+      
+      const transformedItem: any = {
+        slug: item.slug,
+        label: item.label,
+        display: item.display,
+        columns: item.columns,
+      };
+
+      // Add element function for leaf nodes (no children)
+      if (!item.children || item.children.length === 0) {
+        // TEMPORARILY: Use same element function for all items to test if reports are the issue
+        console.log('✅ Adding element function for leaf item:', item.slug);
+        transformedItem.element = () => React.createElement(GenericReport);
+      } else {
+        console.log('📁 Processing parent item with children:', item.slug, 'children count:', item.children.length);
+      }
+
+      // Recursively transform children
+      if (item.children && item.children.length > 0) {
+        transformedItem.children = transformJsonNavigationToNavNodes(item.children, reports);
+      }
+
+      return transformedItem;
+    } catch (error) {
+      console.error('❌ Error transforming navigation item:', item, error);
+      return null;
+    }
+  }).filter(Boolean); // Remove any null items from errors
+  
+  console.log('✅ Transformation complete, result:', transformedItems);
+  return transformedItems;
+}
+
+/**
+ * Create a complete reports section for navigation from reports config
+ * Usage in config.json: Just add reports, this function auto-creates navigation
+ */
+export function createReportsNavigationSection(reports: Record<string, any>, options: {
+  sectionLabel?: string;
+  display?: "buttons" | "tabs";
+  icon?: any;
+  columns?: number;
+} = {}) {
+  if (Object.keys(reports).length === 0) return null;
+  
+  return {
+    slug: "auto-generated-reports",
+    label: options.sectionLabel || "📊 Reports",
+    display: options.display || "buttons",
+    columns: options.columns || 2,
+    children: generateReportsNavigation(reports)
+  };
 }
 
 /**
@@ -122,14 +210,31 @@ export function buildConfig(overrides: ConfigOverrides = {}): MasterConfig {
     config.features = deepMerge(config.features, overrides.features);
   }
   
-  // Apply navigation overrides (replaces entire navigation array)
-  if (overrides.navigation) {
-    config.navigation = overrides.navigation;
+  // Apply reports overrides FIRST - navigation transformation needs these
+  if (overrides.reports) {
+    console.log('🎯 Applying reports overrides from config.json');
+    console.log('🎯 Existing reports:', Object.keys(config.reports));
+    console.log('🎯 Custom reports to merge:', Object.keys(overrides.reports));
+    
+    try {
+      // Use simple spread merge instead of deepMerge for reports
+      config.reports = { ...config.reports, ...overrides.reports } as Record<string, any>;
+      console.log('✅ Reports merge successful, final reports:', Object.keys(config.reports));
+    } catch (error) {
+      console.error('❌ Reports merge failed:', error);
+      console.log('🔄 Falling back to custom reports only');
+      config.reports = { ...overrides.reports as Record<string, any> };
+    }
   }
   
-  // Apply reports overrides
-  if (overrides.reports) {
-    config.reports = deepMerge(config.reports, overrides.reports);
+  // Apply navigation overrides (replaces entire navigation array)
+  if (overrides.navigation) {
+    console.log('🎯 Applying navigation overrides from config.json');
+    console.log('🎯 Available reports for navigation:', Object.keys(config.reports));
+    // Transform JSON navigation items into proper NavNode objects with element functions
+    config.navigation = transformJsonNavigationToNavNodes(overrides.navigation, config.reports);
+  } else {
+    console.log('📋 No navigation overrides found, using default navigation');
   }
   
   return config;

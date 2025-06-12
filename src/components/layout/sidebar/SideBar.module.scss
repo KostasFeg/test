@@ -1,13 +1,13 @@
-@import "../../../styles/_variables.scss";
+// Variables are now handled by the new design system via CSS custom properties
 
 .sidebar {
   // Layout & Positioning - unbreakable width system
   position: relative;
   height: 100%;
-  z-index: var(--z-sidebar);
+  z-index: var(--z-sidebar, 100);
   display: flex;
   flex-direction: column;
-  transition: all var(--transition-normal) var(--easing-default);
+  transition: all var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden; // Prevent sidebar from scrolling
   
   // Unbreakable width constraints - prevent flex shrinking/growing
@@ -15,40 +15,40 @@
   flex-grow: 0;
 
   // Clean minimal design
-  background: var(--sidebar-bg);
-  border-right: 1px solid var(--sidebar-border);
-  box-shadow: 1px 0 3px var(--sidebar-shadow);
+  background: var(--bg-paper);
+  border-right: 1px solid var(--color-grey-200);
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.1);
 
   // Width variants with unbreakable constraints and fallbacks
   &.buttonsVariant {
-    width: var(--sidebar-width-buttons, 80px);
-    min-width: var(--sidebar-width-buttons, 80px);
-    max-width: var(--sidebar-width-buttons, 80px);
+    width: var(--layout-sidebar-width-buttons, 80px);
+    min-width: var(--layout-sidebar-width-buttons, 80px);
+    max-width: var(--layout-sidebar-width-buttons, 80px);
   }
 
   &.labelsVariant {
-    width: var(--sidebar-width-labels, 280px);
-    min-width: var(--sidebar-width-labels, 280px);
-    max-width: var(--sidebar-width-labels, 280px);
+    width: var(--layout-sidebar-width-labels, 280px);
+    min-width: var(--layout-sidebar-width-labels, 280px);
+    max-width: var(--layout-sidebar-width-labels, 280px);
   }
 
   // Responsive behavior - maintain width constraints
   @media (max-width: 768px) {
     transform: translateX(-100%);
-    z-index: calc(var(--z-sidebar) + 10);
+    z-index: calc(var(--z-sidebar, 100) + 10);
     
     // Maintain width even when transformed
     &.buttonsVariant {
-      width: var(--sidebar-width-buttons, 80px) !important;
-      min-width: var(--sidebar-width-buttons, 80px) !important;
-      max-width: var(--sidebar-width-buttons, 80px) !important;
+      width: var(--layout-sidebar-width-buttons, 80px) !important;
+      min-width: var(--layout-sidebar-width-buttons, 80px) !important;
+      max-width: var(--layout-sidebar-width-buttons, 80px) !important;
     }
 
     &.labelsVariant {
       transform: translateX(0);
-      width: var(--sidebar-width-labels, 280px) !important;
-      min-width: var(--sidebar-width-labels, 280px) !important;
-      max-width: var(--sidebar-width-labels, 280px) !important;
+      width: var(--layout-sidebar-width-labels, 280px) !important;
+      min-width: var(--layout-sidebar-width-labels, 280px) !important;
+      max-width: var(--layout-sidebar-width-labels, 280px) !important;
     }
   }
 }
@@ -71,12 +71,12 @@
   width: 100%;
   min-height: 48px;
   border: none;
-  border-radius: var(--radius-md);
-  background: var(--sidebar-item-bg);
-  color: var(--sidebar-item-text);
+  border-radius: var(--radius-medium);
+  background: var(--color-grey-50);
+  color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
-  transition: all var(--transition-fast) var(--easing-default);
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
@@ -111,8 +111,8 @@
   
   // Clean hover state
   &:hover {
-    background: var(--sidebar-item-hover);
-    color: var(--sidebar-item-text-hover);
+    background: var(--color-grey-100);
+    color: var(--text-primary);
   }
 
   &:active {
@@ -121,29 +121,29 @@
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--border-focus);
+    box-shadow: 0 0 0 2px var(--color-accent);
   }
 
   // Clean minimal active state
   &.active {
-    background: var(--sidebar-item-active);
-    color: var(--sidebar-item-text-active);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
     font-weight: 600;
     
     // Simple left border indicator
-    border-left: 2px solid var(--sidebar-indicator);
+    border-left: 2px solid var(--color-accent-dark);
   }
 
   // Disabled state
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background: var(--state-disabled);
+    background: var(--color-grey-200);
     color: var(--text-disabled);
     
     &:hover {
       transform: none;
-      background: var(--state-disabled);
+      background: var(--color-grey-200);
     }
   }
 }
@@ -156,7 +156,7 @@
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  transition: all var(--transition-fast) var(--easing-default);
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   // Icon color adjustments
   color: inherit;
@@ -169,7 +169,7 @@
   
   .navItem.active & {
     opacity: 1;
-    color: var(--sidebar-item-text-active);
+    color: var(--color-accent-contrast);
   }
 
   // SVG icons
@@ -187,7 +187,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: all var(--transition-fast) var(--easing-default);
+  transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   // Typography refinements
   letter-spacing: -0.01em;
@@ -202,8 +202,8 @@
 }
 
 .navBadge {
-  background: var(--status-error);
-  color: var(--text-inverse);
+  background: var(--color-error);
+  color: var(--color-error-contrast);
   font-size: 11px;
   font-weight: 600;
   padding: 2px 6px;
@@ -230,7 +230,7 @@
   &:not(:first-child) {
     margin-top: var(--spacing-6);
     padding-top: var(--spacing-4);
-    border-top: 1px solid var(--border-primary);
+    border-top: 1px solid var(--color-grey-200);
   }
 }
 
@@ -254,8 +254,8 @@
 // Footer area
 .footer {
   padding: var(--spacing-3); // Consistent padding all around
-  border-top: 1px solid var(--sidebar-border);
-  background: var(--surface-secondary);
+  border-top: 1px solid var(--color-grey-200);
+  background: var(--color-grey-50);
   
   // User profile area or additional actions
   .userProfile {
@@ -263,11 +263,11 @@
     align-items: center;
     gap: var(--spacing-3);
     padding: var(--spacing-2);
-    border-radius: var(--radius-md);
-    transition: all var(--transition-fast) var(--easing-default);
+    border-radius: var(--radius-medium);
+    transition: all var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
     
     &:hover {
-      background: var(--state-hover);
+      background: var(--color-grey-100);
     }
   }
   
@@ -340,10 +340,10 @@
 }
 
 .sidebar {
-  animation: slideIn var(--transition-normal) var(--easing-default);
+  animation: slideIn var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
   
   .navItem {
-    animation: fadeIn var(--transition-slow) var(--easing-default);
+    animation: fadeIn var(--transition-slow) cubic-bezier(0.4, 0, 0.2, 1);
     animation-fill-mode: both;
     
     @for $i from 1 through 10 {
@@ -361,7 +361,7 @@
   }
   
   .navItem {
-    border: 1px solid var(--border-secondary);
+    border: 1px solid var(--color-grey-300);
     
     &.active {
       border-color: var(--color-accent);

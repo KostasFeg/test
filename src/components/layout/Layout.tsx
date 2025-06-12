@@ -1,7 +1,8 @@
 import React, { ReactNode } from "react";
 import styles from "./Layout.module.scss";
 import { TopBar } from "./top-bar/TopBar";
-import { SideBar } from "./sidebar/SideBar";
+import SidebarButtons from "./sidebar/SidebarButtons";
+import SidebarLabels from "./sidebar/SidebarLabels";
 import { BottomBar, BottomBarItem } from "./bottom-bar/BottomBar";
 import clsx from "clsx";
 import FloatingBackButton from "../ui/FloatingBackButton";
@@ -43,11 +44,11 @@ export const Layout: React.FC<LayoutProps> = ({
         right={topRight}
       />
 
-      <SideBar
-        className={styles.sidebar}
-        variant={sidebarVariant}
-        items={sidebarItems}
-      />
+      {sidebarVariant === "buttons" ? (
+        <SidebarButtons className={styles.sidebar} items={sidebarItems} />
+      ) : (
+        <SidebarLabels className={styles.sidebar} items={sidebarItems} />
+      )}
 
       <main className={styles.main}>{children}</main>
 

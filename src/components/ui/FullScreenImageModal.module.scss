@@ -1,5 +1,5 @@
-@import "../../styles/variables";
-@import "../../styles/mixins";
+// Variables are now handled by the new design system via CSS custom properties
+@use "../../styles/mixins" as mixins;
 
 .modal {
   position: fixed;
@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-  font-family: $font-family-sans;
+  font-family: var(--font-family-sans);
   animation: fadeInBackdrop 0.3s ease-out;
 }
 
@@ -28,7 +28,7 @@
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  padding: $spacing-4;
+  padding: var(--spacing-4);
   box-sizing: border-box;
   min-height: 0;
 }
@@ -37,23 +37,23 @@
   width: 100%;
   height: 100%;
   max-width: none;
-  border-radius: $radius-lg;
+  border-radius: var(--radius-large);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  background: var(--color-white, $white);
+  background: var(--color-grey-50);
   animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   // Enhanced styling for better image presentation
   :global(.image-scroller-viewport) {
-    background: var(--color-white, $white);
-    border-radius: $radius-lg;
+    background: var(--color-grey-50);
+    border-radius: var(--radius-large);
   }
   
   // Better styling for content inside - optimized for image display
   :global(.image-scroller-html) {
-    background: var(--color-white, $white);
-    color: var(--color-grey-800, $grey-800);
+    background: var(--color-grey-50);
+    color: var(--color-grey-800);
     padding: 0;
-    font-family: $font-family-sans;
+    font-family: var(--font-family-sans);
     line-height: 1.6;
     display: flex;
     flex-direction: column;
@@ -65,7 +65,7 @@
       height: auto;
       display: block;
       object-fit: contain;
-      background: var(--color-white, $white);
+      background: var(--color-grey-50);
       border-radius: 0;
       box-shadow: none;
       margin: 0;
@@ -77,24 +77,24 @@
       box-sizing: border-box;
       
       &:not(img) {
-        padding: $spacing-4 $spacing-6;
+        padding: var(--spacing-4) var(--spacing-6);
       }
     }
     
     // Tables and other content should have proper padding
     table, p, h1, h2, h3, h4, h5, h6, ul, ol, div {
-      padding-left: $spacing-6;
-      padding-right: $spacing-6;
+      padding-left: var(--spacing-6);
+      padding-right: var(--spacing-6);
       margin-left: 0;
       margin-right: 0;
       
       &:first-child {
-        padding-top: $spacing-6;
+        padding-top: var(--spacing-6);
         margin-top: 0;
       }
       
       &:last-child {
-        padding-bottom: $spacing-6;
+        padding-bottom: var(--spacing-6);
         margin-bottom: 0;
       }
     }
@@ -124,7 +124,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 $spacing-6;
+  padding: 0 var(--spacing-6);
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -148,10 +148,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: $spacing-1;
-  padding: $spacing-3 $spacing-4;
+  gap: var(--spacing-1);
+  padding: var(--spacing-3) var(--spacing-4);
   border: none;
-  border-radius: $radius-lg;
+  border-radius: var(--radius-large);
   font-size: 0.9rem;
   font-weight: 600;
   font-family: inherit;
@@ -164,7 +164,7 @@
   
   span {
     font-size: 0.85rem;
-    margin-top: $spacing-1;
+    margin-top: var(--spacing-1);
     position: relative;
     z-index: 2;
   }
@@ -203,7 +203,7 @@
 
 .closeButton {
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: var(--color-white, $white);
+  color: var(--color-grey-50);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
   
   &:hover {
@@ -225,12 +225,12 @@
 }
 
 .printButton {
-  background: linear-gradient(135deg, var(--color-accent, $accent-color) 0%, var(--color-primary, $blue-500) 100%);
-  color: var(--color-white, $white);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+  color: var(--color-grey-50);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
   
   &:hover:not(:disabled) {
-    background: linear-gradient(135deg, var(--color-primary, $blue-500) 0%, #1e40af 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, #1e40af 100%);
     box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
     transform: translateY(-2px);
   }
@@ -246,11 +246,11 @@
     box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4), 0 0 0 3px rgba(37, 99, 235, 0.2);
   }
   
-      &:disabled {
-      background: linear-gradient(135deg, var(--color-grey-300, $grey-300) 0%, var(--color-grey-200, #{lighten($grey-300, 5%)}) 100%);
-      color: var(--color-grey-600, $grey-600);
-      cursor: not-allowed;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  &:disabled {
+    background: linear-gradient(135deg, var(--color-grey-300) 0%, var(--color-grey-200) 100%);
+    color: var(--color-grey-600);
+    cursor: not-allowed;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     
     &:hover {
       transform: none;
@@ -266,15 +266,15 @@
 // Responsive adjustments
 @media (max-width: 768px) {
   .buttonBar {
-    padding: 0 $spacing-2;
-    gap: $spacing-2;
+    padding: 0 var(--spacing-2);
+    gap: var(--spacing-2);
   }
   
   .closeButton,
   .printButton {
     min-width: 80px;
     min-height: 56px;
-    padding: $spacing-2 $spacing-3;
+    padding: var(--spacing-2) var(--spacing-3);
     
     span {
       font-size: 0.8rem;

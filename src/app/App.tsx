@@ -10,10 +10,20 @@ import LoadingFallback from "../components/ui/LoadingFallback";
 import TestToggles from "../components/ui/TestToggles";
 import ErrorBoundary from "../components/feedback/ErrorBoundary";
 import { ROUTES } from "../shared/constants/routes";
+import { useDesignSystemInjection } from "../shared/design-system-integration";
+import { TopBarControls } from "../components/layout/top-bar/TopBarControls";
+
+// Lazy load ConfigEditor for the dedicated route
+const ConfigEditor = React.lazy(
+  () => import("../components/config-editor/ConfigEditor")
+);
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, login } = useAuth();
   const navigation = useNavigationConfig();
+
+  // Initialize the new design system
+  useDesignSystemInjection();
 
   // Show loading while checking authentication state
   if (isLoading) {
@@ -29,7 +39,7 @@ const AppContent: React.FC = () => {
       <Layout
         sidebarItems={navigation}
         topLeft={"Retailer Portal"}
-        topRight={`retailerId: ${user?.retailerId}`}
+        topRight={<TopBarControls retailerId={user?.retailerId} />}
         topCenter={<TestToggles />}
       >
         <Suspense
@@ -37,6 +47,19 @@ const AppContent: React.FC = () => {
         >
           <Routes>
             {buildRoutes(navigation)}
+            {/* Direct route for ConfigEditor - bypasses navigation config */}
+            <Route
+              path="/configuration"
+              element={
+                <Suspense
+                  fallback={
+                    <LoadingFallback message="Loading Configuration Editor..." />
+                  }
+                >
+                  <ConfigEditor />
+                </Suspense>
+              }
+            />
             <Route
               path={ROUTES.HOME}
               element={<Navigate to="/reports" replace />}

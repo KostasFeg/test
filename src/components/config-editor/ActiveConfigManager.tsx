@@ -92,6 +92,36 @@ const ActiveConfigManager: React.FC<ActiveConfigManagerProps> = ({
     showMessage("info", "Active config cleared, reverted to default");
   };
 
+  const forceReloadConfig = () => {
+    // Clear localStorage completely and force reload
+    localStorage.removeItem("active-config-data");
+    localStorage.removeItem("active-config-timestamp");
+    localStorage.removeItem("active-config-exists");
+    localStorage.removeItem("active-config-example");
+
+    // Force reload from file system
+    window.location.reload();
+    showMessage("info", "Force reloading config from file system...");
+  };
+
+  const debugConfigState = () => {
+    const localStorageData = localStorage.getItem("active-config-data");
+    const timestamp = localStorage.getItem("active-config-timestamp");
+    const configInfo = configManager.getActiveConfigInfo();
+
+    console.log("=== CONFIG DEBUG INFO ===");
+    console.log("Has localStorage config:", !!localStorageData);
+    console.log("localStorage timestamp:", timestamp);
+    console.log("ConfigManager info:", configInfo);
+    console.log(
+      "localStorage data:",
+      localStorageData ? JSON.parse(localStorageData) : null
+    );
+    console.log("=== END DEBUG INFO ===");
+
+    showMessage("info", "Debug info logged to console (F12)");
+  };
+
   const downloadExampleConfig = () => {
     const exampleConfig = {
       name: "Example Active Config",
@@ -181,10 +211,16 @@ const ActiveConfigManager: React.FC<ActiveConfigManagerProps> = ({
             {activeConfigInfo.isActive ? (
               <>
                 <div>Config is loaded and active</div>
-                <div className={styles.timestamp}>
-                  Last modified:{" "}
-                  {new Date(activeConfigInfo.lastModified).toLocaleString()}
-                </div>
+                {activeConfigInfo.isStaleLocalStorage ? (
+                  <div className={styles.staleWarning}>
+                    ⚠️ May be cached data - no recent file system activity
+                  </div>
+                ) : (
+                  <div className={styles.timestamp}>
+                    Last modified:{" "}
+                    {new Date(activeConfigInfo.lastModified).toLocaleString()}
+                  </div>
+                )}
               </>
             ) : (
               <div>Using default configuration</div>
@@ -192,15 +228,31 @@ const ActiveConfigManager: React.FC<ActiveConfigManagerProps> = ({
           </div>
         </div>
 
-        {activeConfigInfo.isActive && (
+        <div className={styles.actionButtons}>
+          {activeConfigInfo.isActive && (
+            <button
+              className={styles.clearButton}
+              onClick={clearActiveConfig}
+              title="Clear active config and revert to default"
+            >
+              Clear Active Config
+            </button>
+          )}
           <button
-            className={styles.clearButton}
-            onClick={clearActiveConfig}
-            title="Clear active config and revert to default"
+            className={styles.debugButton}
+            onClick={debugConfigState}
+            title="Debug config state (check console)"
           >
-            Clear Active Config
+            Debug Config
           </button>
-        )}
+          <button
+            className={styles.forceReloadButton}
+            onClick={forceReloadConfig}
+            title="Force reload from file system (clears all cache)"
+          >
+            Force Reload
+          </button>
+        </div>
       </div>
 
       <div

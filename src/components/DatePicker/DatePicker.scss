@@ -1,21 +1,21 @@
 /* DatePicker.scss — Modern calendar styling aligned with design system */
 
-@import '../../styles/variables';
-@import '../../styles/mixins';
+// Variables are now handled by the new design system via CSS custom properties
+@use '../../styles/mixins' as mixins;
 
 .drp-container {
   width: 320px;
-  padding: $spacing-4;
-  background: var(--color-white, $white);
-  border: 1px solid var(--color-grey-300, $grey-300);
-  border-radius: $radius-lg;
+  padding: var(--spacing-4);
+  background: var(--color-grey-50);
+  border: 1px solid var(--color-grey-300);
+  border-radius: var(--radius-large);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  gap: $spacing-3;
-  font-family: $font-family-sans;
+  gap: var(--spacing-3);
+  font-family: var(--font-family-sans);
   font-size: 14px;
-  color: var(--color-grey-800, $grey-800);
+  color: var(--color-grey-800);
 }
 
 .drp-title { 
@@ -23,15 +23,15 @@
   font-weight: 600; 
   font-size: 16px;
   margin: 0;
-  color: var(--color-grey-800, $grey-800);
+  color: var(--color-grey-800);
 }
 
 /* Compact selection display */
-  .drp-selection-display {
-    padding: $spacing-2 $spacing-3;
-    background: var(--color-grey-50, #{lighten($grey-100, 3%)});
-  border-radius: $radius-md;
-  border: 1px solid var(--color-grey-300, $grey-300);
+.drp-selection-display {
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--color-grey-50);
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--color-grey-300);
   font-size: 13px;
   text-align: center;
 }
@@ -40,17 +40,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: $spacing-3;
+  gap: var(--spacing-3);
   flex-wrap: wrap;
   
   span {
     font-weight: 500;
-    color: var(--color-grey-800, $grey-800);
+    color: var(--color-grey-800);
   }
 }
 
 .drp-range-separator {
-  color: var(--color-accent, $accent-color);
+  color: var(--color-accent);
   font-weight: 600;
   font-size: 16px;
 }
@@ -59,7 +59,7 @@
 .drp-inputs {
   display: flex;
   justify-content: space-between;
-  gap: $spacing-3;
+  gap: var(--spacing-3);
 }
 
 .drp-label {
@@ -67,42 +67,42 @@
   flex-direction: column;
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-grey-800, $grey-800);
+  color: var(--color-grey-800);
   flex: 1;
 
   .drp-input {
-    margin-top: $spacing-1;
-    padding: $spacing-2 $spacing-3;
-    border: 1px solid var(--color-grey-300, $grey-300);
-    border-radius: $radius-md;
+    margin-top: var(--spacing-1);
+    padding: var(--spacing-2) var(--spacing-3);
+    border: 1px solid var(--color-grey-300);
+    border-radius: var(--radius-medium);
     font-size: 13px;
-    background: var(--color-white, $white);
-    color: var(--color-grey-800, $grey-800);
+    background: var(--color-grey-50);
+    color: var(--color-grey-800);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
     &:focus {
       outline: none;
-      border-color: var(--color-accent, $accent-color);
+      border-color: var(--color-accent);
       box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb, 37, 99, 235), 0.1);
     }
 
-          &:hover {
-        border-color: var(--color-grey-400, #{darken($grey-300, 10%)});
-      }
+    &:hover {
+      border-color: var(--color-grey-400);
+    }
   }
 
   .drp-time-input {
-    margin-top: $spacing-1;
-    padding: $spacing-1 $spacing-2;
-    border: 1px solid var(--color-grey-300, $grey-300);
-    border-radius: $radius-sm;
+    margin-top: var(--spacing-1);
+    padding: var(--spacing-1) var(--spacing-2);
+    border: 1px solid var(--color-grey-300);
+    border-radius: var(--radius-small);
     font-size: 12px;
-    background: var(--color-white, $white);
-    color: var(--color-grey-800, $grey-800);
+    background: var(--color-grey-50);
+    color: var(--color-grey-800);
     
     &:focus {
       outline: none;
-      border-color: var(--color-accent, $accent-color);
+      border-color: var(--color-accent);
       box-shadow: 0 0 0 2px rgba(var(--color-accent-rgb, 37, 99, 235), 0.1);
     }
   }
@@ -110,9 +110,9 @@
 
 /* Navigation */
 .drp-nav { 
-  @include flex-center;
-  gap: $spacing-2;
-  margin: $spacing-2 0;
+  @include mixins.flex-center;
+  gap: var(--spacing-2);
+  margin: var(--spacing-2) 0;
 }
 
 .drp-nav-btn {
@@ -121,19 +121,19 @@
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
-  padding: $spacing-2;
-  border-radius: $radius-sm;
-  color: var(--color-grey-800, $grey-800);
+  padding: var(--spacing-2);
+  border-radius: var(--radius-small);
+  color: var(--color-grey-800);
   transition: all 0.2s ease;
   
   &:hover { 
-    background: var(--color-accent-bg, $accent-color-bg);
-    color: var(--color-accent, $accent-color);
+    background: var(--color-accent-light);
+    color: var(--color-accent);
   }
 
   &:focus {
     outline: none;
-    background: var(--color-accent-bg, $accent-color-bg);
+    background: var(--color-accent-light);
     box-shadow: 0 0 0 2px rgba(var(--color-accent-rgb, 37, 99, 235), 0.2);
   }
 }
@@ -143,7 +143,7 @@
   text-align: center; 
   font-weight: 600;
   font-size: 15px;
-  color: var(--color-grey-800, $grey-800);
+  color: var(--color-grey-800);
 }
 
 /* Weekdays header */
@@ -153,15 +153,15 @@
   text-align: center;
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-grey-800, $grey-800);
-  margin-bottom: $spacing-2;
+  color: var(--color-grey-800);
+  margin-bottom: var(--spacing-2);
   gap: 1px;
 }
 
 .drp-weekday {
-  padding: $spacing-2 0;
-  background: var(--color-grey-50, #{lighten($grey-100, 2%)});
-  border-radius: $radius-sm;
+  padding: var(--spacing-2) 0;
+  background: var(--color-grey-50);
+  border-radius: var(--radius-small);
 }
 
 /* Day grid */
@@ -180,9 +180,9 @@
 .drp-day {
   width: 40px; 
   height: 40px;
-  @include flex-center;
+  @include mixins.flex-center;
   border: 1px solid transparent;
-  border-radius: $radius-sm;
+  border-radius: var(--radius-small);
   user-select: none; 
   cursor: pointer;
   transition: all 0.2s ease;
@@ -190,9 +190,9 @@
   position: relative;
 
   &:hover:not(&--disabled) { 
-    background: var(--color-accent-bg, $accent-color-bg);
-    border-color: var(--color-accent, $accent-color);
-    color: var(--color-accent, $accent-color);
+    background: var(--color-accent-light);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
   &:focus {
@@ -201,50 +201,50 @@
   }
 
   &--muted { 
-    color: var(--color-grey-200, #{lighten($grey-300, 5%)});
+    color: var(--color-grey-200);
     
     &:hover:not(.drp-day--disabled) {
-      color: var(--color-grey-800, $grey-800);
-      background: var(--color-grey-50, #{lighten($grey-100, 3%)});
-      border-color: var(--color-grey-300, $grey-300);
+      color: var(--color-grey-800);
+      background: var(--color-grey-50);
+      border-color: var(--color-grey-300);
     }
   }
 
   &--saturday { 
-    color: var(--status-error);
+    color: var(--color-error);
     font-weight: 600;
   }
 
   // Today gets a distinct green color to differentiate from selected
   &--today { 
-    background: var(--status-success);
-    color: var(--status-success-contrast);
+    background: var(--color-success);
+    color: var(--color-success-contrast);
     font-weight: 600;
-    box-shadow: var(--btn-shadow-hover);
+    box-shadow: var(--shadow-small);
 
     &:hover {
-      background: var(--status-success-dark);
-      color: var(--status-success-contrast);
+      background: var(--color-success-dark);
+      color: var(--color-success-contrast);
       border-color: transparent;
     }
   }
 
   // Selected gets the main accent color (blue)
   &--selected { 
-    background: var(--color-accent, $accent-color);
-    color: var(--color-white, $white);
+    background: var(--color-accent);
+    color: var(--color-grey-50);
     font-weight: 600;
     box-shadow: 0 2px 6px rgba(var(--color-accent-rgb, 37, 99, 235), 0.4);
 
     &:hover {
-      background: var(--color-accent-dark, #{darken($accent-color, 5%)});
-      color: var(--color-white, $white);
+      background: var(--color-accent-dark);
+      color: var(--color-grey-50);
       border-color: transparent;
     }
 
     // If today is also selected, use a gradient to show both states
     &.drp-day--today {
-      background: linear-gradient(135deg, var(--status-success) 0%, var(--color-accent, $accent-color) 100%);
+      background: linear-gradient(135deg, var(--color-success) 0%, var(--color-accent) 100%);
       box-shadow: 0 2px 8px rgba(var(--color-accent-rgb, 37, 99, 235), 0.4);
     }
   }
@@ -263,19 +263,19 @@
 
 /* Bottom action button */
 .drp-action-btn {
-  margin-top: $spacing-3; 
-  padding: $spacing-3 $spacing-4;
-  background: var(--color-accent, $accent-color); 
-  color: var(--color-white, $white);
+  margin-top: var(--spacing-3); 
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-accent); 
+  color: var(--color-grey-50);
   border: none; 
-  border-radius: $radius-md;
+  border-radius: var(--radius-medium);
   font-size: 14px; 
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover { 
-    background: var(--color-accent-dark, #{darken($accent-color, 5%)});
+    background: var(--color-accent-dark);
     box-shadow: 0 2px 8px rgba(var(--color-accent-rgb, 37, 99, 235), 0.3);
   }
 

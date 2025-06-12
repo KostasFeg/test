@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System Test</title>
+    <style>
+        body {
+            font-family: var(--font-family-sans, system-ui, sans-serif);
+            background: var(--bg-default, #f5f5f5);
+            color: var(--text-primary, #262626);
+            padding: 2rem;
+        }
+        
+        .test-card {
+            background: var(--bg-paper, white);
+            padding: var(--spacing-4, 1rem);
+            border-radius: var(--radius-medium, 0.5rem);
+            margin-bottom: var(--spacing-4, 1rem);
+            border: 1px solid var(--color-grey-200, #e5e7eb);
+        }
+        
+        .color-test {
+            background: var(--color-primary, #2563eb);
+            color: var(--color-primary-contrast, white);
+            padding: var(--spacing-2, 0.5rem);
+            border-radius: var(--radius-small, 0.25rem);
+        }
+    </style>
+</head>
+<body>
+    <h1>Design System CSS Variables Test</h1>
+    
+    <div class="test-card">
+        <h2>Typography Test</h2>
+        <p>This text should use the design system font family: <code>var(--font-family-sans)</code></p>
+    </div>
+    
+    <div class="test-card">
+        <h2>Color Test</h2>
+        <div class="color-test">
+            This should have primary background with contrast text
+        </div>
+    </div>
+    
+    <div class="test-card">
+        <h2>Available CSS Variables</h2>
+        <div id="css-variables-list">Loading...</div>
+    </div>
+
+    <script>
+        // List all CSS custom properties
+        function listCSSVariables() {
+            const cssVariables = [];
+            const allRules = Array.from(document.styleSheets).flatMap(sheet => {
+                try {
+                    return Array.from(sheet.cssRules || sheet.rules);
+                } catch (e) {
+                    return [];
+                }
+            });
+
+            allRules.forEach(rule => {
+                if (rule.type === CSSRule.STYLE_RULE) {
+                    const style = rule.style;
+                    for (let i = 0; i < style.length; i++) {
+                        const property = style[i];
+                        if (property.startsWith('--')) {
+                            cssVariables.push(`${property}: ${style.getPropertyValue(property)}`);
+                        }
+                    }
+                }
+            });
+
+            const container = document.getElementById('css-variables-list');
+            if (cssVariables.length > 0) {
+                container.innerHTML = `<pre>${cssVariables.join('\n')}</pre>`;
+            } else {
+                container.innerHTML = '<p style="color: red;">No CSS variables found! This indicates the design system is not injecting variables.</p>';
+            }
+        }
+
+        // Wait a bit for any dynamic CSS injection
+        setTimeout(listCSSVariables, 1000);
+    </script>
+</body>
+</html> 

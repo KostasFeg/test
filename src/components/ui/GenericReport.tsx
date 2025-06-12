@@ -8,7 +8,9 @@ import {
   ReportParams,
 } from "../../services/mockReportService";
 import { getReportBySlug } from "../../config/reportConfig";
+import { useReportsConfig } from "../../shared/hooks/useConfig";
 import { format } from "date-fns";
+import Button from "../primitives/Button";
 // @ts-ignore
 import styles from "./GenericReport.module.scss";
 
@@ -109,11 +111,20 @@ const GenericReport: React.FC<GenericReportProps> = ({
     return pathSegments[pathSegments.length - 1] || "";
   }, [propReportSlug, location.pathname]);
 
+  const reportsConfig = useReportsConfig();
+
   // Find the report configuration by slug
   const reportConfig = useMemo(() => {
     if (!reportSlug) return null;
+
+    // Prefer user-supplied config (via config.json) if available
+    if (reportsConfig && (reportsConfig as any)[reportSlug]) {
+      return (reportsConfig as any)[reportSlug];
+    }
+
+    // Fallback to built-in static config
     return getReportBySlug(reportSlug);
-  }, [reportSlug]);
+  }, [reportSlug, reportsConfig]);
 
   // Initialize state based on report configuration
   const [state, setState] = useState<ReportState>(() => {
@@ -390,32 +401,29 @@ const GenericReport: React.FC<GenericReportProps> = ({
           {propI18n.get(effectiveReportConfig.name)}
         </h1>
 
-        {/* Action buttons and filters */}
-        {filters.length > 0 && (
-          <div className={styles["action-container"]}>
+        {/* Filters (optional) + Action buttons */}
+        <div className={styles["action-container"]}>
+          {filters.length > 0 && (
             <div className={styles.filters}>{filters}</div>
-            <div className={styles["action-buttons"]}>
-              <button
-                className={`${styles["generate-btn"]} ${
-                  !htmlCode ? styles.disabled : ""
-                }`}
-                onClick={() => fetchReport()}
-                disabled={isLoading}
-              >
-                {isLoading ? "Generating..." : propI18n.get("generate_report")}
-              </button>
-              <button
-                className={`${styles["print-btn"]} ${
-                  !htmlCode ? styles.disabled : ""
-                }`}
-                onClick={handlePrintReport}
-                disabled={!htmlCode || isLoading}
-              >
-                {propI18n.get("print_report")}
-              </button>
-            </div>
+          )}
+          <div className={styles["action-buttons"]}>
+            <Button
+              variant="primary"
+              onClick={() => fetchReport()}
+              disabled={isLoading}
+            >
+              {isLoading ? "Generating..." : propI18n.get("generate_report")}
+            </Button>
+
+            <Button
+              variant="secondary"
+              onClick={handlePrintReport}
+              disabled={!htmlCode || isLoading}
+            >
+              {propI18n.get("print_report")}
+            </Button>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Report content area */}
@@ -431,12 +439,9 @@ const GenericReport: React.FC<GenericReportProps> = ({
           <div className={styles["report-error"]}>
             <h4>Error Loading Report</h4>
             <p>{error}</p>
-            <button
-              className={styles["retry-btn"]}
-              onClick={() => fetchReport()}
-            >
+            <Button variant="primary" onClick={() => fetchReport()}>
               Retry
-            </button>
+            </Button>
           </div>
         )}
 
@@ -444,12 +449,9 @@ const GenericReport: React.FC<GenericReportProps> = ({
           <div className={styles["no-data"]}>
             <h4>No Data Available</h4>
             <p>No data available for this report configuration.</p>
-            <button
-              className={styles["generate-btn"]}
-              onClick={() => fetchReport()}
-            >
+            <Button variant="primary" onClick={() => fetchReport()}>
               Generate Report
-            </button>
+            </Button>
           </div>
         )}
 
