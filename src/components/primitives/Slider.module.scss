@@ -1,0 +1,234 @@
+.sliderContainer {
+  // Base layout
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  width: 100%;
+  font-family: var(--font-family-sans);
+  
+  // Disabled state
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    * {
+      cursor: not-allowed;
+    }
+  }
+  
+  // Dragging state
+  &.dragging {
+    user-select: none;
+    
+    .thumb {
+      transform: translateX(-50%) scale(1.2);
+      box-shadow: 0 0 0 8px rgba(var(--color-primary-rgb, 37, 99, 235), 0.1);
+    }
+  }
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-1);
+}
+
+.valueDisplay {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 13px;
+  background: var(--color-primary-light, rgba(37, 99, 235, 0.1));
+  padding: 2px 8px;
+  border-radius: var(--radius-medium);
+  min-width: 40px;
+  text-align: center;
+}
+
+.sliderWrapper {
+  position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  
+  &:hover {
+    .thumb {
+      transform: translateX(-50%) scale(1.1);
+    }
+    
+    .track {
+      height: 6px;
+    }
+  }
+}
+
+.slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+  
+  &:focus {
+    outline: none;
+    
+    + .track {
+      box-shadow: 0 0 0 2px var(--color-primary-light);
+    }
+    
+    ~ .thumb {
+      box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb, 37, 99, 235), 0.2);
+    }
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: var(--color-grey-200);
+  border-radius: 2px;
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); // Fixed timing - don't slow down the controls!
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  border-radius: 2px;
+  transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1); // Fixed timing - don't slow down the controls!
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -2px;
+    width: 4px;
+    height: 100%;
+    background: inherit;
+    border-radius: 2px;
+    opacity: 0.8;
+  }
+}
+
+.thumb {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: var(--color-primary);
+  border: 2px solid var(--bg-paper, #ffffff);
+  border-radius: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); // Fixed timing - don't slow down the controls!
+  cursor: grab;
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    transform: translateX(-50%) translateY(-50%) scale(1.1);
+  }
+  
+  &:active {
+    cursor: grabbing;
+    transform: translateX(-50%) translateY(-50%) scale(1.2);
+  }
+}
+
+/* ───────── Size Variants ───────── */
+.small {
+  .sliderWrapper {
+    height: 16px;
+  }
+  
+  .track {
+    height: 3px;
+  }
+  
+  .thumb {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .label {
+    font-size: 12px;
+  }
+  
+  .valueDisplay {
+    font-size: 11px;
+    padding: 1px 6px;
+  }
+}
+
+.large {
+  .sliderWrapper {
+    height: 24px;
+  }
+  
+  .track {
+    height: 6px;
+    
+    &:hover {
+      height: 8px;
+    }
+  }
+  
+  .thumb {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .label {
+    font-size: 16px;
+  }
+  
+  .valueDisplay {
+    font-size: 14px;
+    padding: 4px 10px;
+  }
+}
+
+/* ───────── Accessibility ───────── */
+@media (prefers-reduced-motion: reduce) {
+  .thumb,
+  .track,
+  .fill {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .track {
+    border: 1px solid var(--text-primary);
+  }
+  
+  .thumb {
+    border-width: 3px;
+    border-color: var(--text-primary);
+  }
+}
+
+/* ───────── Dark Theme ───────── */
+@media (prefers-color-scheme: dark) {
+  .track {
+    background: var(--color-grey-700);
+  }
+  
+  .thumb {
+    border-color: var(--color-grey-800);
+  }
+  
+  .valueDisplay {
+    background: rgba(var(--color-primary-rgb, 37, 99, 235), 0.2);
+  }
+} 

@@ -3,6 +3,9 @@ import { MasterConfig } from "../../shared/config/master.config";
 import { useConfig } from "../../shared/hooks/useConfig";
 import styles from "./ConfigEditor.module.scss";
 import { configManager } from "../../shared/config/config.manager";
+import Slider from "../primitives/Slider";
+import { Dropdown } from "../primitives";
+import type { DropdownOption } from "../primitives";
 
 import ActiveConfigManager from "./ActiveConfigManager";
 import "./ConfigEditor.scss";
@@ -159,6 +162,74 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
   );
   const [showProfileManager, setShowProfileManager] = useState(false);
 
+  // Sidebar variant options for dropdown
+  const sidebarVariantOptions: DropdownOption[] = [
+    {
+      value: "labels",
+      label: "Labels (Wide sidebar with text)",
+      icon: "📝",
+      description: "Full text navigation with labels",
+    },
+    {
+      value: "buttons",
+      label: "Buttons (Narrow sidebar with icons)",
+      icon: "🔘",
+      description: "Icon-only navigation for compact view",
+    },
+  ];
+
+  // Easing function options for dropdown
+  const easingFunctionOptions: DropdownOption[] = [
+    {
+      value: "cubic-bezier(0.4, 0, 0.2, 1)",
+      label: "Default (Material Design)",
+      icon: "📈",
+      description: "Smooth start and end",
+    },
+    {
+      value: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+      label: "Bounce",
+      icon: "🎾",
+      description: "Bouncy spring animation",
+    },
+    {
+      value: "cubic-bezier(0.4, 0, 0.6, 1)",
+      label: "Sharp",
+      icon: "⚡",
+      description: "Quick and decisive",
+    },
+    {
+      value: "ease",
+      label: "CSS Ease",
+      icon: "🌊",
+      description: "Standard CSS easing",
+    },
+    {
+      value: "ease-in",
+      label: "Ease In",
+      icon: "📉",
+      description: "Slow start, fast end",
+    },
+    {
+      value: "ease-out",
+      label: "Ease Out",
+      icon: "📊",
+      description: "Fast start, slow end",
+    },
+    {
+      value: "ease-in-out",
+      label: "Ease In-Out",
+      icon: "〰️",
+      description: "Slow start and end",
+    },
+    {
+      value: "linear",
+      label: "Linear",
+      icon: "📏",
+      description: "Constant speed",
+    },
+  ];
+
   // Color utility functions
   const lightenColor = (hex: string, percent: number): string => {
     const num = parseInt(hex.replace("#", ""), 16);
@@ -196,6 +267,29 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
         .toString(16)
         .slice(1)
     );
+  };
+
+  // Animation timing helper functions
+  const parseAnimationTime = (timeString: string): number => {
+    // Convert "0.15s" or "150ms" to seconds as number
+    if (timeString.endsWith("ms")) {
+      return parseFloat(timeString.replace("ms", "")) / 1000;
+    } else if (timeString.endsWith("s")) {
+      return parseFloat(timeString.replace("s", ""));
+    }
+    // Fallback: assume it's already in seconds
+    return parseFloat(timeString) || 0;
+  };
+
+  const formatAnimationTime = (seconds: number): string => {
+    // Convert seconds to appropriate string format
+    if (seconds === 0) {
+      return "0s";
+    } else if (seconds < 1) {
+      return `${Math.round(seconds * 1000)}ms`;
+    } else {
+      return `${Number(seconds.toFixed(2))}s`; // Remove trailing zeros
+    }
   };
 
   // Auto-save to localStorage
@@ -256,6 +350,20 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
       const colorRegex = /^#[0-9A-Fa-f]{6}$|^rgb\(|^rgba\(|^hsl\(|^hsla\(/;
       if (!colorRegex.test(value)) {
         return "Invalid color format. Use hex, rgb, rgba, hsl, or hsla.";
+      }
+    }
+
+    // Validate animation timing values
+    if (
+      (path.includes("animation") || path.includes("transition")) &&
+      typeof value === "string" &&
+      (path.includes("Fast") ||
+        path.includes("Medium") ||
+        path.includes("Slow"))
+    ) {
+      const timeRegex = /^(\d+(\.\d+)?)(ms|s)$/;
+      if (!timeRegex.test(value)) {
+        return "Invalid time format. Use format like '0.15s' or '150ms'.";
       }
     }
 
@@ -656,6 +764,120 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
     );
   };
 
+  // Render easing function dropdown
+  const renderEasingDropdown = (key: string, value: string, label?: string) => {
+    const labelText = label || getVariableLabel(key);
+
+    // Check if current value is in our predefined options, if not add it as custom
+    const options = [...easingFunctionOptions];
+    const isCustomValue = !options.some((option) => option.value === value);
+
+    if (isCustomValue && value) {
+      options.push({
+        value: value,
+        label: "Custom",
+        icon: "🛠️",
+        description: value,
+      });
+    }
+
+    return (
+      <div key={key} className="config-item">
+        <Dropdown
+          label={labelText}
+          value={value}
+          options={options}
+          onChange={(newValue) => handleConfigChange(key, newValue)}
+          placeholder="Select easing function..."
+        />
+      </div>
+    );
+  };
+
+  // Render animation timing slider
+  const renderAnimationSlider = (
+    key: string,
+    value: string,
+    label?: string
+  ) => {
+    const numericValue = parseAnimationTime(value);
+    const labelText = label || getVariableLabel(key);
+
+    return (
+      <div key={key} className="config-item">
+        <Slider
+          value={numericValue}
+          min={0}
+          max={3}
+          step={0.01}
+          label={labelText}
+          formatValue={formatAnimationTime}
+          onChange={(newValue) => {
+            const formattedValue = formatAnimationTime(newValue);
+            console.log(
+              `🎛️ Slider change: ${key} = ${formattedValue} (from ${newValue}s)`
+            );
+
+            // Create updated config with the new value
+            const newConfig = { ...editedConfig };
+            const keys = key.split(".");
+            let current: any = newConfig;
+
+            // Navigate to the parent object
+            for (let i = 0; i < keys.length - 1; i++) {
+              if (!current[keys[i]]) current[keys[i]] = {};
+              current = current[keys[i]];
+            }
+
+            // Set the value
+            current[keys[keys.length - 1]] = formattedValue;
+
+            // Sync between theme.transitions and ui sections
+            if (key.includes("theme.transitions.transition")) {
+              const speedType = key.includes("Fast")
+                ? "Fast"
+                : key.includes("Medium")
+                  ? "Medium"
+                  : "Slow";
+              const uiKey =
+                `animation${speedType}` as keyof typeof newConfig.ui;
+              if (newConfig.ui && uiKey in newConfig.ui) {
+                (newConfig.ui as any)[uiKey] = formattedValue;
+                console.log(
+                  `🔄 Syncing ${key} → ui.${uiKey} = ${formattedValue}`
+                );
+              }
+            } else if (key.includes("ui.animation")) {
+              const speedType = key.includes("Fast")
+                ? "Fast"
+                : key.includes("Medium")
+                  ? "Medium"
+                  : "Slow";
+              const themeKey =
+                `transition${speedType}` as keyof typeof newConfig.theme.transitions;
+              if (
+                newConfig.theme?.transitions &&
+                themeKey in newConfig.theme.transitions
+              ) {
+                (newConfig.theme.transitions as any)[themeKey] = formattedValue;
+                console.log(
+                  `🔄 Syncing ${key} → theme.transitions.${themeKey} = ${formattedValue}`
+                );
+              }
+            }
+
+            // Update state
+            setEditedConfig(newConfig);
+            setHasUnsavedChanges(true);
+
+            // Apply immediately to see live updates
+            configManager.updateConfig(newConfig);
+          }}
+        />
+      </div>
+    );
+  };
+
   // Get nested value from config
   const getNestedValue = (obj: any, path: string) => {
     return path.split(".").reduce((current, key) => current?.[key], obj);
@@ -668,7 +890,6 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
     { key: "theme.transitions", label: "Transitions & Animations", icon: "⚡" },
     { key: "theme.interactive", label: "Interactive States", icon: "🖱️" },
     { key: "layout", label: "Layout & Navigation", icon: "📐" },
-    { key: "ui.behavior", label: "Animations & Feel", icon: "⚡" },
     { key: "branding", label: "Branding & Identity", icon: "🏢" },
     { key: "advanced", label: "Advanced Settings", icon: "⚙️" },
   ];
@@ -1183,46 +1404,53 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
               </h2>
               <p className="section-description">
                 Configure animation timing and easing functions for smooth,
-                responsive interactions that feel natural and polished.
+                responsive interactions. Use the sliders to easily adjust timing
+                from 0 to 3 seconds.
               </p>
               <div className="config-subsections">
                 <div className="subsection">
                   <h3>Duration</h3>
+                  <p className="subsection-description">
+                    Control how fast animations play. Drag the sliders to see
+                    instant feedback.
+                  </p>
                   <div className="config-grid">
-                    {renderInput(
+                    {renderAnimationSlider(
                       "theme.transitions.transitionFast",
                       editedConfig.theme.transitions.transitionFast,
-                      "string"
+                      "Fast Transition"
                     )}
-                    {renderInput(
+                    {renderAnimationSlider(
                       "theme.transitions.transitionMedium",
                       editedConfig.theme.transitions.transitionMedium,
-                      "string"
+                      "Medium Transition"
                     )}
-                    {renderInput(
+                    {renderAnimationSlider(
                       "theme.transitions.transitionSlow",
                       editedConfig.theme.transitions.transitionSlow,
-                      "string"
+                      "Slow Transition"
                     )}
                   </div>
                 </div>
                 <div className="subsection">
                   <h3>Easing Functions</h3>
+                  <p className="subsection-description">
+                    Choose animation easing curves for smooth, bouncy, or sharp
+                    motion effects. These control how animations accelerate and
+                    decelerate.
+                  </p>
                   <div className="config-grid">
-                    {renderInput(
+                    {renderEasingDropdown(
                       "theme.transitions.easingDefault",
-                      editedConfig.theme.transitions.easingDefault,
-                      "string"
+                      editedConfig.theme.transitions.easingDefault
                     )}
-                    {renderInput(
+                    {renderEasingDropdown(
                       "theme.transitions.easingBounce",
-                      editedConfig.theme.transitions.easingBounce,
-                      "string"
+                      editedConfig.theme.transitions.easingBounce
                     )}
-                    {renderInput(
+                    {renderEasingDropdown(
                       "theme.transitions.easingSharp",
-                      editedConfig.theme.transitions.easingSharp,
-                      "string"
+                      editedConfig.theme.transitions.easingSharp
                     )}
                   </div>
                 </div>
@@ -1291,27 +1519,15 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                   <h3>📱 Navigation Configuration</h3>
                   <div className="config-grid">
                     <div className="input-group">
-                      <label htmlFor="sidebar-variant">
-                        Default Sidebar Variant
-                      </label>
-                      <select
-                        id="sidebar-variant"
+                      <Dropdown
+                        label="Default Sidebar Variant"
                         value={editedConfig.ui.defaultSidebarVariant}
-                        onChange={(e) =>
-                          handleConfigChange(
-                            "ui.defaultSidebarVariant",
-                            e.target.value
-                          )
+                        options={sidebarVariantOptions}
+                        onChange={(value) =>
+                          handleConfigChange("ui.defaultSidebarVariant", value)
                         }
-                        className="enhanced-select"
-                      >
-                        <option value="labels">
-                          📝 Labels (Wide sidebar with text)
-                        </option>
-                        <option value="buttons">
-                          🔘 Buttons (Narrow sidebar with icons)
-                        </option>
-                      </select>
+                        placeholder="Select sidebar variant..."
+                      />
                       <small>
                         Choose how the sidebar displays navigation items
                       </small>
@@ -1344,6 +1560,11 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
 
                 <div className="subsection">
                   <h3>📏 Sidebar Dimensions</h3>
+                  <p className="subsection-description">
+                    Control the width of the sidebar in different display modes.
+                    Buttons mode shows icon-only navigation, Labels mode shows
+                    full text labels.
+                  </p>
                   <div className="config-grid">
                     {renderInput(
                       "layout.sidebarWidth.buttons",
@@ -1360,6 +1581,10 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
 
                 <div className="subsection">
                   <h3>📐 Bar Heights</h3>
+                  <p className="subsection-description">
+                    Control the height of the top and bottom navigation bars.
+                    Changes apply immediately to the layout grid.
+                  </p>
                   <div className="config-grid">
                     {renderInput(
                       "layout.topBarHeight",
@@ -1433,56 +1658,6 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                       "theme.borderRadius.radiusLarge",
                       editedConfig.theme.borderRadius.radiusLarge,
                       "string"
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Animations & Feel */}
-          {activeSection === "ui.behavior" && (
-            <div className="config-section">
-              <h2 className={styles.sectionHeader}>⚡ Animations & Feel</h2>
-              <p className="section-description">
-                Control how your application feels through animations and
-                interactions
-              </p>
-
-              <div className="config-subsections">
-                <div className="subsection">
-                  <h3>Animation Timing</h3>
-                  <div className="config-grid">
-                    {renderInput(
-                      "ui.animationFast",
-                      editedConfig.ui.animationFast,
-                      "string"
-                    )}
-                    {renderInput(
-                      "ui.animationMedium",
-                      editedConfig.ui.animationMedium,
-                      "string"
-                    )}
-                    {renderInput(
-                      "ui.animationSlow",
-                      editedConfig.ui.animationSlow,
-                      "string"
-                    )}
-                  </div>
-                </div>
-
-                <div className="subsection">
-                  <h3>Sidebar Behavior</h3>
-                  <div className="config-grid">
-                    {renderInput(
-                      "ui.defaultSidebarVariant",
-                      editedConfig.ui.defaultSidebarVariant,
-                      "string"
-                    )}
-                    {renderInput(
-                      "ui.defaultShowBottomBar",
-                      editedConfig.ui.defaultShowBottomBar,
-                      "boolean"
                     )}
                   </div>
                 </div>

@@ -6,16 +6,18 @@
 }
 
 :root {
-  // Layout dimensions - adjust these to customize the layout
+  // Layout dimensions - these will be overridden by design system configuration
   // SAFE RANGES (enforced by CSS clamp()):
   // --topbar-height: 40px to 100px (desktop), 40px to 80px (mobile)
   // --bottombar-height: 50px to 120px (desktop), 50px to 100px (mobile)  
   // --sidebar-width-buttons: 60px to 300px (desktop), 60px to 200px (mobile)
   // --sidebar-width-labels: 180px to 400px
-  --topbar-height: 60px;
-  --bottombar-height: 70px;
-  --sidebar-width-buttons: 80px;
-  --sidebar-width-labels: 240px;
+  
+  // Legacy variables for backward compatibility - will be overridden by --layout-* variables
+  --topbar-height: var(--layout-topbar-height, 60px);
+  --bottombar-height: var(--layout-bottombar-height, 70px);
+  --sidebar-width-buttons: var(--layout-sidebar-width-buttons, 80px);
+  --sidebar-width-labels: var(--layout-sidebar-width-labels, 240px);
   
   // Z-index layers
   --z-topbar: 100;

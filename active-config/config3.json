@@ -1,0 +1,395 @@
+{
+  "name": "Government & Civic Theme",
+  "description": "Professional government and public sector theme with civic analytics, public service metrics, and comprehensive transparency reporting. Perfect for government agencies and civic organizations.",
+  "config": {
+    "branding": {
+      "company": {
+        "name": "Civic Analytics Platform",
+        "displayName": "Public Sector Intelligence & Transparency Portal"
+      },
+      "app": {
+        "name": "Government Performance Dashboard",
+        "version": "6.0.1",
+        "description": "Comprehensive public sector analytics and citizen service management platform"
+      }
+    },
+    "theme": {
+      "colors": {
+        "primary": "#1e3a8a",
+        "secondary": "#1f2937",
+        "accent": "#dc2626",
+        "success": "#059669",
+        "warning": "#d97706",
+        "error": "#dc2626",
+        "info": "#0369a1"
+      },
+      "shadows": {
+        "shadowSmall": "0 1px 3px rgba(30, 58, 138, 0.08)",
+        "shadowMedium": "0 4px 12px rgba(30, 58, 138, 0.1)",
+        "shadowLarge": "0 12px 24px rgba(30, 58, 138, 0.12)",
+        "shadowXLarge": "0 24px 48px rgba(30, 58, 138, 0.15)",
+        "shadowInner": "inset 0 2px 4px rgba(30, 58, 138, 0.06)",
+        "shadowFocus": "0 0 0 3px rgba(30, 58, 138, 0.15)"
+      },
+      "transitions": {
+        "transitionFast": "0.25s",
+        "transitionMedium": "0.4s",
+        "transitionSlow": "0.6s",
+        "easingDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "easingBounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "easingSharp": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      },
+      "borderRadius": {
+        "radiusSmall": "0.25rem",
+        "radiusMedium": "0.375rem",
+        "radiusLarge": "0.5rem",
+        "radiusXLarge": "0.75rem"
+      }
+    },
+    "layout": {
+      "sidebarWidth": {
+        "buttons": "100px",
+        "labels": "380px"
+      },
+      "topBarHeight": "76px",
+      "bottomBarHeight": "0px"
+    },
+    "ui": {
+      "defaultSidebarVariant": "labels",
+      "defaultShowBottomBar": false,
+      "animationFast": "0.25s",
+      "animationMedium": "0.4s",
+      "animationSlow": "0.6s"
+    },
+    "features": {
+      "enableDebugReports": false,
+      "enableAdvancedFilters": true,
+      "enableThemeCustomization": false,
+      "enableBulkOperations": true,
+      "enableOfflineMode": false
+    },
+    "navigation": [
+      {
+        "slug": "civic-dashboard",
+        "label": "🏛️ Civic Dashboard"
+      },
+      {
+        "slug": "citizen-services",
+        "label": "👥 Citizen Services",
+        "display": "buttons",
+        "columns": 2,
+        "children": [
+          {
+            "slug": "service-requests",
+            "label": "Service Requests"
+          },
+          {
+            "slug": "permit-applications",
+            "label": "Permit Applications"
+          },
+          {
+            "slug": "public-engagement",
+            "label": "Public Engagement"
+          },
+          {
+            "slug": "citizen-satisfaction",
+            "label": "Citizen Satisfaction"
+          },
+          {
+            "slug": "response-times",
+            "label": "Response Times"
+          },
+          {
+            "slug": "accessibility-metrics",
+            "label": "Accessibility Metrics"
+          }
+        ]
+      },
+      {
+        "slug": "budget-finance",
+        "label": "💰 Budget & Finance",
+        "display": "tabs",
+        "children": [
+          {
+            "slug": "budget-overview",
+            "label": "Budget Overview"
+          },
+          {
+            "slug": "expenditure-tracking",
+            "label": "Expenditure Tracking"
+          },
+          {
+            "slug": "revenue-analysis",
+            "label": "Revenue Analysis"
+          },
+          {
+            "slug": "grant-management",
+            "label": "Grant Management"
+          }
+        ]
+      },
+      {
+        "slug": "performance-management",
+        "label": "📊 Performance Management",
+        "display": "buttons",
+        "columns": 3,
+        "children": [
+          {
+            "slug": "kpi-dashboard",
+            "label": "KPI Dashboard"
+          },
+          {
+            "slug": "department-performance",
+            "label": "Department Performance"
+          },
+          {
+            "slug": "service-efficiency",
+            "label": "Service Efficiency"
+          },
+          {
+            "slug": "outcome-measurement",
+            "label": "Outcome Measurement"
+          },
+          {
+            "slug": "comparative-analysis",
+            "label": "Comparative Analysis"
+          },
+          {
+            "slug": "trend-analysis",
+            "label": "Trend Analysis"
+          }
+        ]
+      },
+      {
+        "slug": "transparency-reporting",
+        "label": "📋 Transparency & Compliance",
+        "display": "buttons",
+        "columns": 2,
+        "children": [
+          {
+            "slug": "public-records",
+            "label": "Public Records"
+          },
+          {
+            "slug": "audit-reports",
+            "label": "Audit Reports"
+          },
+          {
+            "slug": "ethics-compliance",
+            "label": "Ethics & Compliance"
+          },
+          {
+            "slug": "open-data",
+            "label": "Open Data Portal"
+          }
+        ]
+      },
+      {
+        "slug": "emergency-management",
+        "label": "🚨 Emergency Management"
+      }
+    ],
+    "reports": {
+      "service-requests": {
+        "name": "Citizen Service Requests Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Total Requests", "Request Categories", "Resolution Status", "Priority Levels"],
+          "scope": ["All Departments", "Public Works", "Police", "Fire", "Parks & Recreation"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "permit-applications": {
+        "name": "Permit & License Applications",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Building Permits", "Business Licenses", "Special Events", "Zoning Requests"],
+          "scope": ["New Applications", "Pending Review", "Approved", "Rejected"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "public-engagement": {
+        "name": "Public Engagement Metrics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Town Halls", "Public Meetings", "Online Participation", "Community Surveys"],
+          "scope": ["All Events", "Public Hearings", "Community Forums", "Advisory Committees"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "citizen-satisfaction": {
+        "name": "Citizen Satisfaction Survey Results",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Overall Satisfaction", "Service Quality", "Response Time", "Communication"],
+          "scope": ["All Services", "Police Services", "Public Works", "Administrative Services"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "response-times": {
+        "name": "Service Response Time Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Emergency Response", "Service Requests", "Permit Processing", "Information Requests"],
+          "scope": ["Critical", "High Priority", "Standard", "Low Priority"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "accessibility-metrics": {
+        "name": "Accessibility & Inclusion Metrics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["ADA Compliance", "Language Services", "Digital Accessibility", "Physical Access"],
+          "scope": ["Public Buildings", "Website", "Mobile App", "Service Delivery"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "budget-overview": {
+        "name": "Municipal Budget Overview",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Budget vs Actual", "Variance Analysis", "Year-over-Year", "Budget Categories"],
+          "scope": ["General Fund", "Special Funds", "Capital Projects", "Enterprise Funds"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "expenditure-tracking": {
+        "name": "Government Expenditure Tracking",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Operating Expenses", "Capital Expenditures", "Personnel Costs", "Contract Spending"],
+          "scope": ["All Departments", "Public Safety", "Public Works", "Administration"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "revenue-analysis": {
+        "name": "Municipal Revenue Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Tax Revenue", "Fees & Permits", "Grants", "Other Revenue"],
+          "scope": ["Property Tax", "Sales Tax", "Business Licenses", "Utility Fees"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "grant-management": {
+        "name": "Grant & Funding Management",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Active Grants", "Grant Applications", "Compliance Status", "Funding Sources"],
+          "scope": ["Federal Grants", "State Grants", "Private Foundations", "Emergency Funding"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "kpi-dashboard": {
+        "name": "Key Performance Indicators",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Service Delivery KPIs", "Financial KPIs", "Efficiency KPIs", "Outcome KPIs"],
+          "scope": ["City-wide", "Department Level", "Service Area", "Program Level"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "department-performance": {
+        "name": "Department Performance Metrics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Productivity", "Quality Metrics", "Cost Efficiency", "Goal Achievement"],
+          "scope": ["Public Safety", "Public Works", "Parks & Recreation", "Administration"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "service-efficiency": {
+        "name": "Service Delivery Efficiency",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Processing Time", "Cost per Service", "Resource Utilization", "Automation Impact"],
+          "scope": ["Permit Processing", "Customer Service", "Public Works", "Emergency Services"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "outcome-measurement": {
+        "name": "Public Service Outcomes",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Community Impact", "Quality of Life", "Economic Development", "Public Safety"],
+          "scope": ["Neighborhood Level", "City-wide", "Regional", "Demographic Groups"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "comparative-analysis": {
+        "name": "Comparative Performance Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Peer Cities", "State Averages", "National Benchmarks", "Historical Trends"],
+          "scope": ["Similar-sized Cities", "Regional Peers", "Best Practices", "Performance Leaders"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "trend-analysis": {
+        "name": "Performance Trend Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Multi-year Trends", "Seasonal Patterns", "Predictive Analytics", "Forecasting"],
+          "scope": ["Service Demand", "Budget Trends", "Population Growth", "Economic Indicators"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "public-records": {
+        "name": "Public Records Management",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["FOIA Requests", "Document Access", "Meeting Minutes", "Public Notices"],
+          "scope": ["Council Meetings", "Committee Meetings", "Public Hearings", "Administrative Records"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "audit-reports": {
+        "name": "Audit & Financial Reports",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Internal Audits", "External Audits", "Financial Statements", "Performance Audits"],
+          "scope": ["Annual Reports", "Quarterly Reports", "Special Audits", "Compliance Reviews"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "ethics-compliance": {
+        "name": "Ethics & Compliance Monitoring",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Ethics Training", "Conflict of Interest", "Disclosure Reports", "Compliance Violations"],
+          "scope": ["Elected Officials", "Department Heads", "All Employees", "Contractors"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "open-data": {
+        "name": "Open Data Portal Analytics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Dataset Usage", "Download Statistics", "API Access", "User Engagement"],
+          "scope": ["All Datasets", "Popular Datasets", "New Releases", "Data Categories"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      }
+    }
+  }
+}

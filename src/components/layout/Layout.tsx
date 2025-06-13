@@ -5,7 +5,6 @@ import SidebarButtons from "./sidebar/SidebarButtons";
 import SidebarLabels from "./sidebar/SidebarLabels";
 import { BottomBar, BottomBarItem } from "./bottom-bar/BottomBar";
 import clsx from "clsx";
-import FloatingBackButton from "../ui/FloatingBackButton";
 import { useUI } from "../../app/providers/UIProvider";
 import { peripherals } from "../../mocksHelper";
 import { NavNode } from "../../shared/config/navigation.config";
@@ -67,7 +66,6 @@ export const Layout: React.FC<LayoutProps> = ({
           <BottomBar className={styles.bottombar} items={peripherals} />
         </>
       )}
-      <FloatingBackButton />
     </div>
   );
 };

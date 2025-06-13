@@ -1,0 +1,329 @@
+{
+  "name": "Modern Startup Theme",
+  "description": "Vibrant, innovative theme perfect for tech startups and creative companies. Features fast animations, bold colors, and product-focused analytics.",
+  "config": {
+    "branding": {
+      "company": {
+        "name": "InnovateTech",
+        "displayName": "InnovateTech Solutions"
+      },
+      "app": {
+        "name": "Product Analytics Studio",
+        "version": "3.0.0",
+        "description": "Next-generation product analytics and user insights platform"
+      }
+    },
+    "theme": {
+      "colors": {
+        "primary": "#8b5cf6",
+        "secondary": "#ec4899",
+        "accent": "#f59e0b",
+        "success": "#10b981",
+        "warning": "#f97316",
+        "error": "#ef4444",
+        "info": "#06b6d4"
+      },
+      "shadows": {
+        "shadowSmall": "0 1px 2px rgba(139, 92, 246, 0.1)",
+        "shadowMedium": "0 4px 12px rgba(139, 92, 246, 0.15)",
+        "shadowLarge": "0 12px 32px rgba(139, 92, 246, 0.2)",
+        "shadowXLarge": "0 24px 64px rgba(139, 92, 246, 0.25)",
+        "shadowInner": "inset 0 2px 4px rgba(139, 92, 246, 0.1)",
+        "shadowFocus": "0 0 0 3px rgba(139, 92, 246, 0.2)"
+      },
+      "transitions": {
+        "transitionFast": "0.08s",
+        "transitionMedium": "0.15s",
+        "transitionSlow": "0.3s",
+        "easingDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "easingBounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "easingSharp": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      },
+      "borderRadius": {
+        "radiusSmall": "0.5rem",
+        "radiusMedium": "0.75rem",
+        "radiusLarge": "1rem",
+        "radiusXLarge": "1.5rem"
+      }
+    },
+    "layout": {
+      "sidebarWidth": {
+        "buttons": "85px",
+        "labels": "280px"
+      },
+      "topBarHeight": "64px",
+      "bottomBarHeight": "80px"
+    },
+    "ui": {
+      "defaultSidebarVariant": "buttons",
+      "defaultShowBottomBar": true,
+      "animationFast": "0.08s",
+      "animationMedium": "0.15s",
+      "animationSlow": "0.3s"
+    },
+    "features": {
+      "enableDebugReports": true,
+      "enableAdvancedFilters": true,
+      "enableThemeCustomization": true,
+      "enableBulkOperations": true,
+      "enableOfflineMode": true
+    },
+    "navigation": [
+      {
+        "slug": "product-dashboard",
+        "label": "🚀 Product Dashboard"
+      },
+      {
+        "slug": "user-analytics",
+        "label": "👥 User Analytics",
+        "display": "buttons",
+        "columns": 2,
+        "children": [
+          {
+            "slug": "user-acquisition",
+            "label": "User Acquisition"
+          },
+          {
+            "slug": "user-engagement",
+            "label": "User Engagement"
+          },
+          {
+            "slug": "user-retention",
+            "label": "User Retention"
+          },
+          {
+            "slug": "user-behavior",
+            "label": "User Behavior"
+          },
+          {
+            "slug": "cohort-analysis",
+            "label": "Cohort Analysis"
+          },
+          {
+            "slug": "funnel-analysis",
+            "label": "Funnel Analysis"
+          }
+        ]
+      },
+      {
+        "slug": "product-metrics",
+        "label": "📱 Product Metrics",
+        "display": "tabs",
+        "children": [
+          {
+            "slug": "feature-usage",
+            "label": "Feature Usage"
+          },
+          {
+            "slug": "performance-metrics",
+            "label": "Performance"
+          },
+          {
+            "slug": "crash-analytics",
+            "label": "Crash Analytics"
+          },
+          {
+            "slug": "ab-testing",
+            "label": "A/B Testing"
+          }
+        ]
+      },
+      {
+        "slug": "growth-metrics",
+        "label": "📈 Growth Metrics",
+        "display": "buttons",
+        "columns": 3,
+        "children": [
+          {
+            "slug": "viral-coefficient",
+            "label": "Viral Coefficient"
+          },
+          {
+            "slug": "growth-rate",
+            "label": "Growth Rate"
+          },
+          {
+            "slug": "market-share",
+            "label": "Market Share"
+          },
+          {
+            "slug": "competitive-analysis",
+            "label": "Competitive Analysis"
+          },
+          {
+            "slug": "churn-prediction",
+            "label": "Churn Prediction"
+          },
+          {
+            "slug": "lifetime-value",
+            "label": "Lifetime Value"
+          }
+        ]
+      },
+      {
+        "slug": "innovation-lab",
+        "label": "🔬 Innovation Lab"
+      }
+    ],
+    "reports": {
+      "user-acquisition": {
+        "name": "User Acquisition Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Organic", "Paid", "Referral", "Social", "Direct"],
+          "scope": ["Mobile App", "Web Platform", "Desktop App"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "user-engagement": {
+        "name": "User Engagement Metrics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Daily Active Users", "Session Duration", "Page Views", "Click-through Rates"],
+          "scope": ["New Users", "Returning Users", "Power Users"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "user-retention": {
+        "name": "User Retention Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Day 1 Retention", "Day 7 Retention", "Day 30 Retention", "Quarterly Retention"],
+          "scope": ["By Acquisition Channel", "By User Segment", "By Feature Usage"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "user-behavior": {
+        "name": "User Behavior Insights",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Navigation Patterns", "Feature Discovery", "User Flow", "Drop-off Points"],
+          "scope": ["First-time Users", "Experienced Users", "Premium Users"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "cohort-analysis": {
+        "name": "Cohort Analysis Report",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Weekly Cohorts", "Monthly Cohorts", "Feature-based Cohorts"],
+          "scope": ["Retention Rate", "Revenue per Cohort", "Activity Metrics"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "funnel-analysis": {
+        "name": "Conversion Funnel Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Sign-up Funnel", "Purchase Funnel", "Onboarding Funnel", "Feature Adoption"],
+          "scope": ["All Users", "Mobile Users", "Desktop Users", "By Traffic Source"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "feature-usage": {
+        "name": "Feature Usage Analytics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Feature Adoption", "Feature Engagement", "Feature Abandonment"],
+          "scope": ["Core Features", "Premium Features", "Beta Features"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "performance-metrics": {
+        "name": "Application Performance",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Load Times", "API Response Times", "Error Rates", "Uptime"],
+          "scope": ["Mobile App", "Web App", "API Services", "Database"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "crash-analytics": {
+        "name": "Crash & Error Analytics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Crash Reports", "Error Logs", "Performance Issues", "ANR Reports"],
+          "scope": ["iOS", "Android", "Web", "API"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "ab-testing": {
+        "name": "A/B Testing Results",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Feature Tests", "UI Tests", "Pricing Tests", "Content Tests"],
+          "scope": ["Active Tests", "Completed Tests", "Planned Tests"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "viral-coefficient": {
+        "name": "Viral Growth Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Invitation Rate", "Acceptance Rate", "Viral Factor", "K-Factor"],
+          "scope": ["Organic Sharing", "Incentivized Sharing", "Social Media"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "growth-rate": {
+        "name": "Growth Rate Metrics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["User Growth", "Revenue Growth", "Feature Adoption", "Market Expansion"],
+          "scope": ["Month-over-Month", "Quarter-over-Quarter", "Year-over-Year"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "market-share": {
+        "name": "Market Share Analysis",
+        "filters": ["type", "scope"],
+        "options": {
+          "type": ["App Store Rankings", "Web Traffic Share", "Social Mentions", "Brand Awareness"],
+          "scope": ["Primary Market", "Secondary Markets", "Competitor Comparison"]
+        }
+      },
+      "competitive-analysis": {
+        "name": "Competitive Intelligence",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Feature Comparison", "Pricing Analysis", "Market Position", "User Sentiment"],
+          "scope": ["Direct Competitors", "Indirect Competitors", "Market Leaders"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "churn-prediction": {
+        "name": "Churn Prediction & Prevention",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Churn Risk Score", "Churn Reasons", "Prevention Campaigns"],
+          "scope": ["High-Risk Users", "Medium-Risk Users", "Recovered Users"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "lifetime-value": {
+        "name": "Customer Lifetime Value",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["CLV Calculation", "CLV Trends", "Segment Analysis", "Cohort LTV"],
+          "scope": ["Free Users", "Premium Users", "Enterprise Users"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      }
+    }
+  }
+} 

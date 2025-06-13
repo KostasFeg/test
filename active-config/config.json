@@ -1,99 +1,395 @@
 {
-  "name": "Navigation Test",
-  "description": "Testing navigation changes work properly",
+  "name": "Retail & E-Commerce Theme",
+  "description": "Dynamic retail-focused theme with commerce analytics, inventory management, and customer insights. Perfect for retail chains, e-commerce platforms, and omnichannel operations.",
   "config": {
-    "theme": {
-      "colors": {
-        "primary": "#ef4444"
-      }
-    },
     "branding": {
       "company": {
-        "name": "TEST NAVIGATION WORKS!"
+        "name": "RetailMax Analytics",
+        "displayName": "RetailMax Commerce Intelligence Platform"
+      },
+      "app": {
+        "name": "Omnichannel Analytics Suite",
+        "version": "5.1.3",
+        "description": "Complete retail and e-commerce analytics platform for modern retailers"
       }
+    },
+    "theme": {
+      "colors": {
+        "primary": "#ea580c",
+        "secondary": "#dc2626",
+        "accent": "#f59e0b",
+        "success": "#059669",
+        "warning": "#d97706",
+        "error": "#dc2626",
+        "info": "#0284c7"
+      },
+      "shadows": {
+        "shadowSmall": "0 1px 3px rgba(234, 88, 12, 0.1)",
+        "shadowMedium": "0 4px 12px rgba(234, 88, 12, 0.15)",
+        "shadowLarge": "0 12px 24px rgba(234, 88, 12, 0.2)",
+        "shadowXLarge": "0 24px 48px rgba(234, 88, 12, 0.25)",
+        "shadowInner": "inset 0 2px 4px rgba(234, 88, 12, 0.1)",
+        "shadowFocus": "0 0 0 3px rgba(234, 88, 12, 0.2)"
+      },
+      "transitions": {
+        "transitionFast": "0.1s",
+        "transitionMedium": "0.2s",
+        "transitionSlow": "0.35s",
+        "easingDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "easingBounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "easingSharp": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      },
+      "borderRadius": {
+        "radiusSmall": "0.375rem",
+        "radiusMedium": "0.5rem",
+        "radiusLarge": "0.75rem",
+        "radiusXLarge": "1rem"
+      }
+    },
+    "layout": {
+      "sidebarWidth": {
+        "buttons": "88px",
+        "labels": "300px"
+      },
+      "topBarHeight": "66px",
+      "bottomBarHeight": "75px"
+    },
+    "ui": {
+      "defaultSidebarVariant": "labels",
+      "defaultShowBottomBar": true,
+      "animationFast": "0.1s",
+      "animationMedium": "0.2s",
+      "animationSlow": "0.35s"
+    },
+    "features": {
+      "enableDebugReports": true,
+      "enableAdvancedFilters": true,
+      "enableThemeCustomization": true,
+      "enableBulkOperations": true,
+      "enableOfflineMode": true
     },
     "navigation": [
       {
-        "slug": "test-home",
-        "label": "🏠 Test Home"
+        "slug": "retail-dashboard",
+        "label": "🛍️ Retail Dashboard"
       },
       {
-        "slug": "test-menu",
-        "label": "🧪 Test Menu",
+        "slug": "sales-analytics",
+        "label": "💰 Sales Analytics",
         "display": "buttons",
+        "columns": 3,
         "children": [
           {
-            "slug": "button-1",
-            "label": "Test Button 1"
+            "slug": "daily-sales",
+            "label": "Daily Sales"
           },
           {
-            "slug": "button-2", 
-            "label": "Test Button 2"
+            "slug": "product-performance",
+            "label": "Product Performance"
+          },
+          {
+            "slug": "category-analysis",
+            "label": "Category Analysis"
+          },
+          {
+            "slug": "seasonal-trends",
+            "label": "Seasonal Trends"
+          },
+          {
+            "slug": "promotion-effectiveness",
+            "label": "Promotion Effectiveness"
+          },
+          {
+            "slug": "pricing-optimization",
+            "label": "Pricing Optimization"
           }
         ]
       },
       {
-        "slug": "custom-reports",
-        "label": "📊 Custom Reports",
-        "display": "buttons",
-        "children": [
-          {
-            "slug": "custom-sales",
-            "label": "Custom Sales Report"
-          },
-          {
-            "slug": "custom-analytics",
-            "label": "Custom Analytics Report"
-          },
-          {
-            "slug": "custom-inventory",
-            "label": "Custom Inventory Report"
-          }
-        ]
-      },
-      {
-        "slug": "test-tabs",
-        "label": "📊 Test Tabs",
+        "slug": "inventory-management",
+        "label": "📦 Inventory Management",
         "display": "tabs",
         "children": [
           {
-            "slug": "tab-1",
-            "label": "Tab One"
+            "slug": "stock-levels",
+            "label": "Stock Levels"
           },
           {
-            "slug": "tab-2",
-            "label": "Tab Two"
+            "slug": "turnover-analysis",
+            "label": "Turnover Analysis"
+          },
+          {
+            "slug": "demand-forecasting",
+            "label": "Demand Forecasting"
+          },
+          {
+            "slug": "supplier-performance",
+            "label": "Supplier Performance"
           }
         ]
+      },
+      {
+        "slug": "customer-insights",
+        "label": "👥 Customer Insights",
+        "display": "buttons",
+        "columns": 2,
+        "children": [
+          {
+            "slug": "customer-segments",
+            "label": "Customer Segments"
+          },
+          {
+            "slug": "purchase-behavior",
+            "label": "Purchase Behavior"
+          },
+          {
+            "slug": "loyalty-analysis",
+            "label": "Loyalty Analysis"
+          },
+          {
+            "slug": "customer-lifetime-value",
+            "label": "Customer Lifetime Value"
+          },
+          {
+            "slug": "churn-analysis",
+            "label": "Churn Analysis"
+          },
+          {
+            "slug": "cross-sell-opportunities",
+            "label": "Cross-sell Opportunities"
+          }
+        ]
+      },
+      {
+        "slug": "omnichannel-performance",
+        "label": "🌐 Omnichannel Performance",
+        "display": "buttons",
+        "columns": 2,
+        "children": [
+          {
+            "slug": "channel-comparison",
+            "label": "Channel Comparison"
+          },
+          {
+            "slug": "online-store-metrics",
+            "label": "Online Store Metrics"
+          },
+          {
+            "slug": "physical-store-metrics",
+            "label": "Physical Store Metrics"
+          },
+          {
+            "slug": "mobile-app-analytics",
+            "label": "Mobile App Analytics"
+          }
+        ]
+      },
+      {
+        "slug": "operations-efficiency",
+        "label": "⚙️ Operations & Efficiency"
       }
     ],
-
-    
     "reports": {
-      "custom-sales": {
-        "name": "Custom Sales Report",
-        "filters": ["type", "fromDate", "toDate"],
+      "daily-sales": {
+        "name": "Daily Sales Performance",
+        "filters": ["type", "scope", "fromDate", "toDate"],
         "options": {
-          "type": ["Daily", "Weekly", "Monthly"],
-          "withTime": true
+          "type": ["Total Sales", "Units Sold", "Average Transaction", "Sales Growth"],
+          "scope": ["All Stores", "Individual Store", "Store Group", "Region"],
+          "withTime": true,
+          "withAutoTime": true
         }
       },
-      "custom-analytics": {
-        "name": "Custom Analytics Report", 
-        "filters": ["scope", "fromDate", "toDate"],
+      "product-performance": {
+        "name": "Product Performance Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
         "options": {
-          "scope": ["Store", "Region", "National"],
+          "type": ["Best Sellers", "Slow Movers", "Revenue Contributors", "Margin Analysis"],
+          "scope": ["All Products", "Category", "Brand", "SKU Level"],
           "withTime": false,
           "withAutoTime": true
         }
       },
-      "custom-inventory": {
-        "name": "Custom Inventory Report",
-        "filters": ["type"],
+      "category-analysis": {
+        "name": "Category Performance Report",
+        "filters": ["type", "scope", "fromDate", "toDate"],
         "options": {
-          "type": ["Low Stock", "Overstock", "Full Inventory"]
+          "type": ["Sales by Category", "Margin by Category", "Growth Trends", "Market Share"],
+          "scope": ["All Categories", "Main Categories", "Sub-categories", "New Categories"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "seasonal-trends": {
+        "name": "Seasonal Trends Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Seasonal Sales", "Holiday Performance", "Weather Impact", "Year-over-Year"],
+          "scope": ["Product Categories", "Store Locations", "Customer Segments"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "promotion-effectiveness": {
+        "name": "Promotion Effectiveness Report",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Discount Impact", "BOGO Analysis", "Coupon Redemption", "ROI Analysis"],
+          "scope": ["All Promotions", "Digital Promotions", "In-store Promotions", "Product-specific"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "pricing-optimization": {
+        "name": "Pricing Optimization Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Price Elasticity", "Competitive Pricing", "Margin Optimization", "Dynamic Pricing"],
+          "scope": ["High-Volume Products", "Premium Products", "Seasonal Items", "New Products"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "stock-levels": {
+        "name": "Stock Level Management",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Current Stock", "Low Stock Alerts", "Overstock Items", "Out of Stock"],
+          "scope": ["All Locations", "Warehouse", "Store Level", "Category"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "turnover-analysis": {
+        "name": "Inventory Turnover Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Turnover Rate", "Days Sales Outstanding", "Velocity Analysis", "Dead Stock"],
+          "scope": ["All Inventory", "Fast Movers", "Slow Movers", "Seasonal Items"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "demand-forecasting": {
+        "name": "Demand Forecasting Report",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Short-term Forecast", "Long-term Forecast", "Seasonal Adjustment", "Trend Analysis"],
+          "scope": ["Product Level", "Category Level", "Store Level", "Regional"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "supplier-performance": {
+        "name": "Supplier Performance Metrics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Delivery Performance", "Quality Metrics", "Cost Analysis", "Lead Times"],
+          "scope": ["All Suppliers", "Top Suppliers", "Critical Suppliers", "New Suppliers"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "customer-segments": {
+        "name": "Customer Segmentation Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["RFM Analysis", "Demographic Segments", "Behavioral Segments", "Value Segments"],
+          "scope": ["All Customers", "Online Customers", "In-store Customers", "Mobile App Users"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "purchase-behavior": {
+        "name": "Purchase Behavior Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Basket Analysis", "Purchase Frequency", "Seasonal Patterns", "Channel Preferences"],
+          "scope": ["All Customers", "Loyalty Members", "New Customers", "VIP Customers"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "loyalty-analysis": {
+        "name": "Customer Loyalty Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Loyalty Program Performance", "Points Redemption", "Member Engagement", "Tier Analysis"],
+          "scope": ["All Members", "Active Members", "Inactive Members", "New Members"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "customer-lifetime-value": {
+        "name": "Customer Lifetime Value Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["CLV Calculation", "CLV Segments", "CLV Trends", "Acquisition Cost vs CLV"],
+          "scope": ["All Customers", "Channel-based", "Cohort-based", "Product Category"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "churn-analysis": {
+        "name": "Customer Churn Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Churn Rate", "Churn Prediction", "At-Risk Customers", "Win-back Campaigns"],
+          "scope": ["All Customers", "High-Value Customers", "Loyalty Members", "Recent Customers"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "cross-sell-opportunities": {
+        "name": "Cross-sell & Upsell Opportunities",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Product Affinity", "Recommendation Engine", "Bundle Opportunities", "Upsell Potential"],
+          "scope": ["All Products", "Categories", "Customer Segments", "Seasonal Items"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "channel-comparison": {
+        "name": "Omnichannel Performance Comparison",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Revenue by Channel", "Customer Journey", "Conversion Rates", "Channel Attribution"],
+          "scope": ["Online vs Offline", "Mobile vs Desktop", "Store vs Website", "All Touchpoints"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "online-store-metrics": {
+        "name": "E-commerce Store Metrics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Traffic Analysis", "Conversion Funnel", "Cart Abandonment", "Product Views"],
+          "scope": ["All Traffic", "Organic Traffic", "Paid Traffic", "Returning Visitors"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "physical-store-metrics": {
+        "name": "Physical Store Performance",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Foot Traffic", "Conversion Rate", "Sales per Sq Ft", "Staff Performance"],
+          "scope": ["All Stores", "Flagship Stores", "Mall Locations", "Street Locations"],
+          "withTime": true,
+          "withAutoTime": true
+        }
+      },
+      "mobile-app-analytics": {
+        "name": "Mobile App Analytics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["App Usage", "In-App Purchases", "Push Notification Performance", "Feature Usage"],
+          "scope": ["All Users", "Active Users", "New Users", "iOS vs Android"],
+          "withTime": true,
+          "withAutoTime": true
         }
       }
     }
   }
-} 
+}

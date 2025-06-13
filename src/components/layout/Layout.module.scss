@@ -97,31 +97,31 @@ html, body {
     "topbar topbar"
     "sidebar main"
     "logo bottombar";
-  // Fixed dimensions that work
-  grid-template-columns: 80px 1fr;
-  grid-template-rows: 60px 1fr 70px;
+  // Use CSS variables from configuration instead of hardcoded values
+  grid-template-columns: var(--layout-sidebar-width-buttons, 80px) 1fr;
+  grid-template-rows: var(--layout-topbar-height, 60px) 1fr var(--layout-bottombar-height, 70px);
 
   @media (max-width: 900px) {
     grid-template-areas:
       "topbar topbar"
       "sidebar main"
       "logo bottombar";
-    grid-template-columns: 80px 1fr;
-    grid-template-rows: 60px 1fr 80px;
+    grid-template-columns: var(--layout-sidebar-width-buttons, 80px) 1fr;
+    grid-template-rows: var(--layout-topbar-height, 60px) 1fr var(--layout-bottombar-height, 80px);
   }
   
   // Extra narrow screens (like 850px wide)
   @media (max-width: 850px) {
     grid-template-columns: 60px 1fr;
-    grid-template-rows: 50px 1fr 60px;
+    grid-template-rows: var(--layout-topbar-height, 50px) 1fr var(--layout-bottombar-height, 60px);
   }
 }
 
 .root.labelsVariant {
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: var(--layout-sidebar-width-labels, 280px) 1fr;
   
   @media (max-width: 900px) {
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: var(--layout-sidebar-width-labels, 240px) 1fr;
   }
   
   @media (max-width: 850px) {
@@ -153,7 +153,7 @@ html, body {
   grid-template-areas:
     "topbar topbar"
     "sidebar main";
-  grid-template-rows: 60px 1fr;
+  grid-template-rows: var(--layout-topbar-height, 60px) 1fr;
   
   .logo {
     display: none;
@@ -165,13 +165,13 @@ html, body {
     grid-template-areas:
       "topbar topbar"
       "sidebar main";
-    grid-template-rows: 60px 1fr;
+    grid-template-rows: var(--layout-topbar-height, 60px) 1fr;
   }
 }
 
 @media (max-width: 850px) {
   .root.noBottomBar {
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: var(--layout-topbar-height, 50px) 1fr;
   }
 }
 

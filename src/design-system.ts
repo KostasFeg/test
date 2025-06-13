@@ -1,9 +1,9 @@
 /**
  * 🎨 **Design‑System One‑Stop Shop v2**  (single‑file, zero‑deps)
  * ──────────────────────────────────────────────────────────────────
- *   • Accepts a gigantic JSON config (see README)  
- *   • Returns fully‑typed design tokens ready for MUI `createTheme()` **or** any renderer  
- *   • Colour science upgraded → hue‑preserving HSL tints, α‑aware parsing, WCAG contrast picks  
+ *   • Accepts a gigantic JSON config (see README)
+ *   • Returns fully‑typed design tokens ready for MUI `createTheme()` **or** any renderer
+ *   • Colour science upgraded → hue‑preserving HSL tints, α‑aware parsing, WCAG contrast picks
  *   • Everything lives in **this one TS file** for drop‑in convenience.
  *
  *   import config from './design‑config.json'
@@ -92,7 +92,7 @@ export interface DesignTokens {
   interactive: InteractiveStatesConfig;
   layout: LayoutSection;
   /** untouched extra sections (branding, api, etc.) */
-  _raw?: Omit<DesignSystemConfig, 'theme'>;
+  _raw?: Omit<DesignSystemConfig, "theme">;
 }
 
 /* -------------------------------------------------- */
@@ -116,12 +116,12 @@ export const buildDesignTokens = (cfg: DesignSystemConfig): DesignTokens => {
   const palette = buildPalette(colors);
 
   const defaultType: Required<TypographyConfig> = {
-    fontFamilySans: 'system‑ui, sans‑serif',
-    fontFamilyMono: 'monospace',
-    fontSizeSmall: '0.875rem',
-    fontSizeMedium: '1rem',
-    fontSizeLarge: '1.125rem',
-    fontSizeXLarge: '1.25rem',
+    fontFamilySans: "system‑ui, sans‑serif",
+    fontFamilyMono: "monospace",
+    fontSizeSmall: "0.875rem",
+    fontSizeMedium: "1rem",
+    fontSizeLarge: "1.125rem",
+    fontSizeXLarge: "1.25rem",
     fontWeightNormal: 400,
     fontWeightMedium: 500,
     fontWeightSemibold: 600,
@@ -132,21 +132,21 @@ export const buildDesignTokens = (cfg: DesignSystemConfig): DesignTokens => {
   const typo: Required<TypographyConfig> = { ...defaultType, ...typography };
 
   const defaultSpacing: SpacingConfig = {
-    spacing1: '0.25rem',
-    spacing2: '0.5rem',
-    spacing3: '0.75rem',
-    spacing4: '1rem',
-    spacing5: '1.25rem',
-    spacing6: '1.5rem',
+    spacing1: "0.25rem",
+    spacing2: "0.5rem",
+    spacing3: "0.75rem",
+    spacing4: "1rem",
+    spacing5: "1.25rem",
+    spacing6: "1.5rem",
   };
-  const defaultRadius: BorderRadiusConfig = { radiusMedium: '0.5rem' };
+  const defaultRadius: BorderRadiusConfig = { radiusMedium: "0.5rem" };
 
   /* Default transition durations – used by many SCSS modules */
   const defaultTransitions: TransitionsConfig = {
-    fast: '150ms',
-    normal: '300ms',
-    slow: '450ms',
-    easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    fast: "150ms",
+    normal: "300ms",
+    slow: "450ms",
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)",
   };
 
   return {
@@ -168,9 +168,20 @@ export const buildDesignTokens = (cfg: DesignSystemConfig): DesignTokens => {
 /* -------------------------------------------------- */
 
 export type PaletteColorScale = {
-  50: string; 100: string; 200: string; 300: string; 400: string;
-  500: string; 600: string; 700: string; 800: string; 900: string;
-  main: string; light: string; dark: string; contrastText: string;
+  50: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+  main: string;
+  light: string;
+  dark: string;
+  contrastText: string;
 };
 
 export interface Palette {
@@ -182,7 +193,16 @@ export interface Palette {
   error: PaletteColorScale;
   info: PaletteColorScale;
   grey: {
-    50: string; 100: string; 200: string; 300: string; 400: string; 500: string; 600: string; 700: string; 800: string; 900: string;
+    50: string;
+    100: string;
+    200: string;
+    300: string;
+    400: string;
+    500: string;
+    600: string;
+    700: string;
+    800: string;
+    900: string;
   };
   text: { primary: string; secondary: string; disabled: string };
   divider: string;
@@ -194,24 +214,32 @@ export interface Palette {
 /* -------------------------------------------------- */
 
 /* internal RGBA model */
-interface RGBA { r: number; g: number; b: number; a: number }
+interface RGBA {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
 
 /** Accepts #rgb, #rgba, #rrggbb, #rrggbbaa, rgb(), rgba(), hsl(), hsla() → RGBA */
 const parseColor = (value: string | Partial<RGBA>): RGBA => {
-  if (typeof value !== 'string') return { ...value, a: value.a ?? 1 } as RGBA;
+  if (typeof value !== "string") return { ...value, a: value.a ?? 1 } as RGBA;
   const v = value.trim();
   /* hex */
-  if (v.startsWith('#')) {
+  if (v.startsWith("#")) {
     const hex = v.slice(1);
     const len = hex.length;
     const isShort = len === 3 || len === 4;
-    if (![3,4,6,8].includes(len)) throw new Error(`Bad hex length (${len}) in "${v}"`);
+    if (![3, 4, 6, 8].includes(len))
+      throw new Error(`Bad hex length (${len}) in "${v}"`);
     const toByte = (i: number) => {
-      const part = isShort ? hex[i] : hex.slice(i*2, i*2+2);
+      const part = isShort ? hex[i] : hex.slice(i * 2, i * 2 + 2);
       return parseInt(isShort ? part + part : part, 16);
     };
-    const r = toByte(0), g = toByte(1), b = toByte(2);
-    const a = (len === 4 || len === 8) ? toByte(isShort ? 3 : 3) / 255 : 1;
+    const r = toByte(0),
+      g = toByte(1),
+      b = toByte(2);
+    const a = len === 4 || len === 8 ? toByte(isShort ? 3 : 3) / 255 : 1;
     return { r, g, b, a };
   }
   /* rgb/rgba */
@@ -236,27 +264,46 @@ const parseColor = (value: string | Partial<RGBA>): RGBA => {
 
 const clampByte = (n: number) => Math.round(Math.max(0, Math.min(255, n)));
 const rgbaToHex = ({ r, g, b, a }: RGBA): string =>
-  `#${[r, g, b, clampByte(a * 255)].map(x => clampByte(x).toString(16).padStart(2, '0')).join('')}`;
+  `#${[r, g, b, clampByte(a * 255)].map((x) => clampByte(x).toString(16).padStart(2, "0")).join("")}`;
 
 /* RGB <-> HSL helpers (0‑1 ranges) */
 const rgbToHsl = ({ r, g, b }: RGBA) => {
-  r /= 255; g /= 255; b /= 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h = 0, s = 0, l = (max + min) / 2;
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b);
+  let h = 0,
+    s = 0,
+    l = (max + min) / 2;
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
     }
     h /= 6;
   }
   return { h, s, l } as const;
 };
 
-const hslToRgb = ({ h, s, l }: { h: number; s: number; l: number }): { r: number; g: number; b: number } => {
+const hslToRgb = ({
+  h,
+  s,
+  l,
+}: {
+  h: number;
+  s: number;
+  l: number;
+}): { r: number; g: number; b: number } => {
   const hue2rgb = (p: number, q: number, t: number) => {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
@@ -274,20 +321,30 @@ const hslToRgb = ({ h, s, l }: { h: number; s: number; l: number }): { r: number
   const r = hue2rgb(p, q, h + 1 / 3);
   const g = hue2rgb(p, q, h);
   const b = hue2rgb(p, q, h - 1 / 3);
-  return { r: clampByte(r * 255), g: clampByte(g * 255), b: clampByte(b * 255) };
+  return {
+    r: clampByte(r * 255),
+    g: clampByte(g * 255),
+    b: clampByte(b * 255),
+  };
 };
 
 /* perceptual lighten/darken via HSL L channel */
 const lighten = (hex: string, amt = 0.2) => {
   const col = parseColor(hex);
   const hsl = rgbToHsl(col);
-  return rgbaToHex({ ...hslToRgb({ ...hsl, l: Math.min(1, hsl.l + amt) }), a: col.a });
+  return rgbaToHex({
+    ...hslToRgb({ ...hsl, l: Math.min(1, hsl.l + amt) }),
+    a: col.a,
+  });
 };
 
 const darken = (hex: string, amt = 0.2) => {
   const col = parseColor(hex);
   const hsl = rgbToHsl(col);
-  return rgbaToHex({ ...hslToRgb({ ...hsl, l: Math.max(0, hsl.l - amt) }), a: col.a });
+  return rgbaToHex({
+    ...hslToRgb({ ...hsl, l: Math.max(0, hsl.l - amt) }),
+    a: col.a,
+  });
 };
 
 /* WCAG luminance & contrast */
@@ -304,7 +361,7 @@ const chooseReadable = (bg: string) => {
   const L = relLuminance(bg);
   const white = contrastRatio(1, L);
   const black = contrastRatio(L, 0);
-  return white >= black ? '#ffffff' : '#000000';
+  return white >= black ? "#ffffff" : "#000000";
 };
 
 /* -------------------------------------------------- */
@@ -313,9 +370,16 @@ const chooseReadable = (bg: string) => {
 
 /* perceptually‑weighted tint curve (closer to MUI) */
 const STEPS: Record<number, number> = {
-  50: 0.95, 100: 0.9, 200: 0.75, 300: 0.6, 400: 0.3,
+  50: 0.95,
+  100: 0.9,
+  200: 0.75,
+  300: 0.6,
+  400: 0.3,
   500: 0,
-  600: 0.07, 700: 0.15, 800: 0.25, 900: 0.4,
+  600: 0.07,
+  700: 0.15,
+  800: 0.25,
+  900: 0.4,
 };
 
 // memoise generated scales so repeated seeds are free.
@@ -339,34 +403,34 @@ const generateScale = (seed: string): PaletteColorScale => {
 
 const buildPalette = (c: ColorConfig): Palette => {
   return {
-    primary: generateScale(c.primary ?? '#2563eb'),
-    secondary: generateScale(c.secondary ?? '#64748b'),
-    accent: generateScale(c.accent ?? '#06b6d4'),
-    success: generateScale(c.success ?? '#10b981'),
-    warning: generateScale(c.warning ?? '#f59e0b'),
-    error: generateScale(c.error ?? '#ef4444'),
-    info: generateScale(c.info ?? '#3b82f6'),
+    primary: generateScale(c.primary ?? "#2563eb"),
+    secondary: generateScale(c.secondary ?? "#64748b"),
+    accent: generateScale(c.accent ?? "#06b6d4"),
+    success: generateScale(c.success ?? "#10b981"),
+    warning: generateScale(c.warning ?? "#f59e0b"),
+    error: generateScale(c.error ?? "#ef4444"),
+    info: generateScale(c.info ?? "#3b82f6"),
     grey: {
-      50: c.grey50 ?? '#f9fafb',
-      100: c.grey100 ?? '#f3f4f6',
-      200: c.grey200 ?? '#e5e7eb',
-      300: c.grey300 ?? '#d1d5db',
-      400: c.grey400 ?? '#9ca3af',
-      500: c.grey500 ?? '#6b7280',
-      600: c.grey600 ?? '#4b5563',
-      700: c.grey700 ?? '#374151',
-      800: c.grey800 ?? '#1f2937',
-      900: c.grey900 ?? '#111827',
+      50: c.grey50 ?? "#f9fafb",
+      100: c.grey100 ?? "#f3f4f6",
+      200: c.grey200 ?? "#e5e7eb",
+      300: c.grey300 ?? "#d1d5db",
+      400: c.grey400 ?? "#9ca3af",
+      500: c.grey500 ?? "#6b7280",
+      600: c.grey600 ?? "#4b5563",
+      700: c.grey700 ?? "#374151",
+      800: c.grey800 ?? "#1f2937",
+      900: c.grey900 ?? "#111827",
     },
-    divider: c.grey200 ?? '#e5e7eb',
+    divider: c.grey200 ?? "#e5e7eb",
     background: {
-      paper: c.grey50 ?? '#ffffff',
-      default: c.grey100 ?? '#f9fafb',
+      paper: c.grey50 ?? "#ffffff",
+      default: c.grey100 ?? "#f9fafb",
     },
     text: {
-      primary: c.grey900 ?? '#111827',
-      secondary: c.grey700 ?? '#374151',
-      disabled: c.grey500 ?? '#6b7280',
+      primary: c.grey900 ?? "#111827",
+      secondary: c.grey700 ?? "#374151",
+      disabled: c.grey500 ?? "#6b7280",
     },
   };
 };
@@ -376,13 +440,22 @@ const buildPalette = (c: ColorConfig): Palette => {
 /* -------------------------------------------------- */
 
 export const generateCSSVariables = (tokens: DesignTokens): string => {
-  const { palette, typography, spacing, radius, shadows, transitions, interactive, layout } = tokens;
+  const {
+    palette,
+    typography,
+    spacing,
+    radius,
+    shadows,
+    transitions,
+    interactive,
+    layout,
+  } = tokens;
 
   const cssVariables = [
-    ':root {',
-    '  /* Design System CSS Variables */',
-    '',
-    '  /* Palette Colors */',
+    ":root {",
+    "  /* Design System CSS Variables */",
+    "",
+    "  /* Palette Colors */",
     `  --color-primary: ${palette.primary.main};`,
     `  --color-primary-50: ${palette.primary[50]};`,
     `  --color-primary-100: ${palette.primary[100]};`,
@@ -397,7 +470,7 @@ export const generateCSSVariables = (tokens: DesignTokens): string => {
     `  --color-primary-light: ${palette.primary.light};`,
     `  --color-primary-dark: ${palette.primary.dark};`,
     `  --color-primary-contrast: ${palette.primary.contrastText};`,
-    '',
+    "",
     `  --color-secondary: ${palette.secondary.main};`,
     `  --color-secondary-50: ${palette.secondary[50]};`,
     `  --color-secondary-100: ${palette.secondary[100]};`,
@@ -412,7 +485,7 @@ export const generateCSSVariables = (tokens: DesignTokens): string => {
     `  --color-secondary-light: ${palette.secondary.light};`,
     `  --color-secondary-dark: ${palette.secondary.dark};`,
     `  --color-secondary-contrast: ${palette.secondary.contrastText};`,
-    '',
+    "",
     `  --color-accent: ${palette.accent.main};`,
     `  --color-accent-50: ${palette.accent[50]};`,
     `  --color-accent-100: ${palette.accent[100]};`,
@@ -427,28 +500,28 @@ export const generateCSSVariables = (tokens: DesignTokens): string => {
     `  --color-accent-light: ${palette.accent.light};`,
     `  --color-accent-dark: ${palette.accent.dark};`,
     `  --color-accent-contrast: ${palette.accent.contrastText};`,
-    '',
+    "",
     `  --color-success: ${palette.success.main};`,
     `  --color-success-light: ${palette.success.light};`,
     `  --color-success-dark: ${palette.success.dark};`,
     `  --color-success-contrast: ${palette.success.contrastText};`,
-    '',
+    "",
     `  --color-warning: ${palette.warning.main};`,
     `  --color-warning-light: ${palette.warning.light};`,
     `  --color-warning-dark: ${palette.warning.dark};`,
     `  --color-warning-contrast: ${palette.warning.contrastText};`,
-    '',
+    "",
     `  --color-error: ${palette.error.main};`,
     `  --color-error-light: ${palette.error.light};`,
     `  --color-error-dark: ${palette.error.dark};`,
     `  --color-error-contrast: ${palette.error.contrastText};`,
-    '',
+    "",
     `  --color-info: ${palette.info.main};`,
     `  --color-info-light: ${palette.info.light};`,
     `  --color-info-dark: ${palette.info.dark};`,
     `  --color-info-contrast: ${palette.info.contrastText};`,
-    '',
-    '  /* Grey Scale */',
+    "",
+    "  /* Grey Scale */",
     `  --color-grey-50: ${palette.grey[50]};`,
     `  --color-grey-100: ${palette.grey[100]};`,
     `  --color-grey-200: ${palette.grey[200]};`,
@@ -459,18 +532,18 @@ export const generateCSSVariables = (tokens: DesignTokens): string => {
     `  --color-grey-700: ${palette.grey[700]};`,
     `  --color-grey-800: ${palette.grey[800]};`,
     `  --color-grey-900: ${palette.grey[900]};`,
-    '',
-    '  /* Text Colors */',
+    "",
+    "  /* Text Colors */",
     `  --text-primary: ${palette.text.primary};`,
     `  --text-secondary: ${palette.text.secondary};`,
     `  --text-disabled: ${palette.text.disabled};`,
-    '',
-    '  /* Background Colors */',
+    "",
+    "  /* Background Colors */",
     `  --bg-default: ${palette.background.default};`,
     `  --bg-paper: ${palette.background.paper};`,
     `  --bg-divider: ${palette.divider};`,
-    '',
-    '  /* Typography */',
+    "",
+    "  /* Typography */",
     `  --font-family-sans: ${typography.fontFamilySans};`,
     `  --font-family-mono: ${typography.fontFamilyMono};`,
     `  --font-size-small: ${typography.fontSizeSmall};`,
@@ -481,41 +554,66 @@ export const generateCSSVariables = (tokens: DesignTokens): string => {
     `  --font-weight-medium: ${typography.fontWeightMedium};`,
     `  --font-weight-semibold: ${typography.fontWeightSemibold};`,
     `  --font-weight-bold: ${typography.fontWeightBold};`,
-    '',
-    '  /* Spacing */',
-    ...Object.entries(spacing).map(([key, value]) => `  --spacing-${key.replace('spacing', '')}: ${value};`),
-    '',
-    '  /* Border Radius */',
-    ...Object.entries(radius).map(([key, value]) => `  --radius-${key.replace('radius', '').toLowerCase()}: ${value};`),
-    '',
-    '  /* Shadows */',
-    ...Object.entries(shadows).map(([key, value]) => `  --shadow-${key.replace('shadow', '').toLowerCase()}: ${value};`),
-    '',
-    '  /* Transitions */',
-    ...Object.entries(transitions).map(([key, value]) => `  --transition-${key.replace('transition', '').toLowerCase()}: ${value};`),
-    '',
-    '  /* Easing Curves */',
-    '  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);',
-    '  --easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);',
-    '',
-    '  /* Button Variables – auto-derived from palette */',
+    "",
+    "  /* Spacing */",
+    ...Object.entries(spacing).map(
+      ([key, value]) => `  --spacing-${key.replace("spacing", "")}: ${value};`
+    ),
+    "",
+    "  /* Border Radius */",
+    ...Object.entries(radius).map(
+      ([key, value]) =>
+        `  --radius-${key.replace("radius", "").toLowerCase()}: ${value};`
+    ),
+    "",
+    "  /* Shadows */",
+    ...Object.entries(shadows).map(
+      ([key, value]) =>
+        `  --shadow-${key.replace("shadow", "").toLowerCase()}: ${value};`
+    ),
+    "",
+    "  /* Transitions */",
+    ...Object.entries(transitions).map(
+      ([key, value]) =>
+        `  --transition-${key.replace("transition", "").toLowerCase()}: ${value};`
+    ),
+    "",
+    "  /* Animation Timings from UI Config */",
+    `  --animation-fast: ${tokens._raw?.ui?.animationFast || "0.15s"};`,
+    `  --animation-medium: ${tokens._raw?.ui?.animationMedium || "0.3s"};`,
+    `  --animation-slow: ${tokens._raw?.ui?.animationSlow || "0.5s"};`,
+    "",
+    "  /* Backward compatibility - map old transition names to new animation values */",
+    `  --transition-fast: ${tokens._raw?.ui?.animationFast || "0.15s"};`,
+    `  --transition-normal: ${tokens._raw?.ui?.animationMedium || "0.3s"};`,
+    `  --transition-slow: ${tokens._raw?.ui?.animationSlow || "0.5s"};`,
+    "",
+    "  /* Config Editor specific variables - ALWAYS FAST (immune to user settings) */",
+    "  --config-transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);",
+    "  --config-transition-fast: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);",
+    "",
+    "  /* Easing Curves */",
+    "  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);",
+    "  --easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);",
+    "",
+    "  /* Button Variables – auto-derived from palette */",
     `  --btn-primary-bg: ${palette.primary.main};`,
     `  --btn-primary-border: ${palette.primary.dark};`,
     `  --btn-primary-border-hover: ${palette.primary.dark};`,
     `  --btn-primary-text: ${palette.primary.contrastText};`,
     `  --btn-primary-hover: ${palette.primary.dark};`,
     `  --btn-primary-active: ${palette.primary[700]};`,
-    '',
+    "",
     `  --btn-secondary-bg: ${palette.secondary.main};`,
     `  --btn-secondary-border: ${palette.secondary.main};`,
     `  --btn-secondary-border-hover: ${palette.secondary.dark};`,
     `  --btn-secondary-text: ${palette.secondary.contrastText};`,
     `  --btn-secondary-hover: ${palette.secondary.dark};`,
     `  --btn-secondary-active: ${palette.secondary[700]};`,
-    '',
+    "",
     `  --btn-shadow-hover: 0 2px 8px rgba(0,0,0,0.12);`,
     `  --btn-shadow-secondary: 0 0 0 2px ${palette.secondary.main};`,
-    '',
+    "",
     `  --btn-ghost-bg: transparent;`,
     `  --btn-ghost-border: transparent;`,
     `  --btn-ghost-text: ${palette.text.primary};`,
@@ -523,25 +621,29 @@ export const generateCSSVariables = (tokens: DesignTokens): string => {
     `  --btn-ghost-border-hover: ${palette.grey[300]};`,
     `  --btn-ghost-active: ${palette.grey[100]};`,
     `  --btn-ghost-secondary-hover: ${palette.secondary.light};`,
-    '',
-    '  /* Disabled & State */',
+    "",
+    "  /* Disabled & State */",
     `  --state-disabled: ${palette.grey[200]};`,
     `  --border-focus: ${palette.accent.main};`,
     `  --border-tertiary: ${palette.grey[300]};`,
-    '',
-    '  /* Interactive States */',
-    ...Object.entries(interactive).map(([key, value]) => `  --interactive-${key}: ${value};`),
-    '',
-    '  /* Layout */',
-    `  --layout-sidebar-width-buttons: ${layout.sidebarWidth?.buttons || '80px'};`,
-    `  --layout-sidebar-width-labels: ${layout.sidebarWidth?.labels || '240px'};`,
-    `  --layout-topbar-height: ${layout.topBarHeight || '60px'};`,
-    `  --layout-bottombar-height: ${layout.bottomBarHeight || '70px'};`,
-    ...Object.entries(layout.zIndex || {}).map(([key, value]) => `  --z-${key}: ${value};`),
-    '}',
+    "",
+    "  /* Interactive States */",
+    ...Object.entries(interactive).map(
+      ([key, value]) => `  --interactive-${key}: ${value};`
+    ),
+    "",
+    "  /* Layout */",
+    `  --layout-sidebar-width-buttons: ${layout.sidebarWidth?.buttons || "80px"};`,
+    `  --layout-sidebar-width-labels: ${layout.sidebarWidth?.labels || "240px"};`,
+    `  --layout-topbar-height: ${layout.topBarHeight || "60px"};`,
+    `  --layout-bottombar-height: ${layout.bottomBarHeight || "70px"};`,
+    ...Object.entries(layout.zIndex || {}).map(
+      ([key, value]) => `  --z-${key}: ${value};`
+    ),
+    "}",
   ];
 
-  return cssVariables.join('\n');
+  return cssVariables.join("\n");
 };
 
 /* -------------------------------------------------- */
@@ -553,23 +655,23 @@ export const convertLegacyConfig = (legacyConfig: any): DesignSystemConfig => {
   return {
     theme: {
       colors: {
-        primary: legacyConfig?.theme?.colors?.primary || '#2563eb',
-        secondary: legacyConfig?.theme?.colors?.secondary || '#64748b',
-        accent: legacyConfig?.theme?.colors?.accent || '#06b6d4',
-        success: legacyConfig?.theme?.colors?.success || '#10b981',
-        warning: legacyConfig?.theme?.colors?.warning || '#f59e0b',
-        error: legacyConfig?.theme?.colors?.error || '#ef4444',
-        info: legacyConfig?.theme?.colors?.info || '#3b82f6',
-        grey50: legacyConfig?.theme?.colors?.grey50 || '#f9fafb',
-        grey100: legacyConfig?.theme?.colors?.grey100 || '#f3f4f6',
-        grey200: legacyConfig?.theme?.colors?.grey200 || '#e5e7eb',
-        grey300: legacyConfig?.theme?.colors?.grey300 || '#d1d5db',
-        grey400: legacyConfig?.theme?.colors?.grey400 || '#9ca3af',
-        grey500: legacyConfig?.theme?.colors?.grey500 || '#6b7280',
-        grey600: legacyConfig?.theme?.colors?.grey600 || '#4b5563',
-        grey700: legacyConfig?.theme?.colors?.grey700 || '#374151',
-        grey800: legacyConfig?.theme?.colors?.grey800 || '#1f2937',
-        grey900: legacyConfig?.theme?.colors?.grey900 || '#111827',
+        primary: legacyConfig?.theme?.colors?.primary || "#2563eb",
+        secondary: legacyConfig?.theme?.colors?.secondary || "#64748b",
+        accent: legacyConfig?.theme?.colors?.accent || "#06b6d4",
+        success: legacyConfig?.theme?.colors?.success || "#10b981",
+        warning: legacyConfig?.theme?.colors?.warning || "#f59e0b",
+        error: legacyConfig?.theme?.colors?.error || "#ef4444",
+        info: legacyConfig?.theme?.colors?.info || "#3b82f6",
+        grey50: legacyConfig?.theme?.colors?.grey50 || "#f9fafb",
+        grey100: legacyConfig?.theme?.colors?.grey100 || "#f3f4f6",
+        grey200: legacyConfig?.theme?.colors?.grey200 || "#e5e7eb",
+        grey300: legacyConfig?.theme?.colors?.grey300 || "#d1d5db",
+        grey400: legacyConfig?.theme?.colors?.grey400 || "#9ca3af",
+        grey500: legacyConfig?.theme?.colors?.grey500 || "#6b7280",
+        grey600: legacyConfig?.theme?.colors?.grey600 || "#4b5563",
+        grey700: legacyConfig?.theme?.colors?.grey700 || "#374151",
+        grey800: legacyConfig?.theme?.colors?.grey800 || "#1f2937",
+        grey900: legacyConfig?.theme?.colors?.grey900 || "#111827",
       },
       typography: legacyConfig?.theme?.typography || {},
       spacing: legacyConfig?.theme?.spacing || {},
@@ -595,4 +697,4 @@ export const convertLegacyConfig = (legacyConfig: any): DesignSystemConfig => {
 
 // import sampleConfig from './design‑config.json';
 // const tokens = buildDesignTokens(sampleConfig);
-// console.log(tokens.palette.primary[200]); 
+// console.log(tokens.palette.primary[200]);

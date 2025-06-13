@@ -1,0 +1,295 @@
+{
+  "name": "Enterprise Blue Theme",
+  "description": "Professional corporate theme with comprehensive financial analytics and enterprise-grade reporting capabilities. Perfect for executive dashboards and financial oversight.",
+  "config": {
+    "branding": {
+      "company": {
+        "name": "Enterprise Analytics Corp",
+        "displayName": "Enterprise Analytics Corporation"
+      },
+      "app": {
+        "name": "Executive Dashboard",
+        "version": "2.1.0",
+        "description": "Comprehensive enterprise analytics and reporting platform"
+      }
+    },
+    "theme": {
+      "colors": {
+        "primary": "#1e40af",
+        "secondary": "#3b82f6",
+        "accent": "#06b6d4",
+        "success": "#059669",
+        "warning": "#d97706",
+        "error": "#dc2626",
+        "info": "#0284c7"
+      },
+      "shadows": {
+        "shadowSmall": "0 1px 3px rgba(0, 0, 0, 0.06)",
+        "shadowMedium": "0 4px 12px rgba(0, 0, 0, 0.08)",
+        "shadowLarge": "0 12px 24px rgba(0, 0, 0, 0.12)",
+        "shadowXLarge": "0 24px 48px rgba(0, 0, 0, 0.18)",
+        "shadowInner": "inset 0 2px 4px rgba(0, 0, 0, 0.06)",
+        "shadowFocus": "0 0 0 3px rgba(30, 64, 175, 0.15)"
+      },
+      "transitions": {
+        "transitionFast": "0.12s",
+        "transitionMedium": "0.25s",
+        "transitionSlow": "0.4s",
+        "easingDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "easingBounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "easingSharp": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      },
+      "borderRadius": {
+        "radiusSmall": "0.375rem",
+        "radiusMedium": "0.5rem",
+        "radiusLarge": "0.75rem",
+        "radiusXLarge": "1rem"
+      }
+    },
+    "layout": {
+      "sidebarWidth": {
+        "buttons": "90px",
+        "labels": "320px"
+      },
+      "topBarHeight": "72px",
+      "bottomBarHeight": "0px"
+    },
+    "ui": {
+      "defaultSidebarVariant": "labels",
+      "defaultShowBottomBar": false,
+      "animationFast": "0.12s",
+      "animationMedium": "0.25s",
+      "animationSlow": "0.4s"
+    },
+    "features": {
+      "enableDebugReports": true,
+      "enableAdvancedFilters": true,
+      "enableThemeCustomization": true,
+      "enableBulkOperations": true,
+      "enableOfflineMode": false
+    },
+    "navigation": [
+      {
+        "slug": "executive-dashboard",
+        "label": "📊 Executive Dashboard"
+      },
+      {
+        "slug": "financial-analytics",
+        "label": "💰 Financial Analytics",
+        "display": "buttons",
+        "columns": 3,
+        "children": [
+          {
+            "slug": "revenue-analysis",
+            "label": "Revenue Analysis"
+          },
+          {
+            "slug": "profit-margins",
+            "label": "Profit Margins"
+          },
+          {
+            "slug": "cost-analysis",
+            "label": "Cost Analysis"
+          },
+          {
+            "slug": "budget-planning",
+            "label": "Budget Planning"
+          },
+          {
+            "slug": "cash-flow-forecast",
+            "label": "Cash Flow Forecast"
+          },
+          {
+            "slug": "financial-kpis",
+            "label": "Financial KPIs"
+          }
+        ]
+      },
+      {
+        "slug": "business-intelligence",
+        "label": "🎯 Business Intelligence",
+        "display": "tabs",
+        "children": [
+          {
+            "slug": "market-trends",
+            "label": "Market Trends"
+          },
+          {
+            "slug": "competitor-analysis",
+            "label": "Competitor Analysis"
+          },
+          {
+            "slug": "customer-insights",
+            "label": "Customer Insights"
+          },
+          {
+            "slug": "operational-metrics",
+            "label": "Operational Metrics"
+          }
+        ]
+      },
+      {
+        "slug": "compliance-reports",
+        "label": "⚖️ Compliance & Audit",
+        "display": "buttons",
+        "columns": 2,
+        "children": [
+          {
+            "slug": "audit-trail",
+            "label": "Audit Trail"
+          },
+          {
+            "slug": "compliance-check",
+            "label": "Compliance Check"
+          },
+          {
+            "slug": "risk-assessment",
+            "label": "Risk Assessment"
+          },
+          {
+            "slug": "regulatory-reports",
+            "label": "Regulatory Reports"
+          }
+        ]
+      },
+      {
+        "slug": "administration",
+        "label": "⚙️ Administration"
+      }
+    ],
+    "reports": {
+      "revenue-analysis": {
+        "name": "Revenue Analysis Report",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Daily", "Weekly", "Monthly", "Quarterly", "Annual"],
+          "scope": ["Division", "Department", "Product Line", "Geographic Region"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "profit-margins": {
+        "name": "Profit Margin Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Gross Margin", "Operating Margin", "Net Margin", "EBITDA"],
+          "scope": ["Product", "Service", "Customer Segment", "Channel"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "cost-analysis": {
+        "name": "Cost Structure Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Fixed Costs", "Variable Costs", "Direct Costs", "Indirect Costs"],
+          "scope": ["Department", "Project", "Cost Center", "Activity"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "budget-planning": {
+        "name": "Budget Planning & Variance",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Budget vs Actual", "Forecast vs Budget", "Variance Analysis"],
+          "scope": ["Operating Budget", "Capital Budget", "Cash Budget"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "cash-flow-forecast": {
+        "name": "Cash Flow Forecast",
+        "filters": ["type", "fromDate", "toDate"],
+        "options": {
+          "type": ["13-Week Rolling", "Monthly", "Quarterly", "Annual"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "financial-kpis": {
+        "name": "Financial KPI Dashboard",
+        "filters": ["type", "scope"],
+        "options": {
+          "type": ["Revenue KPIs", "Profitability KPIs", "Efficiency KPIs", "Liquidity KPIs"],
+          "scope": ["Corporate", "Business Unit", "Functional Area"]
+        }
+      },
+      "market-trends": {
+        "name": "Market Trend Analysis",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Industry Trends", "Consumer Behavior", "Economic Indicators"],
+          "scope": ["Primary Market", "Secondary Markets", "Emerging Markets"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "competitor-analysis": {
+        "name": "Competitive Intelligence Report",
+        "filters": ["type", "scope"],
+        "options": {
+          "type": ["Market Share", "Pricing Analysis", "Product Comparison", "Strategic Moves"],
+          "scope": ["Direct Competitors", "Indirect Competitors", "Market Leaders"]
+        }
+      },
+      "customer-insights": {
+        "name": "Customer Analytics & Insights",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Customer Acquisition", "Customer Retention", "Customer Lifetime Value", "Churn Analysis"],
+          "scope": ["B2B Customers", "B2C Customers", "Enterprise Clients", "SMB Clients"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "operational-metrics": {
+        "name": "Operational Performance Metrics",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Production Metrics", "Quality Metrics", "Efficiency Metrics", "Capacity Utilization"],
+          "scope": ["Manufacturing", "Sales", "Marketing", "Customer Service"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "audit-trail": {
+        "name": "System Audit Trail",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["User Activity", "Data Changes", "System Access", "Security Events"],
+          "scope": ["Financial Data", "Customer Data", "System Configuration"],
+          "withTime": true
+        }
+      },
+      "compliance-check": {
+        "name": "Compliance Status Report",
+        "filters": ["type", "scope"],
+        "options": {
+          "type": ["SOX Compliance", "GDPR Compliance", "Industry Standards", "Internal Policies"],
+          "scope": ["Financial Reporting", "Data Privacy", "Security", "Operations"]
+        }
+      },
+      "risk-assessment": {
+        "name": "Enterprise Risk Assessment",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["Financial Risk", "Operational Risk", "Strategic Risk", "Compliance Risk"],
+          "scope": ["High Risk", "Medium Risk", "Low Risk", "Critical Risk"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "regulatory-reports": {
+        "name": "Regulatory Reporting",
+        "filters": ["type", "scope", "fromDate", "toDate"],
+        "options": {
+          "type": ["SEC Filings", "Tax Reports", "Employment Reports", "Environmental Reports"],
+          "scope": ["Federal", "State", "Local", "International"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      }
+    }
+  }
+} 
