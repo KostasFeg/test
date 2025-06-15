@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { MasterConfig } from '../config/master.config';
+import type { MasterConfig } from '../config/master.generated';
 import { configManager } from '../config/config.manager';
 
 /**
@@ -13,7 +13,7 @@ export function useConfig(): MasterConfig {
     console.log('📱 useConfig hook: Setting up subscription');
     // Subscribe to config changes
     const unsubscribe = configManager.subscribe((newConfig) => {
-      console.log('📱 useConfig hook: Received config update', newConfig.ui);
+      console.log('📱 useConfig hook: Received config update');
       setConfig(newConfig);
     });
 
@@ -113,50 +113,6 @@ export function useFeaturesConfig() {
 export function useFeature(featureName: keyof MasterConfig['features']): boolean {
   const config = useConfig();
   return useMemo(() => config.features[featureName], [config.features, featureName]);
-}
-
-/**
- * Hook to get CSS custom property values from the theme configuration
- * Useful for inline styles that need to match the theme
- */
-export function useThemeValues() {
-  const config = useConfig();
-  const theme = config.theme;
-  
-  return useMemo(() => ({
-    // Colors
-    primary: theme.colors.primary,
-    accent: theme.colors.accent,
-    success: theme.colors.success,
-    warning: theme.colors.warning,
-    error: theme.colors.error,
-    
-    // Spacing values for JavaScript calculations
-    spacing: {
-      1: parseInt(theme.spacing.spacing1),
-      2: parseInt(theme.spacing.spacing2),
-      3: parseInt(theme.spacing.spacing3),
-      4: parseInt(theme.spacing.spacing4),
-      5: parseInt(theme.spacing.spacing5),
-      6: parseInt(theme.spacing.spacing6),
-      8: parseInt(theme.spacing.spacing8),
-      12: parseInt(theme.spacing.spacing12),
-    },
-    
-    // Border radius values
-    borderRadius: {
-      small: theme.borderRadius.radiusSmall,
-      medium: theme.borderRadius.radiusMedium,
-      large: theme.borderRadius.radiusLarge,
-      xlarge: theme.borderRadius.radiusXLarge,
-    },
-    
-    // Typography
-    fontFamily: {
-      sans: theme.typography.fontFamilySans,
-      mono: theme.typography.fontFamilyMono,
-    },
-  }), [theme]);
 }
 
 /**

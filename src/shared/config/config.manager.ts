@@ -1,348 +1,128 @@
-import { buildConfig } from "./config.builder";
 import { configPresets, getPresetById, ConfigPreset } from "./config.presets";
 import { injectCSSVariablesFromMasterConfig } from "../design-system-integration";
-import { MasterConfig } from "./master.config";
-import { appConfig } from "./config.builder";
+import type { MasterConfig } from "./master.generated";
+import { defaultConfig } from "./defaultConfig";
+import Ajv from "ajv";
+import schema from "../../config/master.schema.json";
 
 // ==========================================
 // DYNAMIC CONFIGURATION MANAGER
 // ==========================================
 
-const ACTIVE_CONFIG_FOLDER = "active-config";
-const CONFIG_FILE_NAME = "config.json";
-const WATCH_INTERVAL = 1000; // Check every second
+// The original on-disk override mechanism (folder + polling) has been removed.
+// Retain these constants only if other parts of the codebase still reference
+// them. Since they are no longer used inside this file we can safely delete
+// them to avoid the "declared but never read" TypeScript warning.
+
+const ajv = new Ajv({ allErrors: true });
+// compile returns a type-guarding function
+// @ts-ignore – json import typing
+const validate = ajv.compile(schema);
+
+function deepMerge<T>(base: T, override: Partial<T>): T {
+  const out: any = { ...base };
+  Object.keys(override || {}).forEach((k) => {
+    const key = k as keyof T;
+    const val = override[key];
+    if (val && typeof val === "object" && !Array.isArray(val)) {
+      out[key] = deepMerge((base as any)[key] || {}, val as any);
+    } else if (val !== undefined) {
+      out[key] = val;
+    }
+  });
+  return out as T;
+}
+
+// Remove React element functions from navigation structure so config stays pure JSON
+function sanitizeNavigation(nav?: any[]): any[] | undefined {
+  if (!Array.isArray(nav)) return nav;
+  return nav.map((n) => {
+    const { element: _drop, children, ...rest } = n;
+    if (children?.length) {
+      return { ...rest, children: sanitizeNavigation(children) };
+    }
+    return rest;
+  });
+}
 
 export class ConfigManager {
-  private currentPresetId: string = "professional";
-  private config: MasterConfig;
-  private listeners: ((config: MasterConfig) => void)[] = [];
-  private watchTimer: number | null = null;
-  private lastConfigModified: number = 0;
-  private isWatching: boolean = false;
-  private activeConfigPath: string;
+  private current: MasterConfig = defaultConfig;
+  private listeners: ((cfg: MasterConfig) => void)[] = [];
 
-  constructor() {
-    this.config = appConfig;
-    this.activeConfigPath = `${ACTIVE_CONFIG_FOLDER}/${CONFIG_FILE_NAME}`;
-    
-    // Initialize the system properly and handle async loading
-    this.initialize();
-  }
-
-  /**
-   * Initialize the config manager with proper async handling
-   */
-  private async initialize(): Promise<void> {
+  /** Boot-time init: load cached overrides then try file */
+  async init() {
     try {
-      // Create the active config directory if it doesn't exist
-      await this.initializeActiveConfigFolder();
-      
-      // Check for existing active config and load it
-      await this.loadActiveConfig();
-      
-      // Start watching for config changes
-      this.startWatching();
-      
-      // Inject CSS variables after all config loading is complete
-      this.injectCSSVariables();
-    } catch (error) {
-      console.warn('Failed to initialize ConfigManager:', error);
-      // Fallback to default config
-      this.injectCSSVariables();
-    }
-  }
-
-  /**
-   * Initialize the active config folder and create example config
-   */
-  private async initializeActiveConfigFolder(): Promise<void> {
-    try {
-      // Check if running in browser environment
-      if (typeof window === 'undefined') return;
-      
-      // For web applications, we'll use localStorage to simulate file system
-      const activeConfigExists = localStorage.getItem('active-config-exists');
-      if (!activeConfigExists) {
-        // Create example config
-        const exampleConfig = {
-          name: "Custom Active Config",
-          description: "Place your config.json file in the active-config folder to use custom configuration",
-          config: {
-            theme: {
-              colors: {
-                primary: "#007bff",
-                secondary: "#6c757d"
-              }
-            },
-            branding: {
-              company: {
-                name: "Your Company Name"
-              }
-            }
-          }
-        };
-        
-        localStorage.setItem('active-config-example', JSON.stringify(exampleConfig, null, 2));
-        localStorage.setItem('active-config-exists', 'true');
-        
-        console.log('📁 Active config folder initialized. Example config created in localStorage.');
-        console.log('💡 To use active config system:');
-        console.log('   1. Create a config.json file in the active-config folder');
-        console.log('   2. The system will automatically detect and apply it');
+      const cached = localStorage.getItem("active-config-cache");
+      if (cached) {
+        this.set(JSON.parse(cached));
       }
-    } catch (error) {
-      console.warn('Failed to initialize active config folder:', error);
-    }
+      this.reloadFromDisk().catch(() => {});
+    } catch (_) {}
   }
 
-    /**
-   * Load configuration from the active config folder if it exists
-   */
-  private async loadActiveConfig(): Promise<void> {
-    try {
-      // First, try to load from physical file system (for development/local usage)
-      const fileSystemConfigLoaded = await this.loadFromFileSystem();
-      
-      if (fileSystemConfigLoaded) {
-        // File system config was loaded successfully, we're done
-        return;
-      }
-      
-      // No file system config found, check localStorage (for web environment persistence)
-      const activeConfigData = localStorage.getItem('active-config-data');
-      if (activeConfigData) {
-        // We have localStorage data but no file system config
-        // This could mean the config.json was deleted but localStorage persists
-        console.log('⚠️ Found localStorage config but no file system config - this may be stale data');
-        
-        const configData = JSON.parse(activeConfigData);
-        const timestamp = localStorage.getItem('active-config-timestamp');
-        
-        if (timestamp) {
-          this.lastConfigModified = parseInt(timestamp);
-        }
-        
-        // Apply the active config but warn about potential staleness
-        this.applyActiveConfig(configData);
-        console.log('✅ Active config loaded from localStorage (no file system config found)');
-        console.log('💡 To clear this cached config, use the "Clear Active Config" button or delete localStorage data');
-        return;
-      }
-      
-      // No config found anywhere, stay with default
-      console.log('📋 No active config found, using default configuration');
-      
-    } catch (error) {
-      console.warn('Failed to load active config:', error);
-    }
+  getCurrentConfig() {
+    return this.current;
   }
 
-  /**
-   * Load config from physical file system (when possible)
-   */
-  private async loadFromFileSystem(): Promise<boolean> {
-    try {
-      // Try to fetch the config file via HTTP (works in development)
-      const response = await fetch('/active-config/config.json');
-      if (response.ok) {
-        const configData = await response.json();
-        
-        // Get last modified from response headers if available
-        const lastModified = response.headers.get('last-modified');
-        if (lastModified) {
-          this.lastConfigModified = new Date(lastModified).getTime();
-        }
-        
-        // Apply the active config
-        this.applyActiveConfig(configData);
-        console.log('✅ Active config loaded from file system:', configData.name || 'Unnamed');
-        
-        // Store in localStorage as backup
-        localStorage.setItem('active-config-data', JSON.stringify(configData));
-        localStorage.setItem('active-config-timestamp', this.lastConfigModified.toString());
-        
-        return true; // Successfully loaded from file system
-      }
-    } catch (error) {
-      // File system access not available, continue with localStorage
-      console.log('📁 File system config not available, using localStorage fallback');
-    }
-    return false; // No file system config found
-  }
-
-  /**
-   * Apply active configuration data
-   */
-  private applyActiveConfig(configData: any): void {
-    if (configData.config) {
-      console.log('🎨 Applying active config data:', configData.name || 'Unnamed');
-      console.log('🎨 Config overrides:', configData.config);
-      // Use the config builder to properly handle the active config
-      this.config = buildConfig(configData.config);
-      this.injectCSSVariables();
-      this.notifyListeners();
-      
-      if (configData.name) {
-        console.log(`🎨 Applied active config: ${configData.name}`);
-      }
-    }
-  }
-
-  /**
-   * Start watching for changes in the active config folder
-   */
-  private startWatching(): void {
-    if (this.isWatching) return;
-    
-    this.isWatching = true;
-    this.watchTimer = window.setInterval(() => {
-      this.checkForConfigChanges();
-    }, WATCH_INTERVAL);
-    
-    console.log('👀 Started watching for active config changes');
-  }
-
-  /**
-   * Stop watching for config changes
-   */
-  private stopWatching(): void {
-    if (this.watchTimer) {
-      clearInterval(this.watchTimer);
-      this.watchTimer = null;
-    }
-    this.isWatching = false;
-    console.log('⏹️ Stopped watching for active config changes');
-  }
-
-  /**
-   * Check for changes in the active config
-   */
-  private async checkForConfigChanges(): Promise<void> {
-    try {
-      // First, check file system for changes
-      await this.checkFileSystemChanges();
-      
-      // Then check localStorage for changes (web environment)
-      const timestamp = localStorage.getItem('active-config-timestamp');
-      if (timestamp) {
-        const currentTimestamp = parseInt(timestamp);
-        if (currentTimestamp > this.lastConfigModified) {
-          this.lastConfigModified = currentTimestamp;
-          await this.loadActiveConfig();
-        }
-      }
-      
-    } catch (error) {
-      // Silently handle errors to avoid spamming console
-    }
-  }
-
-  /**
-   * Check for file system changes
-   */
-  private async checkFileSystemChanges(): Promise<void> {
-    try {
-      const response = await fetch('/active-config/config.json', { 
-        method: 'HEAD' // Just check headers, don't download content
-      });
-      
-      if (response.ok) {
-        const lastModified = response.headers.get('last-modified');
-        if (lastModified) {
-          const modifiedTime = new Date(lastModified).getTime();
-          if (modifiedTime > this.lastConfigModified) {
-            console.log('🔄 Detected file system config change, reloading...');
-            await this.loadFromFileSystem();
-          }
-        }
-      } else if (response.status === 404) {
-        // Config file was deleted from file system
-        const hasLocalStorageConfig = localStorage.getItem('active-config-data') !== null;
-        if (hasLocalStorageConfig) {
-          console.log('🗑️ File system config was deleted but localStorage config exists');
-          console.log('💡 You can clear the cached config using the "Clear Active Config" button');
-          // We could auto-clear here, but let's be conservative and let user decide
-          // this.clearActiveConfig();
-        }
-      }
-    } catch (error) {
-      // File system not available, that's okay
-    }
-  }
-
-  /**
-   * Manually set active config (for web environment)
-   */
-  setActiveConfig(configData: any): void {
-    try {
-      localStorage.setItem('active-config-data', JSON.stringify(configData));
-      localStorage.setItem('active-config-timestamp', Date.now().toString());
-      
-      this.applyActiveConfig(configData);
-      console.log('✅ Active config updated manually');
-    } catch (error) {
-      console.error('Failed to set active config:', error);
-    }
-  }
-
-  /**
-   * Clear active config and revert to default
-   */
-  clearActiveConfig(): void {
-    localStorage.removeItem('active-config-data');
-    localStorage.removeItem('active-config-timestamp');
-    
-    // Rebuild config from default
-    this.config = appConfig;
-    this.injectCSSVariables();
-    this.notifyListeners();
-    
-    console.log('🔄 Active config cleared, reverted to default');
-  }
-
-  /**
-   * Get information about the active config system
-   */
-  getActiveConfigInfo(): {
-    isActive: boolean;
-    folderPath: string;
-    fileName: string;
-    lastModified: number;
-    watchingStatus: boolean;
-    isStaleLocalStorage: boolean;
-  } {
-    const hasLocalStorageConfig = localStorage.getItem('active-config-data') !== null;
-    
-    return {
-      isActive: hasLocalStorageConfig,
-      folderPath: ACTIVE_CONFIG_FOLDER,
-      fileName: CONFIG_FILE_NAME,
-      lastModified: this.lastConfigModified,
-      watchingStatus: this.isWatching,
-      isStaleLocalStorage: hasLocalStorageConfig && this.lastConfigModified === 0 // localStorage exists but no recent file system activity
+  subscribe(cb: (cfg: MasterConfig) => void) {
+    this.listeners.push(cb);
+    return () => {
+      const i = this.listeners.indexOf(cb);
+      if (i >= 0) this.listeners.splice(i, 1);
     };
   }
 
-  /**
-   * Check if current config might be stale localStorage data
-   */
-  isConfigStale(): boolean {
-    const hasLocalStorageConfig = localStorage.getItem('active-config-data') !== null;
-    return hasLocalStorageConfig && this.lastConfigModified === 0;
+  /** Validate + merge overrides */
+  set(overrides: any) {
+    // Accept the "active-config" wrapper format { name, description, config: {...} }
+    if (overrides && typeof overrides === "object" && "config" in overrides) {
+      overrides = overrides.config;
+    }
+    const partial: Partial<MasterConfig> = overrides ?? {};
+    // strip non-serialisable fields before merge/validate
+    const cleanedOverrides: Partial<MasterConfig> = Object.assign({}, partial) as any;
+    (cleanedOverrides as any).navigation = sanitizeNavigation((partial as any).navigation);
+    const merged = deepMerge(defaultConfig, cleanedOverrides);
+    // Validate a JSON-serialisable snapshot ‒ strip React elements etc. so Ajv
+    // doesn't choke while still keeping them for runtime use.
+    const serialisableForValidation = {
+      ...merged,
+      navigation: sanitizeNavigation(merged.navigation as any),
+    } as MasterConfig;
+
+    if (!validate(serialisableForValidation)) {
+      console.error("❌ Config validation failed", validate.errors);
+      return;
+    }
+    this.current = merged;
+    // Inject latest CSS variables via design system helper
+    try {
+      injectCSSVariablesFromMasterConfig(this.current);
+    } catch (e) {
+      console.warn("Failed to inject CSS variables", e);
+    }
+    this.listeners.forEach((cb) => cb(this.current));
   }
 
-  /**
-   * Get the current active configuration
-   */
-  getCurrentConfig(): MasterConfig {
-    return this.config;
+  updateConfig = this.set.bind(this); // keep old API
+
+  async reloadFromDisk() {
+    try {
+      const res = await fetch("/active-config/config.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const json = await res.json();
+      localStorage.setItem("active-config-cache", JSON.stringify(json));
+      this.set(json);
+    } catch (e) {
+      console.warn("No active-config file", e);
+    }
   }
 
   /**
    * Get the current preset ID
    */
   getCurrentPresetId(): string {
-    return this.currentPresetId;
+    return "professional"; // Assuming default preset
   }
 
   /**
@@ -362,8 +142,7 @@ export class ConfigManager {
       return;
     }
 
-    this.currentPresetId = presetId;
-    this.config = this.buildConfigFromPreset(presetId);
+    this.current = this.buildConfigFromPreset(presetId);
     this.injectCSSVariables();
     this.notifyListeners();
 
@@ -371,43 +150,13 @@ export class ConfigManager {
   }
 
   /**
-   * Apply custom overrides on top of the current preset
+   * Merge arbitrary overrides on top of the *current* configuration.
+   * This uses the same deep-merge helper as the rest of the manager so the
+   * behaviour is now consistent across presets and manual edits.
    */
-  applyOverrides(overrides: any): void {
-    const currentPreset = getPresetById(this.currentPresetId);
-    if (currentPreset) {
-      const mergedOverrides = this.deepMerge(currentPreset.overrides, overrides);
-      this.config = buildConfig(mergedOverrides);
-      this.injectCSSVariables();
-      this.notifyListeners();
-    }
-  }
-
-  /**
-   * Subscribe to configuration changes
-   */
-  subscribe(listener: (config: MasterConfig) => void): () => void {
-    this.listeners.push(listener);
-    
-    // Return unsubscribe function
-    return () => {
-      const index = this.listeners.indexOf(listener);
-      if (index > -1) {
-        this.listeners.splice(index, 1);
-      }
-    };
-  }
-
-  /**
-   * Update the current configuration directly
-   */
-  updateConfig(newConfig: Partial<MasterConfig>): void {
-    this.config = this.deepMerge(this.config, newConfig);
-    
-    // Automatically inject CSS variables when config changes
+  applyOverrides(overrides: Partial<MasterConfig>): void {
+    this.current = deepMerge(this.current, overrides);
     this.injectCSSVariables();
-    
-    // Notify listeners
     this.notifyListeners();
   }
 
@@ -421,7 +170,8 @@ export class ConfigManager {
   // Private methods
   private buildConfigFromPreset(presetId: string): MasterConfig {
     const preset = getPresetById(presetId);
-    return preset ? buildConfig(preset.overrides) : buildConfig();
+    if (!preset) return defaultConfig;
+    return deepMerge(defaultConfig, preset.overrides as any);
   }
 
   /**
@@ -430,7 +180,7 @@ export class ConfigManager {
   private injectCSSVariables(): void {
     try {
       // Use the new design system to inject CSS variables
-      injectCSSVariablesFromMasterConfig(this.config);
+      injectCSSVariablesFromMasterConfig(this.current);
       
       console.log('🎨 CSS variables updated from configuration using new design system');
     } catch (error) {
@@ -449,44 +199,47 @@ export class ConfigManager {
     console.log('🔔 Notifying', this.listeners.length, 'config listeners');
     this.listeners.forEach(listener => {
       try {
-        listener(this.config);
+        listener(this.current);
       } catch (error) {
         console.error("Error in config change listener:", error);
       }
     });
   }
 
-  private deepMerge(target: any, source: any): any {
-    const result = { ...target };
-    
-    for (const key in source) {
-      if (source[key] !== undefined) {
-        if (typeof source[key] === 'object' && source[key] !== null && !Array.isArray(source[key])) {
-          result[key] = this.deepMerge(target[key] || {}, source[key]);
-        } else {
-          result[key] = source[key];
-        }
-      }
-    }
-    
-    return result;
+  /* -------- Compatibility helpers used by ActiveConfigManager ---------- */
+  /** Information about whether an override is active (mirrors previous API) */
+  getActiveConfigInfo() {
+    const hasCache = localStorage.getItem("active-config-cache") !== null;
+    return {
+      isActive: hasCache,
+      folderPath: "active-config",
+      fileName: "config.json",
+      lastModified: 0,
+      watchingStatus: false,
+      isStaleLocalStorage: false,
+    } as const;
   }
 
-  /**
-   * Force reload config from file system (debug helper)
-   */
-  async forceReloadFromFileSystem(): Promise<void> {
-    console.log('🔄 Force reloading config from file system...');
-    
-    // Clear localStorage first
-    localStorage.removeItem('active-config-data');
-    localStorage.removeItem('active-config-timestamp');
-    
-    // Try to load from file system
-    const loaded = await this.loadFromFileSystem();
-    if (!loaded) {
-      console.log('❌ Failed to load from file system');
+  /** Apply a full active-config JSON object (same format as file) */
+  setActiveConfig(cfg: any) {
+    try {
+      localStorage.setItem("active-config-cache", JSON.stringify(cfg));
+      this.set(cfg.config ?? cfg);
+    } catch (e) {
+      console.error("Failed to set active config", e);
     }
+  }
+
+  /** Clear any active config overrides and revert to defaults */
+  clearActiveConfig() {
+    localStorage.removeItem("active-config-cache");
+    this.current = defaultConfig;
+    try {
+      injectCSSVariablesFromMasterConfig(this.current);
+    } catch {
+      /* ignore */
+    }
+    this.listeners.forEach(cb => cb(this.current));
   }
 }
 
@@ -497,8 +250,10 @@ export const configManager = new ConfigManager();
 export const switchConfigPreset = (presetId: string) => configManager.switchToPreset(presetId);
 export const getCurrentConfig = () => configManager.getCurrentConfig();
 export const getAvailablePresets = () => configManager.getAvailablePresets();
-export const subscribeToConfigChanges = (listener: (config: MasterConfig) => void) => configManager.subscribe(listener);
-export const forceReloadConfig = () => configManager.forceReloadFromFileSystem();
+export const subscribeToConfigChanges = (cb: (c: MasterConfig) => void) => configManager.subscribe(cb);
 
 // Debug: Make configManager available globally for debugging
-(window as any).configManager = configManager; 
+(window as any).configManager = configManager;
+
+// initialise immediately
+configManager.init(); 

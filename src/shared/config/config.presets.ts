@@ -1,5 +1,5 @@
-import { MasterConfig } from "./master.config";
-import { ConfigOverrides } from "./config.builder";
+import type { MasterConfig } from "./master.generated";
+import type { ConfigOverrides } from "./overrides.types";
 
 // ==========================================
 // CONFIGURATION PRESETS

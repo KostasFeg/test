@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MasterConfig",
+  "type": "object",
+  "properties": {
+    "theme": {
+      "type": "object",
+      "properties": {
+        "colors": {
+          "type": "object",
+          "properties": {
+            "primary": { "type": "string", "pattern": "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$" },
+            "secondary": { "type": "string" },
+            "accent": { "type": "string" },
+            "success": { "type": "string" },
+            "warning": { "type": "string" },
+            "error": { "type": "string" },
+            "info": { "type": "string" },
+            "primaryLight": { "type": "string" },
+            "primaryDark": { "type": "string" },
+            "secondaryLight": { "type": "string" },
+            "secondaryDark": { "type": "string" },
+            "accentBackground": { "type": "string" }
+          },
+          "required": ["primary", "secondary", "accent"],
+          "additionalProperties": true
+        },
+        "transitions": {
+          "type": "object",
+          "properties": {
+            "transitionFast": { "type": "string" },
+            "transitionMedium": { "type": "string" },
+            "transitionSlow": { "type": "string" },
+            "easingDefault": { "type": "string" },
+            "easingBounce": { "type": "string" },
+            "easingSharp": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "interactiveStates": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "spacing": {
+          "type": "object",
+          "patternProperties": {
+            "^spacing[0-9]+$": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "borderRadius": {
+          "type": "object",
+          "patternProperties": {
+            "^radius(Small|Medium|Large|XLarge)$": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "sidebarWidth": { "type": "object", "additionalProperties": { "type": "string" } },
+        "topBarHeight": { "type": "string" },
+        "bottomBarHeight": { "type": "string" },
+        "mobile": { "type": "object", "additionalProperties": { "type": "string" } },
+        "breakpoints": { "type": "object", "additionalProperties": { "type": "string" } },
+        "zIndex": { "type": "object", "additionalProperties": { "type": "number" } }
+      },
+      "additionalProperties": true
+    },
+    "ui": {
+      "type": "object",
+      "properties": {
+        "defaultSidebarVariant": { "type": "string" },
+        "defaultShowBottomBar": { "type": "boolean" },
+        "animationFast": { "type": "string" },
+        "animationMedium": { "type": "string" },
+        "animationSlow": { "type": "string" },
+        "easingDefault": { "type": "string" },
+        "easingBounce": { "type": "string" },
+        "easingSharp": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "componentStyles": { "type": "object", "additionalProperties": true },
+    "branding": { "type": "object", "additionalProperties": true },
+    "api": { "type": "object", "additionalProperties": true },
+    "auth": { "type": "object", "additionalProperties": true },
+    "navigation": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    },
+    "reports": { "type": "object", "additionalProperties": true },
+    "features": { "type": "object", "additionalProperties": true }
+  },
+  "required": [
+    "theme",
+    "layout",
+    "ui",
+    "navigation",
+    "reports"
+  ],
+  "additionalProperties": true
+} 

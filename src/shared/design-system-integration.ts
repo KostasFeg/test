@@ -53,6 +53,10 @@ export function useDesignSystemInjection(): void {
 
     // Inject CSS variables into the document
     injectCSSVariables(cssVariables);
+
+    // Also set each variable inline on :root to guarantee they override any
+    // later-added stylesheets during hot-reload.
+    applyInlineCSSVariables(cssVariables);
   }, [tokens]);
 }
 
@@ -71,14 +75,31 @@ function injectCSSVariables(cssVariables: string): void {
   styleElement.id = "design-system-variables";
   styleElement.innerHTML = cssVariables; // Already includes :root {}
 
-  // Insert at the beginning so user styles can override
-  document.head.insertBefore(styleElement, document.head.firstChild);
+  // Append as the last <style> so it overrides earlier defaults
+  document.head.appendChild(styleElement);
 
   console.log(
     "💉 Injected CSS variables:",
     cssVariables.split("\n").length,
     "variables"
   );
+}
+
+/**
+ * Helper: parse the generated :root { ... } string and set each variable on
+ * document.documentElement.style so it wins the cascade regardless of sheet
+ * ordering during HMR.
+ */
+function applyInlineCSSVariables(cssVariables: string) {
+  if (typeof document === "undefined") return;
+  const rootStyle = document.documentElement.style;
+  cssVariables.split(/;\s*\n?/).forEach((line) => {
+    const match = line.match(/--([^:]+):\s*(.+)$/);
+    if (match) {
+      const [, name, value] = match;
+      rootStyle.setProperty(`--${name.trim()}`, value.trim());
+    }
+  });
 }
 
 /**

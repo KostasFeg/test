@@ -179,6 +179,17 @@ const MOCK_REPORT_CONFIGS: Record<string, {
     filters: [],
     contentType: 'html',
     generator: (params) => generateMinimalContentReport(params)
+  },
+  // Aliases without the "games/" prefix so navigation slugs match the mock service
+  'current-jackpots': {
+    filters: [],
+    contentType: 'html',
+    generator: (params) => generateJackpotsReport(params)
+  },
+  'winning-numbers': {
+    filters: ['fromDate'],
+    contentType: 'html',
+    generator: (params) => generateWinningNumbersReport(params)
   }
 };
 

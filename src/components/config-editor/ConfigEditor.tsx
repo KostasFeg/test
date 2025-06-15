@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { MasterConfig } from "../../shared/config/master.config";
+import type { MasterConfig } from "../../shared/config/master.generated";
 import { useConfig } from "../../shared/hooks/useConfig";
 import styles from "./ConfigEditor.module.scss";
 import { configManager } from "../../shared/config/config.manager";
@@ -837,8 +837,8 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
               const speedType = key.includes("Fast")
                 ? "Fast"
                 : key.includes("Medium")
-                  ? "Medium"
-                  : "Slow";
+                ? "Medium"
+                : "Slow";
               const uiKey =
                 `animation${speedType}` as keyof typeof newConfig.ui;
               if (newConfig.ui && uiKey in newConfig.ui) {
@@ -851,8 +851,8 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
               const speedType = key.includes("Fast")
                 ? "Fast"
                 : key.includes("Medium")
-                  ? "Medium"
-                  : "Slow";
+                ? "Medium"
+                : "Slow";
               const themeKey =
                 `transition${speedType}` as keyof typeof newConfig.theme.transitions;
               if (
@@ -869,9 +869,6 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
             // Update state
             setEditedConfig(newConfig);
             setHasUnsavedChanges(true);
-
-            // Apply immediately to see live updates
-            configManager.updateConfig(newConfig);
           }}
         />
       </div>

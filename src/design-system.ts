@@ -139,7 +139,12 @@ export const buildDesignTokens = (cfg: DesignSystemConfig): DesignTokens => {
     spacing5: "1.25rem",
     spacing6: "1.5rem",
   };
-  const defaultRadius: BorderRadiusConfig = { radiusMedium: "0.5rem" };
+  const defaultRadius: BorderRadiusConfig = {
+    radiusSmall: "0.25rem",
+    radiusMedium: "0.5rem",
+    radiusLarge: "1rem",
+    radiusXLarge: "1.5rem",
+  };
 
   /* Default transition durations – used by many SCSS modules */
   const defaultTransitions: TransitionsConfig = {
@@ -451,199 +456,155 @@ export const generateCSSVariables = (tokens: DesignTokens): string => {
     layout,
   } = tokens;
 
-  const cssVariables = [
-    ":root {",
-    "  /* Design System CSS Variables */",
-    "",
-    "  /* Palette Colors */",
-    `  --color-primary: ${palette.primary.main};`,
-    `  --color-primary-50: ${palette.primary[50]};`,
-    `  --color-primary-100: ${palette.primary[100]};`,
-    `  --color-primary-200: ${palette.primary[200]};`,
-    `  --color-primary-300: ${palette.primary[300]};`,
-    `  --color-primary-400: ${palette.primary[400]};`,
-    `  --color-primary-500: ${palette.primary[500]};`,
-    `  --color-primary-600: ${palette.primary[600]};`,
-    `  --color-primary-700: ${palette.primary[700]};`,
-    `  --color-primary-800: ${palette.primary[800]};`,
-    `  --color-primary-900: ${palette.primary[900]};`,
-    `  --color-primary-light: ${palette.primary.light};`,
-    `  --color-primary-dark: ${palette.primary.dark};`,
-    `  --color-primary-contrast: ${palette.primary.contrastText};`,
-    "",
-    `  --color-secondary: ${palette.secondary.main};`,
-    `  --color-secondary-50: ${palette.secondary[50]};`,
-    `  --color-secondary-100: ${palette.secondary[100]};`,
-    `  --color-secondary-200: ${palette.secondary[200]};`,
-    `  --color-secondary-300: ${palette.secondary[300]};`,
-    `  --color-secondary-400: ${palette.secondary[400]};`,
-    `  --color-secondary-500: ${palette.secondary[500]};`,
-    `  --color-secondary-600: ${palette.secondary[600]};`,
-    `  --color-secondary-700: ${palette.secondary[700]};`,
-    `  --color-secondary-800: ${palette.secondary[800]};`,
-    `  --color-secondary-900: ${palette.secondary[900]};`,
-    `  --color-secondary-light: ${palette.secondary.light};`,
-    `  --color-secondary-dark: ${palette.secondary.dark};`,
-    `  --color-secondary-contrast: ${palette.secondary.contrastText};`,
-    "",
-    `  --color-accent: ${palette.accent.main};`,
-    `  --color-accent-50: ${palette.accent[50]};`,
-    `  --color-accent-100: ${palette.accent[100]};`,
-    `  --color-accent-200: ${palette.accent[200]};`,
-    `  --color-accent-300: ${palette.accent[300]};`,
-    `  --color-accent-400: ${palette.accent[400]};`,
-    `  --color-accent-500: ${palette.accent[500]};`,
-    `  --color-accent-600: ${palette.accent[600]};`,
-    `  --color-accent-700: ${palette.accent[700]};`,
-    `  --color-accent-800: ${palette.accent[800]};`,
-    `  --color-accent-900: ${palette.accent[900]};`,
-    `  --color-accent-light: ${palette.accent.light};`,
-    `  --color-accent-dark: ${palette.accent.dark};`,
-    `  --color-accent-contrast: ${palette.accent.contrastText};`,
-    "",
-    `  --color-success: ${palette.success.main};`,
-    `  --color-success-light: ${palette.success.light};`,
-    `  --color-success-dark: ${palette.success.dark};`,
-    `  --color-success-contrast: ${palette.success.contrastText};`,
-    "",
-    `  --color-warning: ${palette.warning.main};`,
-    `  --color-warning-light: ${palette.warning.light};`,
-    `  --color-warning-dark: ${palette.warning.dark};`,
-    `  --color-warning-contrast: ${palette.warning.contrastText};`,
-    "",
-    `  --color-error: ${palette.error.main};`,
-    `  --color-error-light: ${palette.error.light};`,
-    `  --color-error-dark: ${palette.error.dark};`,
-    `  --color-error-contrast: ${palette.error.contrastText};`,
-    "",
-    `  --color-info: ${palette.info.main};`,
-    `  --color-info-light: ${palette.info.light};`,
-    `  --color-info-dark: ${palette.info.dark};`,
-    `  --color-info-contrast: ${palette.info.contrastText};`,
-    "",
-    "  /* Grey Scale */",
-    `  --color-grey-50: ${palette.grey[50]};`,
-    `  --color-grey-100: ${palette.grey[100]};`,
-    `  --color-grey-200: ${palette.grey[200]};`,
-    `  --color-grey-300: ${palette.grey[300]};`,
-    `  --color-grey-400: ${palette.grey[400]};`,
-    `  --color-grey-500: ${palette.grey[500]};`,
-    `  --color-grey-600: ${palette.grey[600]};`,
-    `  --color-grey-700: ${palette.grey[700]};`,
-    `  --color-grey-800: ${palette.grey[800]};`,
-    `  --color-grey-900: ${palette.grey[900]};`,
-    "",
-    "  /* Text Colors */",
-    `  --text-primary: ${palette.text.primary};`,
-    `  --text-secondary: ${palette.text.secondary};`,
-    `  --text-disabled: ${palette.text.disabled};`,
-    "",
-    "  /* Background Colors */",
-    `  --bg-default: ${palette.background.default};`,
-    `  --bg-paper: ${palette.background.paper};`,
-    `  --bg-divider: ${palette.divider};`,
-    "",
-    "  /* Typography */",
-    `  --font-family-sans: ${typography.fontFamilySans};`,
-    `  --font-family-mono: ${typography.fontFamilyMono};`,
-    `  --font-size-small: ${typography.fontSizeSmall};`,
-    `  --font-size-medium: ${typography.fontSizeMedium};`,
-    `  --font-size-large: ${typography.fontSizeLarge};`,
-    `  --font-size-xlarge: ${typography.fontSizeXLarge};`,
-    `  --font-weight-normal: ${typography.fontWeightNormal};`,
-    `  --font-weight-medium: ${typography.fontWeightMedium};`,
-    `  --font-weight-semibold: ${typography.fontWeightSemibold};`,
-    `  --font-weight-bold: ${typography.fontWeightBold};`,
-    "",
-    "  /* Spacing */",
-    ...Object.entries(spacing).map(
-      ([key, value]) => `  --spacing-${key.replace("spacing", "")}: ${value};`
-    ),
-    "",
-    "  /* Border Radius */",
-    ...Object.entries(radius).map(
-      ([key, value]) =>
-        `  --radius-${key.replace("radius", "").toLowerCase()}: ${value};`
-    ),
-    "",
-    "  /* Shadows */",
-    ...Object.entries(shadows).map(
-      ([key, value]) =>
-        `  --shadow-${key.replace("shadow", "").toLowerCase()}: ${value};`
-    ),
-    "",
-    "  /* Transitions */",
-    ...Object.entries(transitions).map(
-      ([key, value]) =>
-        `  --transition-${key.replace("transition", "").toLowerCase()}: ${value};`
-    ),
-    "",
-    "  /* Animation Timings from UI Config */",
-    `  --animation-fast: ${tokens._raw?.ui?.animationFast || "0.15s"};`,
-    `  --animation-medium: ${tokens._raw?.ui?.animationMedium || "0.3s"};`,
-    `  --animation-slow: ${tokens._raw?.ui?.animationSlow || "0.5s"};`,
-    "",
-    "  /* Backward compatibility - map old transition names to new animation values */",
-    `  --transition-fast: ${tokens._raw?.ui?.animationFast || "0.15s"};`,
-    `  --transition-normal: ${tokens._raw?.ui?.animationMedium || "0.3s"};`,
-    `  --transition-slow: ${tokens._raw?.ui?.animationSlow || "0.5s"};`,
-    "",
-    "  /* Config Editor specific variables - ALWAYS FAST (immune to user settings) */",
-    "  --config-transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);",
-    "  --config-transition-fast: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);",
-    "",
-    "  /* Easing Curves */",
-    "  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);",
-    "  --easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);",
-    "",
-    "  /* Button Variables – auto-derived from palette */",
-    `  --btn-primary-bg: ${palette.primary.main};`,
-    `  --btn-primary-border: ${palette.primary.dark};`,
-    `  --btn-primary-border-hover: ${palette.primary.dark};`,
-    `  --btn-primary-text: ${palette.primary.contrastText};`,
-    `  --btn-primary-hover: ${palette.primary.dark};`,
-    `  --btn-primary-active: ${palette.primary[700]};`,
-    "",
-    `  --btn-secondary-bg: ${palette.secondary.main};`,
-    `  --btn-secondary-border: ${palette.secondary.main};`,
-    `  --btn-secondary-border-hover: ${palette.secondary.dark};`,
-    `  --btn-secondary-text: ${palette.secondary.contrastText};`,
-    `  --btn-secondary-hover: ${palette.secondary.dark};`,
-    `  --btn-secondary-active: ${palette.secondary[700]};`,
-    "",
-    `  --btn-shadow-hover: 0 2px 8px rgba(0,0,0,0.12);`,
-    `  --btn-shadow-secondary: 0 0 0 2px ${palette.secondary.main};`,
-    "",
-    `  --btn-ghost-bg: transparent;`,
-    `  --btn-ghost-border: transparent;`,
-    `  --btn-ghost-text: ${palette.text.primary};`,
-    `  --btn-ghost-hover: ${palette.grey[50]};`,
-    `  --btn-ghost-border-hover: ${palette.grey[300]};`,
-    `  --btn-ghost-active: ${palette.grey[100]};`,
-    `  --btn-ghost-secondary-hover: ${palette.secondary.light};`,
-    "",
-    "  /* Disabled & State */",
-    `  --state-disabled: ${palette.grey[200]};`,
-    `  --border-focus: ${palette.accent.main};`,
-    `  --border-tertiary: ${palette.grey[300]};`,
-    "",
-    "  /* Interactive States */",
-    ...Object.entries(interactive).map(
-      ([key, value]) => `  --interactive-${key}: ${value};`
-    ),
-    "",
-    "  /* Layout */",
-    `  --layout-sidebar-width-buttons: ${layout.sidebarWidth?.buttons || "80px"};`,
-    `  --layout-sidebar-width-labels: ${layout.sidebarWidth?.labels || "240px"};`,
-    `  --layout-topbar-height: ${layout.topBarHeight || "60px"};`,
-    `  --layout-bottombar-height: ${layout.bottomBarHeight || "70px"};`,
-    ...Object.entries(layout.zIndex || {}).map(
-      ([key, value]) => `  --z-${key}: ${value};`
-    ),
-    "}",
-  ];
+  /** Generic walker → converts object paths to CSS variable lines */
+  const lines: string[] = [":root {"];
 
-  return cssVariables.join("\n");
+  const kebab = (str: string) =>
+    str
+      .replace(/([a-z])([A-Z])/g, "$1-$2")
+      .replace(/\./g, "-")
+      .toLowerCase();
+
+  const walk = (obj: any, path: string[] = []) => {
+    Object.entries(obj || {}).forEach(([k, v]) => {
+      if (v && typeof v === "object" && !Array.isArray(v)) {
+        walk(v, [...path, k]);
+      } else {
+        const name = kebab([...path, k].join("-"));
+        lines.push(`  --${name}: ${v};`);
+      }
+    });
+  };
+
+  /* ───────── Alias variables for legacy SCSS ───────── */
+  const add = (name: string, value: string | number) => {
+    lines.push(`  --${name}: ${value};`);
+  };
+
+  // Palette → --color-* variables (incl. rgb & contrast)
+  const toRgb = (hex: string) => {
+    const { r, g, b } = parseColor(hex);
+    return `${r}, ${g}, ${b}`;
+  };
+
+  (Object.entries(palette) as [string, any][]).forEach(([key, scale]) => {
+    if (["grey", "text", "divider", "background"].includes(key)) return; // handled later
+    add(`color-${key}`, scale.main);
+    add(`color-${key}-light`, scale.light);
+    add(`color-${key}-dark`, scale.dark);
+    add(`color-${key}-contrast`, scale.contrastText);
+    add(`color-${key}-rgb`, toRgb(scale.main));
+    // individual numeric steps 50-900
+    [50,100,200,300,400,500,600,700,800,900].forEach((step) => {
+      if (scale[step]) add(`color-${key}-${step}`, scale[step]);
+    });
+  });
+
+  // Greys
+  Object.entries(palette.grey).forEach(([k, v]) => add(`color-grey-${k}`, v));
+
+  // Text / background / divider
+  add("text-primary", palette.text.primary);
+  add("text-secondary", palette.text.secondary);
+  add("text-disabled", palette.text.disabled);
+  add("divider", palette.divider);
+  add("bg-default", palette.background.default);
+  add("bg-paper", palette.background.paper);
+
+  // Spacing → --spacing-1 ...
+  Object.entries(spacing).forEach(([k, v]) => {
+    const m = k.match(/^spacing(\d+)$/);
+    if (m) add(`spacing-${m[1]}`, v);
+  });
+
+  // Radius → --radius-small / medium / large / xlarge
+  Object.entries(radius).forEach(([k, v]) => {
+    const name = k
+      .replace(/^radius/i, "radius-") // radiusMedium → radius-Medium
+      .replace(/([A-Z])/g, "-$1")     // radius-Medium → radius--Medium
+      .replace(/--+/g, "-")           // collapse any double hyphen
+      .toLowerCase();
+    add(name, v);
+  });
+
+  // Transitions & easings
+  Object.entries(transitions).forEach(([k, v]) => {
+    const keb = kebab(k);
+    if (k.toLowerCase().includes("easing")) {
+      const suffix = keb.replace(/^easing-?/, "");
+      add(`easing-${suffix || "default"}`, v);
+    } else {
+      add(`transition-${keb}`, v);
+    }
+  });
+
+  // Support legacy keys under ui.* (animationFast, animationMedium, animationSlow, easing*)
+  const rawAny = tokens._raw as any | undefined;
+  if (rawAny?.ui) {
+    const ui = rawAny.ui as Record<string, any>;
+    if (ui.animationFast) add("transition-fast", ui.animationFast);
+    if (ui.animationMedium) add("transition-medium", ui.animationMedium);
+    if (ui.animationSlow) add("transition-slow", ui.animationSlow);
+
+    if (ui.easingDefault) add("easing-default", ui.easingDefault);
+    if (ui.easingBounce) add("easing-bounce", ui.easingBounce);
+    if (ui.easingSharp) add("easing-sharp", ui.easingSharp);
+  }
+
+  // Radius full helper
+  add("radius-full", "9999px");
+
+  // Button helper variables mapping to primary / secondary palettes
+  const btnMap = (
+    varName: string,
+    colorKey: keyof typeof palette,
+    variant: "main" | "dark" | "light" = "main"
+  ) => {
+    const colScale: any = (palette as any)[colorKey];
+    if (!colScale) return;
+    const col =
+      variant === "main"
+        ? colScale.main
+        : variant === "dark"
+        ? colScale.dark
+        : colScale.light;
+    add(varName, col);
+  };
+
+  btnMap("btn-primary-bg", "primary");
+  btnMap("btn-primary-hover", "primary", "dark");
+  btnMap("btn-primary-active", "primary", "dark");
+  btnMap("btn-primary-border", "primary");
+  add("btn-primary-text", palette.primary.contrastText);
+
+  btnMap("btn-secondary-bg", "secondary");
+  btnMap("btn-secondary-hover", "secondary", "dark");
+  btnMap("btn-secondary-active", "secondary", "dark");
+  btnMap("btn-secondary-border", "secondary");
+  add("btn-secondary-text", palette.secondary.contrastText);
+
+  // Ghost variant and shadow helper
+  add("btn-ghost-bg", "transparent");
+  add("btn-ghost-hover", palette.grey[100]);
+  add("btn-ghost-active", palette.grey[200]);
+  add("btn-ghost-border", "transparent");
+  add("btn-ghost-text", palette.primary.main);
+  add("btn-ghost-border-hover", palette.grey[200]);
+  add("btn-shadow-secondary", `0 2px 6px rgba(${toRgb(palette.secondary.main)}, 0.15)`);
+
+  // Status helper colours
+  add("status-secondary-bg", palette.secondary.light);
+
+  // Finally walk the raw object sections for generic variables
+  if (rawAny) {
+    walk(rawAny.theme || {});
+    walk(rawAny.layout || {}, ["layout"]);
+    walk(rawAny.ui || {}, ["ui"]);
+    walk(rawAny.componentStyles || {}, ["component"]);
+  }
+
+  lines.push("}");
+  return lines.join("\n");
 };
 
 /* -------------------------------------------------- */

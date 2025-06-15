@@ -1,0 +1,1 @@
+export { default as defaultConfig } from "./master.config"; 

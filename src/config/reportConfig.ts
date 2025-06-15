@@ -10,8 +10,20 @@ export interface ReportConfig {
   // Human readable name for display
   name: string;
   
+  /**
+   * Optional slug override for the backend / generator. If omitted the key of the
+   *  reports object or the navigation slug will be used.
+   */
+  slug?: string;
+  
   // Which filters to show (empty array = no filters)
   filters?: Array<'type' | 'scope' | 'fromDate' | 'toDate'>;
+  
+  /**
+   * Legacy alias used by older JSON configs – kept for backward-compatibility.
+   * Will be mapped to `filters` when loading.
+   */
+  required?: Array<'type' | 'scope' | 'fromDate' | 'toDate'>;
   
   // Options for each filter
   options?: {

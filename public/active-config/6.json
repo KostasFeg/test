@@ -1,0 +1,26 @@
+{
+  "name": "Minimal Light",
+  "description": "Soft pastel UI with minimal chrome; bottom bar hidden for content-first layouts.",
+  "config": {
+    "theme": {
+      "colors": {
+        "primary": "#6366f1",
+        "secondary": "#a5b4fc",
+        "accent": "#f9a8d4",
+        "success": "#14b8a6",
+        "warning": "#facc15",
+        "error": "#ef4444",
+        "info": "#0ea5e9",
+        "grey100": "#fafafa",
+        "grey200": "#f4f4f5",
+        "grey700": "#52525b",
+        "grey900": "#18181b"
+      }
+    },
+    "ui": { "defaultSidebarVariant": "buttons", "defaultShowBottomBar": false },
+    "layout": { "sidebarWidth": { "buttons": "72px", "labels": "240px", "mobile": "64px" }, "topBarHeight": "56px" },
+    "reports": {
+      "minimal-metrics": { "name": "Minimal Metrics", "filters": ["fromDate","toDate"], "options": {"withTime": true} }
+    }
+  }
+} 

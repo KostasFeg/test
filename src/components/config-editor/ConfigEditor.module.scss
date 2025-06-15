@@ -926,26 +926,42 @@
 // Enhanced global grid layouts with better mobile behavior
 :global {
   .config-section {
-    margin-bottom: 3rem;
-    
-    @media (max-width: 640px) {
-      margin-bottom: 2rem;
+    display: grid;
+    gap: var(--spacing-4, 1rem);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+    /* Section header spans full width so first row aligns */
+    > h2,
+    > .sectionHeader {
+      grid-column: 1 / -1;
+    }
+
+    .config-item {
+      width: 100%;
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+
+    > .section-description {
+      grid-column: 1 / -1;
+      font-size: 0.875rem;
+      color: var(--text-secondary, #64748b);
+      margin: 0 0 var(--spacing-2, 0.5rem);
     }
   }
   
   .config-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    gap: var(--spacing-4, 1rem);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     margin-bottom: 2rem;
-    
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-    
+
+    /* Collapse to a single column only on very narrow screens */
     @media (max-width: 480px) {
-      gap: 0.75rem;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-3, 0.75rem);
     }
   }
   
@@ -1197,5 +1213,16 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Tighter layout for colour inputs so they fit half-rows nicely */
+.color-input-wrapper {
+  display: grid;
+  grid-template-columns: 40px 1fr; /* swatch + hex */
+  gap: var(--spacing-2, 0.5rem);
+
+  input[type="color"] {
+    flex: 0 0 40px;
   }
 } 

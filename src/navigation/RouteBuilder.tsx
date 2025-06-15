@@ -5,8 +5,13 @@ import type { NavNode } from "../shared/config/navigation.config";
 import { SectionWithTabs } from "./SectionWithTabs";
 import { SectionWithButtons } from "./SectionWithButtons";
 import LoadingFallback from "../components/ui/LoadingFallback";
+import GenericReport from "../components/ui/GenericReport";
+import { getCurrentConfig } from "../shared/config/config.manager";
 
 export function buildRoutes(nodes: NavNode[], base = ""): React.ReactElement[] {
+  // Grab dynamic reports map once for fallback detection
+  const dynamicReports = (getCurrentConfig() as any).reports || {};
+
   return nodes
     .filter((node) => {
       // Skip callback-only nodes (onCallback but no element) as they don't need routes
@@ -45,18 +50,26 @@ export function buildRoutes(nodes: NavNode[], base = ""): React.ReactElement[] {
       }
 
       /* -------- leaf routes --------------------------------------------- */
+
+      let leafElementFn = node.element;
+
+      // Fallback: if no element provided but slug exists in dynamic reports, render GenericReport automatically
+      if (!leafElementFn && dynamicReports && dynamicReports[node.slug]) {
+        leafElementFn = () => <GenericReport reportSlug={node.slug} />;
+      }
+
       return (
         <Route
           key={fullPath}
           path={node.slug}
           element={
-            node.element ? (
+            leafElementFn ? (
               <Suspense
                 fallback={
                   <LoadingFallback size={48} message="Loading page..." />
                 }
               >
-                {node.element()}
+                {leafElementFn()}
               </Suspense>
             ) : (
               <Navigate to="." />

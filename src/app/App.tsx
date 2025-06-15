@@ -1,5 +1,11 @@
 import React, { Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { UIProvider } from "./providers/UIProvider";
 import LoginPage from "../pages/LoginPage";
@@ -12,6 +18,7 @@ import ErrorBoundary from "../components/feedback/ErrorBoundary";
 import { ROUTES } from "../shared/constants/routes";
 import { useDesignSystemInjection } from "../shared/design-system-integration";
 import { TopBarControls } from "../components/layout/top-bar/TopBarControls";
+import FullScreenPanel from "../components/ui/FullScreenPanel";
 
 // Lazy load ConfigEditor for the dedicated route
 const ConfigEditor = React.lazy(
@@ -48,18 +55,7 @@ const AppContent: React.FC = () => {
           <Routes>
             {buildRoutes(navigation)}
             {/* Direct route for ConfigEditor - bypasses navigation config */}
-            <Route
-              path="/configuration"
-              element={
-                <Suspense
-                  fallback={
-                    <LoadingFallback message="Loading Configuration Editor..." />
-                  }
-                >
-                  <ConfigEditor />
-                </Suspense>
-              }
-            />
+            <Route path="/configuration" element={<ConfigEditorWrapper />} />
             <Route
               path={ROUTES.HOME}
               element={<Navigate to="/reports" replace />}
@@ -68,6 +64,20 @@ const AppContent: React.FC = () => {
         </Suspense>
       </Layout>
     </BrowserRouter>
+  );
+};
+
+// Wrapper so we can safely call useNavigate (requires Router context)
+const ConfigEditorWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return (
+    <Suspense
+      fallback={<LoadingFallback message="Loading Configuration Editor..." />}
+    >
+      <FullScreenPanel onClose={() => navigate(-1)}>
+        <ConfigEditor />
+      </FullScreenPanel>
+    </Suspense>
   );
 };
 
