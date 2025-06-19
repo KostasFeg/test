@@ -155,23 +155,11 @@
 
 .config-item {
   background: var(--ce-surface-elevated);
-  border: 2px solid var(--ce-border);
+  border: 1px solid var(--ce-border-light);
   border-radius: var(--ce-radius-xl);
   padding: var(--ce-space-6);
-  transition: var(--ce-transition);
   position: relative;
-  
-  &:hover {
-    border-color: var(--ce-border-medium);
-    box-shadow: var(--ce-shadow-md);
-    transform: translateY(-2px);
-  }
-
-  &:focus-within {
-    border-color: var(--ce-primary);
-    box-shadow: var(--ce-shadow-focus);
-    transform: translateY(-2px);
-  }
+  box-shadow: var(--ce-shadow-sm);
 
   label {
     display: block;
@@ -392,22 +380,10 @@
 
 .input-group {
   background: var(--ce-surface-elevated);
-  border: 2px solid var(--ce-border);
+  border: 1px solid var(--ce-border-light);
   border-radius: var(--ce-radius-xl);
   padding: var(--ce-space-6);
-  transition: var(--ce-transition);
-  
-  &:hover {
-    border-color: var(--ce-border-medium);
-    box-shadow: var(--ce-shadow-md);
-    transform: translateY(-2px);
-  }
-
-  &:focus-within {
-    border-color: var(--ce-primary);
-    box-shadow: var(--ce-shadow-focus);
-    transform: translateY(-2px);
-  }
+  box-shadow: var(--ce-shadow-sm);
 
   label {
     display: block;

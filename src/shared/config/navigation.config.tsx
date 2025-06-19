@@ -58,6 +58,10 @@ const ConfigEditor = React.lazy(
   () => import("../../components/config-editor/ConfigEditor")
 );
 
+const ReportServiceExample = React.lazy(
+  () => import("../../components/ui/ReportServiceExample")
+);
+
 export const navConfig: NavNode[] = [
   // {
   //   slug: "reload",
@@ -201,6 +205,11 @@ export const navConfig: NavNode[] = [
     display: "buttons",
     columns: 2,
     children: [
+      {
+        slug: "report-service-demo",
+        label: "🚀 Report Service Demo",
+        element: () => <ReportServiceExample />,
+      },
       {
         slug: "sales",
         label: "Sales Report",
@@ -351,6 +360,14 @@ export const navConfig: NavNode[] = [
   //     },
   //   ],
   // },
+
+  // 🚀 Enhanced Report Service Demo
+  {
+    slug: "report-service-demo",
+    label: "Report Service Demo",
+    icon: <FileText />,
+    element: () => <ReportServiceExample />,
+  },
 
   // 🎨 Configuration System - Hidden from normal navigation but accessible via route
   {

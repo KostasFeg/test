@@ -1,0 +1,194 @@
+.container {
+  // Base layout
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+
+  // Typography
+  font-family: var(--font-family-sans);
+  font-weight: 400;
+  line-height: 1.5;
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    .checkbox {
+      border-color: var(--border-tertiary);
+      background: var(--state-disabled);
+    }
+
+    .label {
+      color: var(--text-disabled);
+    }
+  }
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  // Hide the native checkbox but keep it accessible
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: inherit;
+  z-index: 1;
+
+  &:focus-visible + .checkbox {
+    outline: 2px solid var(--focus-ring-color, var(--color-primary));
+    outline-offset: 2px;
+  }
+}
+
+.checkbox {
+  // Base styling
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  
+  background: var(--surface-primary, #ffffff);
+  border: 2px solid var(--border-secondary, #d1d5db);
+  border-radius: var(--radius-small, 0.25rem);
+  
+  transition: all var(--transition-fast, 150ms) var(--easing-default, ease);
+
+  // Hover effect
+  &:hover {
+    border-color: var(--color-primary, #3b82f6);
+    background: var(--surface-hover, rgba(59, 130, 246, 0.04));
+  }
+
+  // Icons
+  .checkIcon,
+  .indeterminateIcon {
+    width: 100%;
+    height: 100%;
+    color: transparent;
+    transition: all var(--transition-fast, 150ms) var(--easing-default, ease);
+    transform: scale(0.8);
+  }
+
+  .indeterminateIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+// Checked state
+.checkbox.checked {
+  background: var(--color-primary, #3b82f6);
+  border-color: var(--color-primary, #3b82f6);
+
+  .checkIcon {
+    color: var(--color-on-primary, #ffffff);
+    transform: scale(1);
+  }
+
+  &:hover {
+    background: var(--color-primary-hover, #2563eb);
+    border-color: var(--color-primary-hover, #2563eb);
+  }
+}
+
+// Indeterminate state
+.checkbox.indeterminate {
+  background: var(--color-primary, #3b82f6);
+  border-color: var(--color-primary, #3b82f6);
+
+  .indeterminateIcon {
+    color: var(--color-on-primary, #ffffff);
+    transform: scale(1);
+  }
+
+  &:hover {
+    background: var(--color-primary-hover, #2563eb);
+    border-color: var(--color-primary-hover, #2563eb);
+  }
+}
+
+.label {
+  color: var(--text-primary, #111827);
+  line-height: inherit;
+  margin: 0;
+}
+
+/* ───────── Size Variants ───────── */
+.small {
+  font-size: 14px;
+
+  .checkbox {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.medium {
+  font-size: 16px;
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.large {
+  font-size: 18px;
+  gap: var(--spacing-3);
+
+  .checkbox {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* ───────── Active/Pressed State ───────── */
+.container:active .checkbox {
+  transform: scale(0.95);
+}
+
+/* ───────── Ripple Effect (Optional Enhancement) ───────── */
+.inputWrapper::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary, #3b82f6);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: all var(--transition-fast, 150ms) var(--easing-default, ease);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container:active .inputWrapper::before {
+  opacity: 0.1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ───────── High Contrast Mode Support ───────── */
+@media (prefers-contrast: high) {
+  .checkbox {
+    border-width: 3px;
+  }
+
+  .checkbox.checked,
+  .checkbox.indeterminate {
+    border-color: var(--text-primary, #000000);
+  }
+} 

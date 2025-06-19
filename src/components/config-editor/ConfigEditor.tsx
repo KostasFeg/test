@@ -4,7 +4,7 @@ import { useConfig } from "../../shared/hooks/useConfig";
 import styles from "./ConfigEditor.module.scss";
 import { configManager } from "../../shared/config/config.manager";
 import Slider from "../primitives/Slider";
-import { Dropdown } from "../primitives";
+import { Dropdown, Checkbox } from "../primitives";
 import type { DropdownOption } from "../primitives";
 
 import ActiveConfigManager from "./ActiveConfigManager";
@@ -705,7 +705,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
 
     return (
       <div key={key} className="config-item">
-        <label htmlFor={key}>{label}</label>
+        {type !== "boolean" && <label htmlFor={key}>{label}</label>}
 
         {type === "color" && (
           <div className="color-input-wrapper">
@@ -749,11 +749,11 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
         )}
 
         {type === "boolean" && (
-          <input
-            type="checkbox"
+          <Checkbox
             id={key}
             checked={value}
             onChange={(e) => handleConfigChange(key, e.target.checked)}
+            label={getVariableLabel(key)}
           />
         )}
 
@@ -1111,7 +1111,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                     Define your brand identity - all other interface colors are
                     automatically derived
                   </p>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "theme.colors.primary",
                       editedConfig.theme.colors.primary,
@@ -1135,7 +1135,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                   <p className="subsection-description">
                     Colors for user feedback and notifications
                   </p>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "theme.colors.success",
                       editedConfig.theme.colors.success,
@@ -1164,7 +1164,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                   <p className="subsection-description">
                     Core neutral colors that define your interface foundation
                   </p>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "theme.colors.grey100",
                       editedConfig.theme.colors.grey100 || "#f5f5f5",
@@ -1257,7 +1257,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                       These variants are automatically generated from your brand
                       colors
                     </p>
-                    <div className="config-grid">
+                    <div className="config-items-container">
                       <div className="derived-color-preview">
                         <label>Primary Light</label>
                         <div
@@ -1351,7 +1351,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
               <div className="config-subsections">
                 <div className="subsection">
                   <h3>Elevation Shadows</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "theme.shadows.shadowSmall",
                       editedConfig.theme.shadows.shadowSmall,
@@ -1376,7 +1376,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                 </div>
                 <div className="subsection">
                   <h3>Special Effects</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "theme.shadows.shadowInner",
                       editedConfig.theme.shadows.shadowInner,
@@ -1411,7 +1411,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                     Control how fast animations play. Drag the sliders to see
                     instant feedback.
                   </p>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderAnimationSlider(
                       "theme.transitions.transitionFast",
                       editedConfig.theme.transitions.transitionFast,
@@ -1436,7 +1436,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                     motion effects. These control how animations accelerate and
                     decelerate.
                   </p>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderEasingDropdown(
                       "theme.transitions.easingDefault",
                       editedConfig.theme.transitions.easingDefault
@@ -1466,7 +1466,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
               <div className="config-subsections">
                 <div className="subsection">
                   <h3>Interaction Values</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "theme.interactiveStates.hoverOpacity",
                       editedConfig.theme.interactiveStates.hoverOpacity,
@@ -1486,7 +1486,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                 </div>
                 <div className="subsection">
                   <h3>Focus Styling</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "theme.interactiveStates.focusRingWidth",
                       editedConfig.theme.interactiveStates.focusRingWidth,
@@ -1514,7 +1514,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
               <div className="config-subsections">
                 <div className="subsection">
                   <h3>📱 Navigation Configuration</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     <div className="input-group">
                       <Dropdown
                         label="Default Sidebar Variant"
@@ -1531,23 +1531,17 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                     </div>
 
                     <div className="input-group">
-                      <label>Show Bottom Bar</label>
-                      <div className="checkbox-group">
-                        <input
-                          type="checkbox"
-                          checked={editedConfig.ui.defaultShowBottomBar}
-                          onChange={(e) =>
-                            handleConfigChange(
-                              "ui.defaultShowBottomBar",
-                              e.target.checked
-                            )
-                          }
-                          id="show-bottom-bar"
-                        />
-                        <label htmlFor="show-bottom-bar">
-                          Enable bottom navigation bar
-                        </label>
-                      </div>
+                      <Checkbox
+                        checked={editedConfig.ui.defaultShowBottomBar}
+                        onChange={(e) =>
+                          handleConfigChange(
+                            "ui.defaultShowBottomBar",
+                            e.target.checked
+                          )
+                        }
+                        id="show-bottom-bar"
+                        label="Enable bottom navigation bar"
+                      />
                       <small>
                         Shows peripheral devices and secondary navigation
                       </small>
@@ -1562,7 +1556,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                     Buttons mode shows icon-only navigation, Labels mode shows
                     full text labels.
                   </p>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "layout.sidebarWidth.buttons",
                       editedConfig.layout.sidebarWidth.buttons,
@@ -1582,7 +1576,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
                     Control the height of the top and bottom navigation bars.
                     Changes apply immediately to the layout grid.
                   </p>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "layout.topBarHeight",
                       editedConfig.layout.topBarHeight,
@@ -1635,7 +1629,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
 
                 <div className="subsection">
                   <h3>📏 Spacing & Border Radius</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {renderInput(
                       "theme.spacing.spacing4",
                       editedConfig.theme.spacing.spacing4,
@@ -1669,7 +1663,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
               <div className="config-subsections">
                 <div className="subsection">
                   <h3>Company Information</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {Object.entries(editedConfig.branding.company).map(
                       ([key, value]) => (
                         <div key={key} className="config-item">
@@ -1686,7 +1680,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
 
                 <div className="subsection">
                   <h3>Application Details</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {Object.entries(editedConfig.branding.app).map(
                       ([key, value]) => (
                         <div key={key} className="config-item">
@@ -1699,7 +1693,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
 
                 <div className="subsection">
                   <h3>Logo Configuration</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {Object.entries(editedConfig.branding.logo).map(
                       ([key, value]) => (
                         <div key={key} className="config-item">
@@ -1725,7 +1719,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
               <div className="config-subsections">
                 <div className="subsection">
                   <h3>Feature Flags</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {Object.entries(editedConfig.features).map(
                       ([key, value]) => (
                         <div key={key} className="config-item">
@@ -1738,7 +1732,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
 
                 <div className="subsection">
                   <h3>API Configuration</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {Object.entries(editedConfig.api).map(([key, value]) => (
                       <div key={key} className="config-item">
                         {renderInput(
@@ -1753,7 +1747,7 @@ const ConfigEditor: React.FC<ConfigEditorProps> = ({ className }) => {
 
                 <div className="subsection">
                   <h3>Authentication Settings</h3>
-                  <div className="config-grid">
+                  <div className="config-items-container">
                     {Object.entries(editedConfig.auth).map(([key, value]) => (
                       <div key={key} className="config-item">
                         {renderInput(

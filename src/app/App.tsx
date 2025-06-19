@@ -28,6 +28,7 @@ const ConfigEditor = React.lazy(
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, login } = useAuth();
   const navigation = useNavigationConfig();
+  const routes = React.useMemo(() => buildRoutes(navigation), [navigation]);
 
   // Initialize the new design system
   useDesignSystemInjection();
@@ -53,7 +54,7 @@ const AppContent: React.FC = () => {
           fallback={<LoadingFallback message="Loading application..." />}
         >
           <Routes>
-            {buildRoutes(navigation)}
+            {routes}
             {/* Direct route for ConfigEditor - bypasses navigation config */}
             <Route path="/configuration" element={<ConfigEditorWrapper />} />
             <Route

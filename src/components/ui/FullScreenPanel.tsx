@@ -18,10 +18,18 @@ const FullScreenPanel: React.FC<FullScreenPanelProps> = ({
   const panelRef = useRef<HTMLDivElement>(null);
   const startY = useRef<number | null>(null);
   const [dragY, setDragY] = useState(0);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const requestClose = () => {
+    // Trigger closing animation
+    if (!isClosing) {
+      setIsClosing(true);
+    }
+  };
 
   // ESC key closes
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && requestClose();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
@@ -42,7 +50,7 @@ const FullScreenPanel: React.FC<FullScreenPanelProps> = ({
   const handlePointerUp = () => {
     if (dragY > 120) {
       // close
-      onClose();
+      requestClose();
     } else {
       // snap back
       setDragY(0);
@@ -50,20 +58,29 @@ const FullScreenPanel: React.FC<FullScreenPanelProps> = ({
     startY.current = null;
   };
 
+  const handleAnimationEnd = () => {
+    if (isClosing) {
+      onClose();
+    }
+  };
+
   const panel = (
-    <div className={styles.backdrop} onClick={() => onClose()}>
+    <div className={styles.backdrop} onClick={requestClose}>
       <div
         ref={panelRef}
-        className={clsx(styles.panel, className)}
+        className={clsx(styles.panel, className, {
+          [styles.closing]: isClosing,
+        })}
         style={{ transform: `translateY(${dragY}px)` }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onClick={(e) => e.stopPropagation()}
+        onAnimationEnd={handleAnimationEnd}
       >
         <button
           className={styles.closeBtn}
-          onClick={onClose}
+          onClick={requestClose}
           aria-label="Close configuration editor"
           onPointerDown={(e) => e.stopPropagation()}
         >

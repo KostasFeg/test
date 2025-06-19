@@ -17,6 +17,7 @@
     "@bbob/html": "^4.2.0",
     "@bbob/preset-html5": "^4.2.0",
     "@tanstack/react-table": "^8.21.3",
+    "axios": "^1.10.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.511.0",

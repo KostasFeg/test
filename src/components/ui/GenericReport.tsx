@@ -3,10 +3,8 @@ import { useLocation } from "react-router-dom";
 import SimpleDatePicker from "../DatePicker/SimpleDatePicker";
 import ImageScroller from "./ImageScroller";
 import Spinner from "./Spinner";
-import {
-  mockReportService,
-  ReportParams,
-} from "../../services/mockReportService";
+import { getReport, ApiReportParams } from "../../services/reportService";
+import { ReportParams } from "../../services/mockReportService";
 import { getReportBySlug } from "../../config/reportConfig";
 import { useReportsConfig } from "../../shared/hooks/useConfig";
 import { format } from "date-fns";
@@ -210,8 +208,8 @@ const GenericReport: React.FC<GenericReportProps> = ({
         requestParams.toDate = utcToTimestamp;
       }
 
-      // Use the enhanced mock service
-      const response = await mockReportService.getReport(requestParams);
+      // Use the enhanced report service (supports both mock and real API)
+      const response = await getReport(requestParams as ApiReportParams);
       setState((prev) => ({
         ...prev,
         htmlCode: response || "",
