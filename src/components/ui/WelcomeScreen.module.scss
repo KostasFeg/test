@@ -1,0 +1,338 @@
+.welcomeScreen {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FF5000 0%, #e04800 25%, #cc3f00 75%, #b33600 100%);
+  position: relative;
+  overflow: hidden;
+  
+  // Subtle animated background elements
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: float 25s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.05);
+    pointer-events: none;
+  }
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  color: white;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4rem;
+}
+
+// Header Section
+.header {
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    
+    .companyLogo {
+      height: 80px;
+      width: auto;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
+      animation: logoGlow 4s ease-in-out infinite;
+    }
+    
+    .sparkle {
+      color: #fff3e0;
+      animation: sparkle 4s ease-in-out infinite;
+      position: absolute;
+      
+      &:first-child {
+        animation-delay: 0.8s;
+        top: -10px;
+        right: 20px;
+      }
+      
+      &:last-child {
+        animation-delay: 2s;
+        bottom: -10px;
+        left: 20px;
+      }
+    }
+  }
+  
+  .title {
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 800;
+    margin: 0 0 2rem 0;
+    background: linear-gradient(135deg, #ffffff 0%, #fff3e0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  
+  .subtitle {
+    font-size: 1.375rem;
+    font-weight: 300;
+    line-height: 1.7;
+    margin: 0;
+    opacity: 0.95;
+    max-width: 700px;
+    margin: 0 auto;
+    color: #fff3e0;
+  }
+}
+
+// Actions Section
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.primaryAction, .customizeAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quickStartButton {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem 3rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  color: #2E3335;
+  border: 3px solid #FF5000;
+  border-radius: 20px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 12px 32px rgba(46, 51, 53, 0.15);
+  position: relative;
+  overflow: hidden;
+  min-width: 320px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.8s;
+  }
+  
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(255, 80, 0, 0.3);
+    background: linear-gradient(135deg, #FF5000 0%, #e04800 100%);
+    color: white;
+    
+    &::before {
+      left: 100%;
+    }
+  }
+  
+  &:active {
+    transform: translateY(-2px) scale(1.01);
+  }
+  
+  &:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+    transform: none;
+    
+    &:hover {
+      transform: none;
+      box-shadow: 0 12px 32px rgba(46, 51, 53, 0.15);
+    }
+  }
+}
+
+.customizeButton {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 2.5rem;
+  background: rgba(46, 51, 53, 0.8);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+  min-width: 280px;
+  
+  &:hover {
+    background: rgba(46, 51, 53, 0.95);
+    border-color: #FF5000;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 80, 0, 0.2);
+  }
+}
+
+.quickStartDescription, .customizeDescription {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+  max-width: 500px;
+  line-height: 1.6;
+  color: #fff3e0;
+  font-weight: 400;
+}
+
+.orDivider {
+  position: relative;
+  margin: 1.5rem 0;
+  
+  span {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.8;
+    backdrop-filter: blur(12px);
+    color: #fff3e0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+// Animations
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(180deg); }
+}
+
+@keyframes logoGlow {
+  0%, 100% { 
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
+    transform: scale(1);
+  }
+  50% { 
+    filter: drop-shadow(0 12px 32px rgba(255, 80, 0, 0.4));
+    transform: scale(1.02);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1) rotate(0deg); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.3) rotate(180deg); 
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .container {
+    padding: 3rem 1.5rem;
+    gap: 3rem;
+  }
+  
+  .header {
+    .logoContainer {
+      margin-bottom: 2rem;
+      gap: 1.5rem;
+      
+      .companyLogo {
+        height: 60px;
+      }
+    }
+    
+    .title {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .subtitle {
+      font-size: 1.25rem;
+    }
+  }
+  
+  .actions {
+    gap: 2.5rem;
+  }
+  
+      .quickStartButton {
+      padding: 1.25rem 2.5rem;
+      font-size: 1.125rem;
+      min-width: 260px;
+    }
+    
+    .customizeButton {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      min-width: 240px;
+    }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 2rem 1rem;
+    gap: 2.5rem;
+  }
+  
+  .header {
+    .title {
+      font-size: 2rem;
+    }
+    
+    .subtitle {
+      font-size: 1.125rem;
+    }
+  }
+  
+  .quickStartButton, .customizeButton {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+    min-width: 220px;
+  }
+  
+  .header .logoContainer .companyLogo {
+    height: 50px;
+  }
+  
+  .quickStartDescription, .customizeDescription {
+    font-size: 0.9rem;
+  }
+  
+  .orDivider span {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+} 

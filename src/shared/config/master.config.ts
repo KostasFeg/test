@@ -296,43 +296,257 @@ export interface FeatureFlags {
 // ==========================================
 
 export interface MasterConfig {
-  // Theme and visual design
   theme: {
-    colors: ThemeColors;
-    shadows: ThemeShadows;
-    transitions: ThemeTransitions;
-    interactiveStates: ThemeInteractiveStates;
-    typography: TypographyConfig;
-    spacing: SpacingConfig;
-    borderRadius: BorderRadiusConfig;
+    colors: {
+      primary: string;
+      primaryLight?: string;
+      primaryDark?: string;
+      secondary: string;
+      secondaryLight?: string;
+      secondaryDark?: string;
+      accent: string;
+      accentBackground?: string;
+      success: string;
+      warning: string;
+      error: string;
+      info: string;
+      white?: string;
+      grey50?: string;
+      grey100?: string;
+      grey200?: string;
+      grey300?: string;
+      grey400?: string;
+      grey500?: string;
+      grey600?: string;
+      grey700?: string;
+      grey800?: string;
+      grey900?: string;
+      [key: string]: any;
+    };
+    shadows?: {
+      shadowSmall?: string;
+      shadowMedium?: string;
+      shadowLarge?: string;
+      shadowXLarge?: string;
+      shadowInner?: string;
+      shadowFocus?: string;
+      [key: string]: any;
+    };
+    transitions?: {
+      transitionFast?: string;
+      transitionMedium?: string;
+      transitionSlow?: string;
+      easingDefault?: string;
+      easingBounce?: string;
+      easingSharp?: string;
+      [key: string]: any;
+    };
+    interactiveStates?: {
+      hoverOpacity?: number;
+      activeScale?: number;
+      focusRingWidth?: string;
+      focusRingOffset?: string;
+      disabledOpacity?: number;
+      [key: string]: any;
+    };
+    typography?: {
+      fontFamilySans?: string;
+      fontFamilyMono?: string;
+      fontSizeSmall?: string;
+      fontSizeMedium?: string;
+      fontSizeLarge?: string;
+      fontSizeXLarge?: string;
+      fontWeightNormal?: number;
+      fontWeightMedium?: number;
+      fontWeightSemibold?: number;
+      fontWeightBold?: number;
+      [key: string]: any;
+    };
+    spacing?: {
+      spacing1?: string;
+      spacing2?: string;
+      spacing3?: string;
+      spacing4?: string;
+      spacing5?: string;
+      spacing6?: string;
+      spacing8?: string;
+      spacing12?: string;
+      [key: string]: any;
+    };
+    borderRadius?: {
+      radiusSmall?: string;
+      radiusMedium?: string;
+      radiusLarge?: string;
+      radiusXLarge?: string;
+      [key: string]: any;
+    };
+    [key: string]: any;
   };
-  
-  // Layout and structure
-  layout: LayoutConfig;
-  
-  // UI behavior and interactions
-  ui: UIBehaviorConfig;
-  
-  // Component-specific styles
-  componentStyles: ComponentStylesConfig;
-  
-  // Branding and identity
-  branding: BrandingConfig;
-  
-  // API and backend
-  api: APIConfig;
-  
-  // Authentication
-  auth: AuthConfig;
-  
-  // Navigation and routing
-  navigation: NavNode[];
-  
-  // Reports configuration
-  reports: Record<string, ReportConfig>;
-  
-  // Feature toggles
-  features: FeatureFlags;
+  layout: {
+    sidebarWidth?: {
+      buttons?: string;
+      labels?: string;
+      mobile?: string;
+      [key: string]: any;
+    };
+    topBarHeight?: string;
+    bottomBarHeight?: string;
+    mobile?: {
+      topBarHeight?: string;
+      sidebarWidthButtons?: string;
+      sidebarWidthLabels?: string;
+      [key: string]: any;
+    };
+    breakpoints?: {
+      mobile?: string;
+      tablet?: string;
+      desktop?: string;
+      [key: string]: any;
+    };
+    zIndex?: {
+      topbar?: number;
+      sidebar?: number;
+      bottombar?: number;
+      modal?: number;
+      dropdown?: number;
+      [key: string]: any;
+    };
+    [key: string]: any;
+  };
+  ui: {
+    defaultSidebarVariant?: string;
+    defaultShowBottomBar?: boolean;
+    animationFast?: string;
+    animationMedium?: string;
+    animationSlow?: string;
+    easingDefault?: string;
+    easingBounce?: string;
+    easingSharp?: string;
+    [key: string]: any;
+  };
+  componentStyles?: {
+    buttons?: {
+      borderRadius?: string;
+      paddingVertical?: string;
+      paddingHorizontal?: string;
+      fontWeight?: number;
+      minHeight?: string;
+      minWidth?: string;
+      hoverTransform?: string;
+      hoverShadow?: string;
+      focusRingStyle?: string;
+      [key: string]: any;
+    };
+    inputs?: {
+      borderRadius?: string;
+      padding?: string;
+      fontSize?: string;
+      borderWidth?: string;
+      focusRingWidth?: string;
+      focusRingColor?: string;
+      placeholderOpacity?: string;
+      [key: string]: any;
+    };
+    cards?: {
+      borderRadius?: string;
+      padding?: string;
+      shadowLight?: string;
+      shadowMedium?: string;
+      shadowHeavy?: string;
+      borderWidth?: string;
+      borderStyle?: string;
+      hoverElevation?: string;
+      [key: string]: any;
+    };
+    navigation?: {
+      buttonGrid?: {
+        gap?: string;
+        itemMinWidth?: string;
+        itemMaxWidth?: string;
+        itemPadding?: string;
+        hoverScale?: string;
+        activeScale?: string;
+        [key: string]: any;
+      };
+      tabs?: {
+        height?: string;
+        borderRadius?: string;
+        gap?: string;
+        activeIndicatorHeight?: string;
+        hoverBackground?: string;
+        [key: string]: any;
+      };
+      [key: string]: any;
+    };
+    modals?: {
+      backdropBlur?: string;
+      borderRadius?: string;
+      padding?: string;
+      maxWidth?: string;
+      shadow?: string;
+      animationDuration?: string;
+      [key: string]: any;
+    };
+    [key: string]: any;
+  };
+  branding?: {
+    company?: {
+      name?: string;
+      displayName?: string;
+      [key: string]: any;
+    };
+    logo?: {
+      src?: string;
+      alt?: string;
+      width?: number;
+      height?: number;
+      [key: string]: any;
+    };
+    loginPage?: {
+      title?: string;
+      logo?: {
+        src?: string;
+        alt?: string;
+        width?: number;
+        height?: number;
+        [key: string]: any;
+      };
+      [key: string]: any;
+    };
+    app?: {
+      name?: string;
+      version?: string;
+      description?: string;
+      [key: string]: any;
+    };
+    [key: string]: any;
+  };
+  api?: {
+    baseUrl?: string;
+    timeout?: number;
+    retryAttempts?: number;
+    retryDelay?: number;
+    [key: string]: any;
+  };
+  auth?: {
+    persistKey?: string;
+    sessionTimeout?: number;
+    autoLogoutWarning?: number;
+    [key: string]: any;
+  };
+  navigation: any[];
+  reports?: {
+    [key: string]: any;
+  };
+  features?: {
+    enableDebugReports?: boolean;
+    enableAdvancedFilters?: boolean;
+    enableThemeCustomization?: boolean;
+    enableBulkOperations?: boolean;
+    enableOfflineMode?: boolean;
+    [key: string]: any;
+  };
+  [key: string]: any;
 }
 
 // ==========================================

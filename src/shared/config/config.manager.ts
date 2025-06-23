@@ -1,6 +1,6 @@
 import { configPresets, getPresetById, ConfigPreset } from "./config.presets";
 import { injectCSSVariablesFromMasterConfig } from "../design-system-integration";
-import type { MasterConfig } from "./master.generated";
+import type { MasterConfig } from "./master.config";
 import { defaultConfig } from "./defaultConfig";
 import Ajv from "ajv";
 import schema from "../../config/master.schema.json";
@@ -60,7 +60,7 @@ export class ConfigManager {
     } catch (_) {}
   }
 
-  getCurrentConfig() {
+  getCurrentConfig(): MasterConfig {
     return this.current;
   }
 
@@ -82,13 +82,12 @@ export class ConfigManager {
     // strip non-serialisable fields before merge/validate
     const cleanedOverrides: Partial<MasterConfig> = Object.assign({}, partial) as any;
     (cleanedOverrides as any).navigation = sanitizeNavigation((partial as any).navigation);
-    const merged = deepMerge(defaultConfig, cleanedOverrides);
+    const merged: MasterConfig = deepMerge(defaultConfig, cleanedOverrides);
     // Validate a JSON-serialisable snapshot ‒ strip React elements etc. so Ajv
     // doesn't choke while still keeping them for runtime use.
-    const serialisableForValidation = {
-      ...merged,
+    const serialisableForValidation = Object.assign({}, merged, {
       navigation: sanitizeNavigation(merged.navigation as any),
-    } as MasterConfig;
+    }) as MasterConfig;
 
     if (!validate(serialisableForValidation)) {
       console.error("❌ Config validation failed", validate.errors);

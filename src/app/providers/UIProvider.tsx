@@ -6,7 +6,7 @@ import React, {
   ReactNode,
 } from "react";
 import { SidebarVariant } from "../../shared/types/ui";
-import { useConfig } from "../../shared/hooks/useConfig";
+import { useUIConfig } from "../../shared/hooks/useConfig";
 
 interface UIContextType {
   sidebarVariant: SidebarVariant;
@@ -22,21 +22,23 @@ interface UIProviderProps {
 }
 
 export const UIProvider: React.FC<UIProviderProps> = ({ children }) => {
-  const config = useConfig();
+  const uiConfig = useUIConfig();
 
   // Initialize state from configuration
   const [sidebarVariant, setSidebarVariant] = useState<SidebarVariant>(
-    config.ui.defaultSidebarVariant
+    (uiConfig?.defaultSidebarVariant as SidebarVariant) || "buttons"
   );
   const [showBottomBar, setShowBottomBar] = useState(
-    config.ui.defaultShowBottomBar
+    uiConfig?.defaultShowBottomBar || false
   );
 
   // Update state when config changes
   useEffect(() => {
-    setSidebarVariant(config.ui.defaultSidebarVariant);
-    setShowBottomBar(config.ui.defaultShowBottomBar);
-  }, [config.ui.defaultSidebarVariant, config.ui.defaultShowBottomBar]);
+    setSidebarVariant(
+      (uiConfig?.defaultSidebarVariant as SidebarVariant) || "buttons"
+    );
+    setShowBottomBar(uiConfig?.defaultShowBottomBar || false);
+  }, [uiConfig?.defaultSidebarVariant, uiConfig?.defaultShowBottomBar]);
 
   const value = {
     sidebarVariant,

@@ -6,11 +6,14 @@ import { SectionWithTabs } from "./SectionWithTabs";
 import { SectionWithButtons } from "./SectionWithButtons";
 import LoadingFallback from "../components/ui/LoadingFallback";
 import GenericReport from "../components/ui/GenericReport";
-import { getCurrentConfig } from "../shared/config/config.manager";
+import { dynamicConfig } from "../shared/config/dynamic-config.service";
 
 export function buildRoutes(nodes: NavNode[], base = ""): React.ReactElement[] {
   // Grab dynamic reports map once for fallback detection
-  const dynamicReports = (getCurrentConfig() as any).reports || {};
+  const dynamicReports = dynamicConfig.getReportSlugs().reduce((acc, slug) => {
+    acc[slug] = dynamicConfig.getReportConfig(slug);
+    return acc;
+  }, {} as Record<string, any>);
 
   return nodes
     .filter((node) => {

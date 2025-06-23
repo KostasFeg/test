@@ -84,7 +84,10 @@ function EditableTable<T extends Record<string, any>>({
 
         const opt = editableMap.get(key)!;
         const current = (row as any)[key] as number;
-        const next = Math.max(opt.min ?? 0, Math.min(opt.max ?? Infinity, current + delta));
+        const next = Math.max(
+          opt.min ?? 0,
+          Math.min(opt.max ?? Infinity, current + delta)
+        );
         return { ...row, [key]: next };
       })
     );
@@ -93,9 +96,9 @@ function EditableTable<T extends Record<string, any>>({
   // Build the column defs, injecting plus/minus renderers where needed
   const columnsWithEditors = useMemo<ColumnDef<T, any>[]>(() => {
     return columns.map((col) => {
-      if (!col.id && typeof col.accessorKey !== "string") return col; // skip non-string accessor keys
+      if (!col.id && typeof (col as any).accessorKey !== "string") return col; // skip non-string accessor keys
 
-      const key = (col.id ?? col.accessorKey) as string;
+      const key = (col.id ?? (col as any).accessorKey) as string;
       if (!editableMap.has(key)) return col;
 
       const opt = editableMap.get(key)!;
@@ -104,7 +107,7 @@ function EditableTable<T extends Record<string, any>>({
         ...col,
         cell: (info: any) => {
           const rowIdx = info.row.index;
-          const value = info.getValue<number>();
+          const value = info.getValue() as number;
           return (
             <div className="qty-wrapper">
               <button
@@ -132,9 +135,13 @@ function EditableTable<T extends Record<string, any>>({
   }, [columns, editableMap]);
 
   // Fallback highlight predicate: at least one editable column value > min
-  const safeHighlight = highlightWhen ?? ((row: T) => {
-    return editableColumns.some(({ key, min = 0 }) => (row as any)[key] > min);
-  });
+  const safeHighlight =
+    highlightWhen ??
+    ((row: T) => {
+      return editableColumns.some(
+        ({ key, min = 0 }) => (row as any)[key] > min
+      );
+    });
 
   // Table instance
   const table = useReactTable<T>({
@@ -152,7 +159,10 @@ function EditableTable<T extends Record<string, any>>({
             <tr key={hg.id}>
               {hg.headers.map((header) => (
                 <th key={header.id} style={{ width: header.getSize() }}>
-                  {flexRender(header.column.columnDef.header, header.getContext())}
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
                 </th>
               ))}
             </tr>
@@ -161,9 +171,14 @@ function EditableTable<T extends Record<string, any>>({
 
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className={safeHighlight(row.original) ? "selected" : undefined}>
+            <tr
+              key={row.id}
+              className={safeHighlight(row.original) ? "selected" : undefined}
+            >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
               ))}
             </tr>
           ))}

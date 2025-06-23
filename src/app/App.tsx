@@ -15,23 +15,38 @@ import { useNavigationConfig } from "../shared/hooks/useConfig";
 import LoadingFallback from "../components/ui/LoadingFallback";
 import TestToggles from "../components/ui/TestToggles";
 import ErrorBoundary from "../components/feedback/ErrorBoundary";
-import { ROUTES } from "../shared/constants/routes";
 import { useDesignSystemInjection } from "../shared/design-system-integration";
 import { TopBarControls } from "../components/layout/top-bar/TopBarControls";
 import FullScreenPanel from "../components/ui/FullScreenPanel";
+import {
+  dynamicConfig,
+  useHomeRoute,
+} from "../shared/config/dynamic-config.service";
+import { useShouldShowWelcome } from "../hooks/useActiveConfig";
+import { shouldShowConfigEditor } from "../shared/config/app.config";
 
-// Lazy load ConfigEditor for the dedicated route
-const ConfigEditor = React.lazy(
-  () => import("../components/config-editor/ConfigEditor")
+// Lazy load components - only load ConfigEditor in development
+const ConfigEditor = shouldShowConfigEditor()
+  ? React.lazy(() => import("../components/config-editor/ConfigEditor"))
+  : null;
+
+const WelcomeScreen = React.lazy(
+  () => import("../components/ui/WelcomeScreen")
 );
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, login } = useAuth();
   const navigation = useNavigationConfig();
   const routes = React.useMemo(() => buildRoutes(navigation), [navigation]);
+  const homeRoute = useHomeRoute();
+  const shouldShowWelcome = useShouldShowWelcome();
 
-  // Initialize the new design system
+  // Initialize the new design system and dynamic config
   useDesignSystemInjection();
+
+  React.useEffect(() => {
+    dynamicConfig.initialize();
+  }, []);
 
   // Show loading while checking authentication state
   if (isLoading) {
@@ -40,6 +55,24 @@ const AppContent: React.FC = () => {
 
   if (!isAuthenticated) {
     return <LoginPage onLoginSuccess={login} />;
+  }
+
+  // Show welcome screen if no config is loaded
+  if (shouldShowWelcome) {
+    return (
+      <BrowserRouter>
+        <Suspense
+          fallback={<LoadingFallback message="Preparing your portal..." />}
+        >
+          <Routes>
+            {shouldShowConfigEditor() && (
+              <Route path="/configuration" element={<ConfigEditorWrapper />} />
+            )}
+            <Route path="*" element={<WelcomeScreen />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    );
   }
 
   return (
@@ -56,11 +89,10 @@ const AppContent: React.FC = () => {
           <Routes>
             {routes}
             {/* Direct route for ConfigEditor - bypasses navigation config */}
-            <Route path="/configuration" element={<ConfigEditorWrapper />} />
-            <Route
-              path={ROUTES.HOME}
-              element={<Navigate to="/reports" replace />}
-            />
+            {shouldShowConfigEditor() && (
+              <Route path="/configuration" element={<ConfigEditorWrapper />} />
+            )}
+            <Route path="/" element={<Navigate to={homeRoute} replace />} />
           </Routes>
         </Suspense>
       </Layout>
@@ -71,6 +103,11 @@ const AppContent: React.FC = () => {
 // Wrapper so we can safely call useNavigate (requires Router context)
 const ConfigEditorWrapper: React.FC = () => {
   const navigate = useNavigate();
+
+  if (!shouldShowConfigEditor() || !ConfigEditor) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <Suspense
       fallback={<LoadingFallback message="Loading Configuration Editor..." />}

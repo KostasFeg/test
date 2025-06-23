@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import type { MasterConfig } from '../config/master.generated';
+import type { MasterConfig } from '../config/master.config';
 import { configManager } from '../config/config.manager';
 
 /**

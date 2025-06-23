@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import type { MasterConfig } from "../../shared/config/master.generated";
+import type { MasterConfig } from "../../shared/config/master.config";
 import { useConfig } from "../../shared/hooks/useConfig";
 import styles from "./ConfigEditor.module.scss";
 import { configManager } from "../../shared/config/config.manager";

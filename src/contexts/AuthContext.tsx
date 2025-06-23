@@ -42,7 +42,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Initialize from localStorage on mount
   useEffect(() => {
-    const storedAuth = localStorage.getItem(config.auth.persistKey);
+    const persistKey = config?.auth?.persistKey || "loggedIn";
+    const storedAuth = localStorage.getItem(persistKey);
     const storedUser = localStorage.getItem("user");
 
     if (storedAuth === "true" && storedUser) {
@@ -66,7 +67,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsAuthenticated(false);
         setIsOfflineMode(false);
         accessManager.reset();
-        localStorage.removeItem(config.auth.persistKey);
+        localStorage.removeItem(persistKey);
         localStorage.removeItem("user");
       }
     }
@@ -96,7 +97,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsAuthenticated(true);
 
     // Persist to localStorage
-    localStorage.setItem(config.auth.persistKey, "true");
+    const persistKey = config?.auth?.persistKey || "loggedIn";
+    localStorage.setItem(persistKey, "true");
     localStorage.setItem("user", JSON.stringify(userData));
   };
 
@@ -111,7 +113,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsOfflineMode(false);
 
     // Clear localStorage
-    localStorage.removeItem(config.auth.persistKey);
+    const persistKey = config?.auth?.persistKey || "loggedIn";
+    localStorage.removeItem(persistKey);
     localStorage.removeItem("user");
   };
 

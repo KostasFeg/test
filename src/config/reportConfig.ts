@@ -34,70 +34,18 @@ export interface ReportConfig {
   };
 }
 
-export const REPORTS: Record<string, ReportConfig> = {
-  // Financial reports
-  "sales": {
-    name: "Sales Report", 
-    filters: ['type', 'scope'],
-    options: {
-      type: ['Day', 'Week'],
-      scope: ['Retailer'],
-      withAutoTime: true
-    }
-  },
-  
-  "commissions": {
-    name: "Commission Report",
-    filters: ['type', 'scope'], 
-    options: {
-      type: ['Day', 'Week'],
-      scope: ['Retailer'],
-      withAutoTime: true
-    }
-  },
-  
-  "cashes": {
-    name: "Cash Report",
-    filters: ['type', 'scope'],
-    options: {
-      type: ['Day', 'Week'], 
-      scope: ['Retailer'],
-      withAutoTime: true
-    }
-  },
-  
-  // Date range reports
-  "transaction-history": {
-    name: "Transaction History",
-    filters: ['fromDate', 'toDate'],
-    options: {
-      withTime: true
-    }
-  },
-  
-  // Simple reports with no filters
-  "shifts": {
-    name: "Shifts Report"
-  },
-  
-  "current-jackpots": {
-    name: "Current Jackpots"
-  },
-  
-  "winning-numbers": {
-    name: "Winning Numbers"
-  },
-  
-  
-  // Additional reports
-  "inventory": { 
-    name: "Inventory Report", 
-    filters: ['fromDate', 'toDate'],
-    options: { withTime: true }
-  },
-};
+// HARDCODED REPORTS REMOVED - NOW CONFIG-DRIVEN!
+// All reports are now defined in config.json and loaded dynamically
+// Use dynamicConfig.getReportConfig(slug) instead of getReportBySlug(slug)
 
-// Helper function for components that need to lookup report config by slug
+/**
+ * @deprecated Use dynamicConfig.getReportConfig(slug) instead
+ * This function is kept for backward compatibility only
+ */
 export const getReportBySlug = (slug: string): ReportConfig | undefined => {
-  return REPORTS[slug];
+  console.warn('getReportBySlug is deprecated. Use dynamicConfig.getReportConfig(slug) instead.');
+  
+  // This function is deprecated - all reports are now config-driven
+  // The actual functionality is now handled by the dynamic config service
+  return undefined;
 };

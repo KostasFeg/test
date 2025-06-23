@@ -18,7 +18,13 @@ export const useNavigation = () => {
   }, [navigate]);
 
   const goToHome = useCallback(() => {
-    navigate('/maintenance-operations');
+    // Import here to avoid circular dependency
+    import('../shared/config/dynamic-config.service').then(({ dynamicConfig }) => {
+      const homeRoute = dynamicConfig.getHomeRoute();
+      navigate(homeRoute);
+    }).catch(() => {
+      navigate('/'); // Fallback
+    });
   }, [navigate]);
 
   return {
