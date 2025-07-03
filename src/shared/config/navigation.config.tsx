@@ -41,6 +41,22 @@ export type NavNode = {
    * - Combined actions (backup system then show backup UI)
    */
   onCallback?: () => void | Promise<void>;
+  // --- Hybrid config extensions (runtime-only) ------------------
+  /**
+   * If present the loader augments the node based on this value.
+   * "report" (default)  – render GenericReport via slug lookup
+   * "component"         – render a React component from componentRegistry
+   * "action"            – call an action from actionRegistry
+   */
+  kind?: "report" | "component" | "action";
+  /** Reference into the registry – component name for kind="component" */
+  component?: string;
+  /** Reference into the registry – action name for kind="action" */
+  action?: string;
+  /** Props passed to the loaded component */
+  props?: Record<string, any>;
+  /** Extra params forwarded to the action handler  */
+  params?: Record<string, any>;
 };
 
 // Lazy-loaded components

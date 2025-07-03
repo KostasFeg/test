@@ -11,7 +11,7 @@ import { UIProvider } from "./providers/UIProvider";
 import LoginPage from "../pages/LoginPage";
 import { Layout } from "../components/layout/Layout";
 import { buildRoutes } from "../navigation/RouteBuilder";
-import { useNavigationConfig } from "../shared/hooks/useConfig";
+import { useDynamicNavigation } from "../shared/config/dynamic-config.service";
 import LoadingFallback from "../components/ui/LoadingFallback";
 import TestToggles from "../components/ui/TestToggles";
 import ErrorBoundary from "../components/feedback/ErrorBoundary";
@@ -36,7 +36,7 @@ const WelcomeScreen = React.lazy(
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading, user, login } = useAuth();
-  const navigation = useNavigationConfig();
+  const navigation = useDynamicNavigation();
   const routes = React.useMemo(() => buildRoutes(navigation), [navigation]);
   const homeRoute = useHomeRoute();
   const shouldShowWelcome = useShouldShowWelcome();

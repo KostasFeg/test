@@ -35,7 +35,7 @@ const BottomBarButton: React.FC<BottomBarButtonProps> = (props) => {
       {...rest}
       variant={variant}
       className={clsx(styles.bottomBarItem, active && styles.active, className)}
-      style={{ flex: 1 }}
+      style={{ flex: 1, height: "100%" }}
     >
       {icon && <span className={styles.bottomBarIcon}>{icon}</span>}
       <span className={styles.bottomBarLabel}>{label}</span>

@@ -9,6 +9,10 @@ import {
 import styles from "./ButtonSection.module.scss";
 import Button from "../components/primitives/Button";
 import type { NavNode } from "../shared/config/navigation.config";
+// Hybrid action fallback when navigation not yet enriched
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore – path resolver
+import { actionRegistry } from "../registries/actionRegistry";
 
 interface SectionWithButtonsProps {
   node: NavNode;
@@ -26,17 +30,31 @@ export const SectionWithButtons: React.FC<SectionWithButtonsProps> = ({
   /* if we're *exactly* on "…/dreamtouch-operations" show menu, otherwise hide */
   const showMenu = pathname === basePath || pathname === `${basePath}/`;
 
-  const handleButtonClick = async (child: NavNode) => {
-    // Execute callback if provided
+  const handleButtonClick = async (child: NavNode, e: React.MouseEvent) => {
+    // If the node has a callback treat it as an action first
     if (child.onCallback) {
+      e.preventDefault(); // stop default navigation behaviour
       await child.onCallback();
+
+      // Navigate afterwards only when a component view exists
+      if (child.element) {
+        navigate(child.slug);
+      }
+      return; // done
     }
 
-    // Navigate only if no callback is provided, or if both callback and element exist
-    // This allows for flexible behavior: callback-only, navigation-only, or both
-    if (!child.onCallback || child.element) {
-      navigate(child.slug);
+    // No callback – regular navigation to leaf route
+    // Fallback: treat raw kind="action" nodes before navigation
+    if ((child as any).kind === "action" && (child as any).action) {
+      e.preventDefault();
+      const handler = actionRegistry[(child as any).action];
+      if (handler) {
+        await handler((child as any).params, child);
+      }
+      return;
     }
+
+    navigate(child.slug);
   };
 
   return (
@@ -57,7 +75,7 @@ export const SectionWithButtons: React.FC<SectionWithButtonsProps> = ({
               key={child.slug}
               variant="ghost"
               className={styles.item}
-              onClick={() => handleButtonClick(child)}
+              onClick={(e) => handleButtonClick(child, e)}
             >
               {child.label}
             </Button>

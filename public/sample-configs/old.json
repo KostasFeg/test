@@ -1,0 +1,348 @@
+{
+  "name": "Enterprise Multi-Domain Configuration",
+  "description": "Comprehensive enterprise configuration showcasing multiple business domains with extensive reporting capabilities, routing integration, and advanced customizations. Demonstrates the full potential of the master configuration system.",
+  "config": {
+    "branding": {
+      "company": {
+        "name": "Nexus Enterprise Solutions",
+        "displayName": "Nexus Enterprise Analytics & Operations Platform"
+      },
+      "logo": {
+        "src": "/nhlottery-logo.png",
+        "alt": "Nexus Enterprise Logo",
+        "width": 220,
+        "height": 55
+      },
+      "loginPage": {
+        "title": "Welcome to Nexus Enterprise",
+        "logo": {
+          "src": "/nhlottery-logo.png",
+          "alt": "Nexus Login Logo",
+          "width": 180,
+          "height": 45
+        }
+      },
+      "app": {
+        "name": "Nexus Enterprise Platform",
+        "version": "5.2.0",
+        "description": "Complete enterprise management solution with advanced analytics, operations management, and comprehensive reporting across all business domains"
+      }
+    },
+    "theme": {
+      "colors": {
+        "primary": "#1e40af",
+        "primaryLight": "#3b82f6",
+        "primaryDark": "#1e3a8a",
+        "secondary": "#059669",
+        "secondaryLight": "#10b981",
+        "secondaryDark": "#047857",
+        "accent": "#7c3aed",
+        "accentBackground": "#f3e8ff",
+        "success": "#059669",
+        "warning": "#d97706",
+        "error": "#dc2626",
+        "info": "#0284c7",
+        "white": "#ffffff",
+        "grey50": "#f8fafc",
+        "grey100": "#f1f5f9",
+        "grey200": "#e2e8f0",
+        "grey300": "#cbd5e1",
+        "grey400": "#94a3b8",
+        "grey500": "#64748b",
+        "grey600": "#475569",
+        "grey700": "#334155",
+        "grey800": "#1e293b",
+        "grey900": "#0f172a"
+      },
+      "shadows": {
+        "shadowSmall": "0 1px 3px rgba(30, 64, 175, 0.08)",
+        "shadowMedium": "0 4px 12px rgba(30, 64, 175, 0.12)",
+        "shadowLarge": "0 12px 28px rgba(30, 64, 175, 0.15)",
+        "shadowXLarge": "0 28px 48px rgba(30, 64, 175, 0.18)",
+        "shadowInner": "inset 0 2px 4px rgba(30, 64, 175, 0.06)",
+        "shadowFocus": "0 0 0 3px rgba(30, 64, 175, 0.15)"
+      },
+      "transitions": {
+        "transitionFast": "0.15s",
+        "transitionMedium": "0.3s",
+        "transitionSlow": "0.6s",
+        "easingDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "easingBounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "easingSharp": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      },
+      "interactiveStates": {
+        "hoverOpacity": 0.85,
+        "activeScale": 0.96,
+        "focusRingWidth": "3px",
+        "focusRingOffset": "2px",
+        "disabledOpacity": 0.4
+      },
+      "typography": {
+        "fontFamilySans": "'Inter', 'Segoe UI', system-ui, sans-serif",
+        "fontFamilyMono": "'JetBrains Mono', 'Fira Code', 'Monaco', monospace",
+        "fontSizeSmall": "0.875rem",
+        "fontSizeMedium": "1rem",
+        "fontSizeLarge": "1.125rem",
+        "fontSizeXLarge": "1.25rem",
+        "fontWeightNormal": 400,
+        "fontWeightMedium": 500,
+        "fontWeightSemibold": 600,
+        "fontWeightBold": 700
+      },
+      "spacing": {
+        "spacing1": "0.25rem",
+        "spacing2": "0.5rem",
+        "spacing3": "0.75rem",
+        "spacing4": "1rem",
+        "spacing5": "1.25rem",
+        "spacing6": "1.5rem",
+        "spacing8": "2rem",
+        "spacing12": "3rem"
+      },
+      "borderRadius": {
+        "radiusSmall": "0.375rem",
+        "radiusMedium": "0.5rem",
+        "radiusLarge": "0.75rem",
+        "radiusXLarge": "1rem"
+      }
+    },
+    "layout": {
+      "sidebarWidth": {
+        "buttons": "85px",
+        "labels": "280px",
+        "mobile": "70px"
+      },
+      "topBarHeight": "72px",
+      "bottomBarHeight": "0px",
+      "mobile": {
+        "topBarHeight": "64px",
+        "sidebarWidthButtons": "70px",
+        "sidebarWidthLabels": "240px"
+      },
+      "breakpoints": {
+        "mobile": "768px",
+        "tablet": "1024px",
+        "desktop": "1280px"
+      },
+      "zIndex": {
+        "topbar": 100,
+        "sidebar": 50,
+        "bottombar": 200,
+        "modal": 1000,
+        "dropdown": 500
+      }
+    },
+    "ui": {
+      "defaultSidebarVariant": "labels",
+      "defaultShowBottomBar": false,
+      "animationFast": "0.15s",
+      "animationMedium": "0.3s",
+      "animationSlow": "0.6s",
+      "easingDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "easingBounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+      "easingSharp": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+    },
+    "componentStyles": {
+      "buttons": {
+        "borderRadius": "0.5rem",
+        "paddingVertical": "0.875rem",
+        "paddingHorizontal": "1.5rem",
+        "fontWeight": 600,
+        "minHeight": "44px",
+        "minWidth": "140px",
+        "hoverTransform": "translateY(-1px)",
+        "hoverShadow": "0 6px 16px rgba(30, 64, 175, 0.25)",
+        "focusRingStyle": "0 0 0 3px rgba(30, 64, 175, 0.2)"
+      },
+      "inputs": {
+        "borderRadius": "0.5rem",
+        "padding": "0.875rem 1rem",
+        "fontSize": "0.875rem",
+        "borderWidth": "1px",
+        "focusRingWidth": "3px",
+        "focusRingColor": "rgba(30, 64, 175, 0.3)",
+        "placeholderOpacity": "0.6"
+      },
+      "cards": {
+        "borderRadius": "0.75rem",
+        "padding": "1.5rem",
+        "shadowLight": "0 1px 3px rgba(30, 64, 175, 0.08)",
+        "shadowMedium": "0 4px 12px rgba(30, 64, 175, 0.12)",
+        "shadowHeavy": "0 12px 28px rgba(30, 64, 175, 0.15)",
+        "borderWidth": "1px",
+        "borderStyle": "solid",
+        "hoverElevation": "0 8px 24px rgba(30, 64, 175, 0.15)"
+      },
+      "navigation": {
+        "buttonGrid": {
+          "gap": "1.25rem",
+          "itemMinWidth": "260px",
+          "itemMaxWidth": "320px",
+          "itemPadding": "1.5rem",
+          "hoverScale": "1.02",
+          "activeScale": "0.98"
+        },
+        "tabs": {
+          "height": "48px",
+          "borderRadius": "0.75rem",
+          "gap": "0.75rem",
+          "activeIndicatorHeight": "3px",
+          "hoverBackground": "rgba(30, 64, 175, 0.08)"
+        }
+      },
+      "modals": {
+        "backdropBlur": "12px",
+        "borderRadius": "1rem",
+        "padding": "2rem",
+        "maxWidth": "700px",
+        "shadow": "0 24px 48px rgba(30, 64, 175, 0.2)",
+        "animationDuration": "0.3s"
+      },
+      "loading": {
+        "spinnerSize": "28px",
+        "spinnerThickness": "3px",
+        "pulseOpacity": "0.6",
+        "skeletonBackground": "#f1f5f9",
+        "skeletonHighlight": "#e2e8f0"
+      },
+      "scrollbar": {
+        "width": "10px",
+        "thumbColor": "#cbd5e1",
+        "trackColor": "transparent",
+        "thumbHoverColor": "#94a3b8",
+        "borderRadius": "5px"
+      }
+    },
+    "features": {
+      "enableDebugReports": true,
+      "enableAdvancedFilters": true,
+      "enableThemeCustomization": true,
+      "enableBulkOperations": true,
+      "enableOfflineMode": false
+    },
+    "api": {
+      "baseUrl": "https://api.nexus-enterprise.com",
+      "timeout": 30000,
+      "retryAttempts": 3,
+      "retryDelay": 1000
+    },
+    "auth": {
+      "persistKey": "nexus-auth-token",
+      "sessionTimeout": 28800,
+      "autoLogoutWarning": 300
+    },
+    "navigation": [
+      {
+        "slug": "stats",
+        "label": "📊 Stats",
+        "kind": "component",
+        "component": "StatsPanel"
+      },
+      {
+        "slug": "reports-tabs",
+        "label": "📑 Reports (Tabs)",
+        "display": "tabs",
+        "children": [
+          { "slug": "sales-summary", "label": "Sales Summary" },
+          { "slug": "ticket-analytics", "label": "Ticket Analytics" },
+          { "slug": "shift-overview", "label": "Shift Overview" }
+        ]
+      },
+      {
+        "slug": "reports-buttons",
+        "label": "🔘 Reports (Buttons)",
+        "display": "buttons",
+        "columns": 2,
+        "children": [
+          { "slug": "daily-sales", "label": "Daily Sales" },
+          { "slug": "weekly-revenue", "label": "Weekly Revenue" },
+          { "slug": "monthly-profit", "label": "Monthly Profit" },
+          { "slug": "regional-comparison", "label": "Regional Comparison" }
+        ]
+      },
+      {
+        "slug": "utility-actions",
+        "label": "⚙️ Utilities",
+        "display": "buttons",
+        "columns": 3,
+        "children": [
+          { "slug": "force-reload", "label": "Force Reload", "kind": "action", "action": "forceReload" },
+          { "slug": "show-alert", "label": "Show Alert", "kind": "action", "action": "showAlert", "params": { "message": "Hello from config!" } },
+          { "slug": "logout", "label": "Logout", "kind": "action", "action": "logout" }
+        ]
+      },
+      {
+        "slug": "extra",
+        "label": "🧩 Extra Views",
+        "display": "tabs",
+        "children": [
+          { "slug": "hello-world", "label": "Hello World", "kind": "component", "component": "HelloWorldPage" },
+          { "slug": "stats-panel", "label": "Stats Panel", "kind": "component", "component": "StatsPanel" }
+        ]
+      }
+    ],
+    "reports": {
+      "sales-summary": {
+        "name": "Sales Summary Report",
+        "filters": ["type", "fromDate", "toDate"],
+        "options": {
+          "type": ["Day", "Week", "Month"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "ticket-analytics": {
+        "name": "Ticket Analytics Report",
+        "filters": ["scope", "fromDate", "toDate"],
+        "options": {
+          "scope": ["All", "Region", "Site"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "shift-overview": {
+        "name": "Shift Overview Report",
+        "filters": ["fromDate", "toDate"],
+        "options": {
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "daily-sales": {
+        "name": "Daily Sales Report",
+        "filters": ["scope", "fromDate"],
+        "options": {
+          "scope": ["All", "Region"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "weekly-revenue": {
+        "name": "Weekly Revenue Analysis",
+        "filters": ["fromDate", "toDate"],
+        "options": {
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "monthly-profit": {
+        "name": "Monthly Profit & Loss",
+        "filters": ["fromDate", "toDate"],
+        "options": {
+          "withTime": false,
+          "withAutoTime": true
+        }
+      },
+      "regional-comparison": {
+        "name": "Regional Comparison Report",
+        "filters": ["scope", "type"],
+        "options": {
+          "scope": ["North", "South", "East", "West"],
+          "type": ["Revenue", "Units"],
+          "withTime": false,
+          "withAutoTime": true
+        }
+      }
+    }
+  }
+} 

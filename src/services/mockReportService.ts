@@ -37,6 +37,8 @@ export interface ReportResponse {
   };
 }
 
+
+
 // Enhanced mock fetch function as requested
 export const mockFetch = (mockData: any, { delay = 400, status = 200 }: MockFetchOptions = {}) => {
   return async (): Promise<Response> => {
@@ -1095,6 +1097,106 @@ function generateMinimalContentReport(params: ReportParams): string {
   `;
 }
 
+// Simple generic mock report generator
+function generateGenericMockReport(params: ReportParams): string {
+  const reportTitle = params.slug
+    .split(/[-_]/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  
+  const reportType = params.type || 'Summary';
+  const scope = params.scope || 'Company-wide';
+  
+  // Generate some random metrics
+  const metrics = [
+    { label: 'Total Volume', value: '$' + (Math.random() * 1000000 + 100000).toFixed(0), trend: Math.round(Math.random() * 40 - 20) },
+    { label: 'Performance Rate', value: (Math.random() * 30 + 70).toFixed(1) + '%', trend: Math.round(Math.random() * 20 - 10) },
+    { label: 'Efficiency Score', value: (Math.random() * 25 + 75).toFixed(0) + '%', trend: Math.round(Math.random() * 15 - 7) },
+    { label: 'Target Achievement', value: (Math.random() * 40 + 80).toFixed(1) + '%', trend: Math.round(Math.random() * 25 - 10) }
+  ];
+  
+  const periods = ['This Week', 'Last Week', 'This Month', 'Last Month', 'This Quarter'];
+  const trends = periods.map(period => ({
+    period,
+    value: '$' + (Math.random() * 500000 + 50000).toFixed(0),
+    change: Math.round(Math.random() * 40 - 20)
+  }));
+  
+  return `
+    <div style="font-family: Arial, sans-serif; padding: 20px; background: white; color: black;">
+      <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #1e40af; padding-bottom: 20px;">
+        <h1 style="margin: 0; color: #1e40af; font-size: 28px;">📊 ${reportTitle}</h1>
+        <p style="margin: 10px 0 0 0; color: #666; font-size: 16px;">Comprehensive analysis and reporting</p>
+        <div style="margin-top: 15px; padding: 10px; background: #f8fafc; border-radius: 8px; display: inline-block;">
+          <strong>Period:</strong> ${formatDateRange(params)} | 
+          <strong>Type:</strong> ${reportType} | 
+          <strong>Scope:</strong> ${scope}
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
+        ${metrics.map(metric => `
+          <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 20px; border-radius: 12px; text-align: center; border: 1px solid #93c5fd;">
+            <h3 style="margin: 0 0 10px 0; color: #1e3a8a; font-size: 14px;">${metric.label}</h3>
+            <p style="margin: 0; font-size: 24px; font-weight: bold; color: #1e40af;">${metric.value}</p>
+            <p style="margin: 5px 0 0 0; font-size: 12px; color: ${metric.trend > 0 ? '#2e7d32' : '#c62828'};">
+              ${metric.trend > 0 ? '↗' : '↘'} ${Math.abs(metric.trend)}% vs last period
+            </p>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="margin: 30px 0;">
+        <h2 style="color: #1e40af; margin-bottom: 20px; font-size: 20px;">📈 Performance Trends</h2>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="background-color: #1e40af; color: white;">
+              <th style="padding: 12px; text-align: left;">Period</th>
+              <th style="padding: 12px; text-align: right;">Value</th>
+              <th style="padding: 12px; text-align: right;">Change</th>
+              <th style="padding: 12px; text-align: left;">Status</th>
+            </tr>
+            ${trends.map(trend => `
+              <tr style="background-color: ${trend.change > 0 ? '#f0f9ff' : '#fef2f2'};">
+                <td style="padding: 10px; border: 1px solid #e2e8f0;">${trend.period}</td>
+                <td style="padding: 10px; text-align: right; border: 1px solid #e2e8f0; font-weight: bold;">${trend.value}</td>
+                <td style="padding: 10px; text-align: right; border: 1px solid #e2e8f0; color: ${trend.change > 0 ? '#059669' : '#dc2626'};">
+                  ${trend.change > 0 ? '+' : ''}${trend.change}%
+                </td>
+                <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                  <span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; 
+                              background: ${trend.change > 0 ? '#dcfce7' : '#fee2e2'}; 
+                              color: ${trend.change > 0 ? '#166534' : '#991b1b'};">
+                    ${trend.change > 0 ? '✅ Good' : '⚠️ Review'}
+                  </span>
+                </td>
+              </tr>
+            `).join('')}
+          </table>
+        </div>
+      </div>
+
+      <div style="margin: 30px 0;">
+        <h2 style="color: #1e40af; margin-bottom: 15px; font-size: 20px;">📋 Summary</h2>
+        <div style="background: #fffbeb; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+          <ul style="margin: 0; padding-left: 20px; color: #92400e;">
+            <li style="margin-bottom: 8px;">Performance metrics are showing positive trends</li>
+            <li style="margin-bottom: 8px;">Key objectives are being met according to schedule</li>
+            <li style="margin-bottom: 8px;">Areas for improvement have been identified</li>
+            <li>Next review scheduled for: ${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toDateString()}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top: 40px; text-align: center; padding-top: 20px; border-top: 2px solid #e2e8f0;">
+        <p style="margin: 0; font-size: 12px; color: #6b7280;">
+          Generated: ${new Date().toLocaleString()} | Report ID: DEMO-${Math.random().toString(36).substr(2, 6).toUpperCase()}
+        </p>
+      </div>
+    </div>
+  `;
+}
+
 function formatDateRange(params: ReportParams): string {
   if (params.fromDate && params.toDate) {
     const from = new Date(params.fromDate * 1000).toDateString();
@@ -1132,12 +1234,37 @@ class MockReportService {
       return config.generator(params);
     }
 
-    // Fallback to generic report
-    return this.getDefaultReport(params);
+    // Generate intelligent report based on slug analysis
+    return this.generateIntelligentReport(params);
   }
 
   getReportConfig(slug: string) {
-    return MOCK_REPORT_CONFIGS[slug];
+    // Return existing config or generate one dynamically
+    if (MOCK_REPORT_CONFIGS[slug]) {
+      return MOCK_REPORT_CONFIGS[slug];
+    }
+    
+    // Generate dynamic config based on slug
+    return this.generateDynamicConfig(slug);
+  }
+
+  private generateDynamicConfig(slug: string) {
+    const filters = ['type', 'scope', 'fromDate', 'toDate'];
+    
+    // Reduce filters for certain types
+    if (slug.includes('dashboard') || slug.includes('summary')) {
+      return { filters: ['type', 'scope'], contentType: 'html' as const };
+    }
+    
+    if (slug.includes('monitoring') || slug.includes('logs')) {
+      return { filters: ['type', 'fromDate', 'toDate'], contentType: 'html' as const };
+    }
+    
+    return { filters, contentType: 'html' as const };
+  }
+
+  private generateIntelligentReport(params: ReportParams): string {
+    return generateGenericMockReport(params);
   }
 
   private getDefaultReport(params: ReportParams): string {

@@ -10,6 +10,11 @@
 import { NavNode } from './navigation.config';
 import { getCurrentConfig } from './config.manager';
 import { MasterConfig } from './master.config';
+import { componentRegistry } from "../../registries/componentRegistry";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore – path resolution handled by Vite/TS config
+import { actionRegistry } from "../../registries/actionRegistry";
+import React from "react";
 
 export interface DynamicRoute {
   path: string;
@@ -38,8 +43,9 @@ export class DynamicConfigService {
    */
   async initialize(): Promise<void> {
     this.config = getCurrentConfig() as MasterConfig;
-    this.generateDynamicRoutes();
+    // Build navigation first so routes can rely on enriched nodes
     this.generateDynamicNavigation();
+    this.generateDynamicRoutes();
   }
 
   /**
@@ -121,7 +127,7 @@ export class DynamicConfigService {
       }
     };
 
-    this.config.navigation.forEach(node => processNavNode(node));
+    this.cachedNavigation.forEach(node => processNavNode(node));
     this.cachedRoutes = routes;
   }
 
@@ -134,8 +140,45 @@ export class DynamicConfigService {
       return;
     }
 
-    // Use navigation from active config if available, otherwise fallback to master config
-    this.cachedNavigation = this.config.navigation;
+    // Build runtime-aware navigation (adds element/onCallback based on kind)
+    const transform = (node: NavNode): NavNode => {
+      const { children, kind, component, action, props, params, ...rest } = node as any;
+
+      const out: NavNode = { ...(rest as NavNode) };
+
+      // Recursively transform children first
+      if (Array.isArray(children) && children.length) {
+        out.children = children.map(transform);
+      } else {
+        // Leaf-specific augmentation
+        const k: string = kind || "report";
+
+        // Component leaf – wire element
+        if (k === "component" && typeof component === "string") {
+          const Comp = componentRegistry[component];
+          if (Comp) {
+            out.element = () => React.createElement(Comp as any, props || {});
+          } else {
+            console.warn(`Component '${component}' not found in registry`);
+          }
+        }
+
+        // Action leaf – wire callback (no navigation unless element also provided)
+        if (k === "action" && typeof action === "string") {
+          const act = actionRegistry[action];
+          if (act) {
+            out.onCallback = () => act(params, out);
+          } else {
+            console.warn(`Action '${action}' not found in registry`);
+          }
+        }
+        // For 'report' we do nothing – RouteBuilder already handles it.
+      }
+
+      return out;
+    };
+
+    this.cachedNavigation = (this.config.navigation || []).map(transform);
   }
 
   /**
@@ -208,8 +251,8 @@ export class DynamicConfigService {
    */
   refresh(): void {
     this.config = getCurrentConfig() as MasterConfig;
-    this.generateDynamicRoutes();
     this.generateDynamicNavigation();
+    this.generateDynamicRoutes();
   }
 
   /**

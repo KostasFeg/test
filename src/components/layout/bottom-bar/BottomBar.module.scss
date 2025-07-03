@@ -88,7 +88,8 @@
   align-items: center;
   justify-content: center;
   // padding: var(--spacing-3) var(--spacing-4);
-  height: var(--layout-bottombar-height, 60px);
+  height: 100%;
+  min-height: var(--layout-bottombar-height, 60px);
   background: var(--bg-paper);
   border-top: 1px solid var(--color-grey-200);
   font-family: var(--font-family-sans);
