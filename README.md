@@ -1,123 +1,133 @@
-# React + Vite
+# 📚 Portal Configuration & Navigation Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 1 Folder structure (TL;DR)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+my-new-dir/
+ ├─ public/
+ │   └─ active-config/config.json   ← ONE file → overrides everything
+ │
+ ├─ src/registries/
+ │   ├─ componentRegistry.ts       ← Map string → lazy React component
+ │   └─ actionRegistry.ts          ← Map string → function(params?)
+ │
+ └─ src/shared/config/…
+     ├─ config.manager.ts          ← Loads + validates config, injects CSS vars
+     └─ dynamic-config.service.ts  ← Enriches nav + routes at runtime
+```
 
-## Expanding the ESLint configuration
+_There is no other place to add routes or pages._
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
 
-# Configuration System - Enhanced Version
+## 2 The JSON anatomy
 
-## 🎨 What's New?
+```jsonc
+{
+  "name": "Portal name (optional)",
+  "config": {
+    "navigation": [ … ],     // required – drives the router
+    "reports":    { … },     // optional – binds slugs to GenericReport
+    "theme":      { … },     // colours, spacing, etc → auto CSS vars
+    // …branding, layout, ui, features, api, auth
+  }
+}
+```
 
-Your configuration system has been significantly enhanced to make styling changes more intuitive and automatic!
+### 2.1 Navigation leaf types
 
-### Key Improvements:
+| kind (default = "report") | What happens                                                           |
+| ------------------------- | ---------------------------------------------------------------------- |
+| `report` or omitted       | Route renders `<GenericReport>` using the same slug in `reports` block |
+| `component`               | Looks-up `componentRegistry[component]` and renders it                 |
+| `action`                  | Executes `actionRegistry[action](params)` – no navigation              |
 
-1. **Automatic Color Derivation** 🌈
+Example leaf:
 
-   - When you change the primary color, the system automatically generates harmonious variants
-   - Light/dark versions, accent colors, and background tints are calculated automatically
-   - Uses advanced color theory algorithms for pleasing color combinations
+```jsonc
+{
+  "slug": "force-reload",
+  "label": "Reload",
+  "kind": "action",
+  "action": "forceReload",
+  "params": { "clearCache": true }
+}
+```
 
-2. **Semantic CSS Variables** 🎯
+### 2.2 Reports block
 
-   - New semantic variables like `--ui-sidebar-bg`, `--ui-button-primary-bg`, etc.
-   - Clear mapping between configuration changes and visual results
-   - Changing "primary color" now actually affects primary UI elements!
+Key **must** equal navigation slug.
 
-3. **Simplified Configuration Interface** ✨
+```jsonc
+"daily-sales": {
+  "name": "Daily Sales Report",
+  "filters": ["scope","fromDate"],
+  "options": { "scope": ["All","Region"], "withAutoTime": true }
+}
+```
 
-   - Reorganized into 5 intuitive sections:
-     - 🎨 Colors & Theming (most impactful changes)
-     - 📐 Layout & Sizing
-     - ⚡ Animations & Feel
-     - 🏢 Branding & Identity
-     - ⚙️ Advanced Settings
-   - Auto-derivation toggle for colors
-   - Live preview of derived colors
+_GenericReport_ auto-renders filter controls based on `filters` & `options`.
 
-4. **Real-time CSS Injection** ⚡
-   - Changes are applied instantly without page refresh
-   - Automatic CSS variable generation and injection
-   - Better performance and user experience
+---
 
-## How to Use:
+## 3 Registries – adding code hooks without touching router
 
-### Quick Theme Change:
+### 3.1 componentRegistry.ts
 
-1. Open the Configuration Editor
-2. Go to "Colors & Theming"
-3. Change the "Primary Color" - watch everything update automatically!
-4. The sidebar, buttons, and accent elements will all use harmonious colors derived from your choice
+```ts
+export const componentRegistry = {
+  StatsPanel: React.lazy(() => import("../views/StatsPanel")),
+  BursterAction: React.lazy(
+    () => import("../components/bursters/BursterActionPanel")
+  ),
+  // Add your own here
+};
+```
 
-### Color Auto-Derivation:
+Refer to the key with `"component": "StatsPanel"` in navigation.
 
-- ✅ **Enabled**: Changing primary color generates light/dark variants automatically
-- ❌ **Disabled**: Manual control over all color variants
+### 3.2 actionRegistry.ts
 
-### Example Usage:
-
-```typescript
-// Change primary color programmatically
-configManager.updateConfig({
-  theme: {
-    colors: {
-      primary: "#7c3aed", // Purple - auto-generates variants
-    },
+```ts
+export const actionRegistry = {
+  forceReload: () => window.location.reload(),
+  showAlert: (p) => alert(p?.message ?? "Hello"),
+  logout: () => {
+    /* custom logout */
   },
-});
+};
 ```
 
-The system will automatically:
+Use `"kind":"action","action":"showAlert"` in navigation.
 
-- Generate `primaryLight: #8b5cf6`
-- Generate `primaryDark: #6d28d9`
-- Create harmonious `accent: #ec4899`
-- Create subtle `accentBackground: #fdf4ff`
-- Update all CSS variables in real-time
+---
 
-### Semantic CSS Variables Available:
+## 4 Runtime data-flow
 
-```scss
-// Sidebar theming
-.my-sidebar {
-  background: var(--ui-sidebar-bg);
-  border: 1px solid var(--ui-sidebar-border);
-
-  .active-item {
-    background: var(--ui-sidebar-item-active);
-    color: var(--ui-sidebar-item-active-text);
-  }
-}
-
-// Button theming
-.my-button {
-  background: var(--ui-button-primary-bg);
-  &:hover {
-    background: var(--ui-button-primary-hover);
-  }
-}
+```mermaid
+flowchart TD
+  A[config.json] -->|parse| B(configManager.set)
+  B --> C[validate + merge]
+  C --> D[dynamicConfig.generateNavigation]
+  D --> E[nav enriched (element / onCallback)]
+  E --> F[dynamicConfig.generateRoutes]
+  F --> G[RouteBuilder]
+  G --> H[React Router v6 tree]
 ```
 
-## Benefits:
+Key point: **RouteBuilder never contains hard-coded slugs** – it only consumes the enriched nav.
 
-1. **Intuitive**: Changing "primary color" actually affects primary elements
-2. **Automatic**: No need to manually calculate color variants
-3. **Consistent**: Automatically generated colors follow design principles
-4. **Fast**: Real-time preview without page refreshes
-5. **Professional**: Uses color theory for harmonious combinations
+---
 
-## Try It Out:
+## 5 Creating a new portal – 4 steps
 
-1. Open your app
-2. Navigate to the Configuration Editor
-3. Change the primary color from blue to purple, green, or red
-4. Watch your entire sidebar, buttons, and UI elements update with beautiful, harmonious colors!
+1. Duplicate `public/sample-configs/advanced-retailer-config.json` → `public/active-config/config.json`
+2. Edit branding, colours, navigation labels.
+3. Add/rename report slugs & definitions.
+4. If you need custom pages or actions, register them in one of the registries and reference them in navigation.
 
-The configuration system now provides the intuitive experience you wanted - changing key variables like "primary color" creates obvious, beautiful changes throughout your application! 🎨✨
+Refresh twice the first time (localStorage cache then live) – subsequent edits hot-reload.
+
+---
